@@ -3,10 +3,13 @@
 
 #include "MolVizGameModeBase.h"
 
+#include "MousePlayerController.h"
+
 AMolVizGameModeBase::AMolVizGameModeBase() : Super()
 {
 	UE_LOG(LogTemp, Log, TEXT("Hello from game mode"));
 	HUDClass = ABaseHUD::StaticClass();
+	PlayerControllerClass = AMousePlayerController::StaticClass();
 }
 
 void AMolVizGameModeBase::BeginPlay()

@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "HAL/FileManagerGeneric.h"
 #include "SFileExplorer.h"
+#include "MolViz.h"
 #include "BaseHUD.generated.h"
 
 

@@ -20,6 +20,7 @@ public:
 		
 	SLATE_END_ARGS()
 
-	void Construct(const FArguments& InArgs);
-	
+	void Construct(const FArguments& InArgs);	
+private:
+	TSharedPtr<SWindow> mainWindow;
 };

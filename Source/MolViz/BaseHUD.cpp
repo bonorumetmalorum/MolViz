@@ -2,7 +2,6 @@
 
 
 #include "BaseHUD.h"
-#include "Engine.h"
 #include "Widgets/SWeakWidget.h"
 
 void ABaseHUD::BeginPlay()
@@ -13,6 +12,7 @@ void ABaseHUD::BeginPlay()
 	if (GEngine && GEngine->GameViewport)
 	{
 		fileExplorer = SNew(SFileExplorer).fileManager(fileManager);
-		GEngine->GameViewport->AddViewportWidgetContent(SAssignNew(container, SWeakWidget).PossiblyNullContent(fileExplorer.ToSharedRef()));
+		GEngine->GameViewport->AddViewportWidgetContent(SAssignNew(container, SWeakWidget)
+		.PossiblyNullContent(fileExplorer.ToSharedRef()));
 	}
 }

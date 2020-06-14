@@ -15,39 +15,22 @@ void SFileExplorer::Construct(const FArguments& InArgs)
 	 * a button to navigate up one level
 	 * a list view of the current directory
 	 */
-	float widgetWidth = 5.0f;
+	float widgetWidth = 500.0f;
 	FString button = FString("hello");
-	TSharedPtr<SWindow> mainWindow;
 	ChildSlot
 	[
-		/*SNew(SVerticalBox)
-		+SVerticalBox::Slot()
-		.AutoHeight()
-		.HAlign(HAlign_Left)
-		.VAlign(VAlign_Top)
-		[
-			SNew(SHorizontalBox)
-			+SHorizontalBox::Slot()
-			.AutoWidth()
-			[
-				SNew(SImage)
-				.ColorAndOpacity(FColor::Black)
-			]
-			+SHorizontalBox::Slot()
-			[
-				SNew(SBorder)
-				.BorderBackgroundColor(FSlateColor(FLinearColor::Black))
-				[
-					SNew(SButton)
-					.Text(FText::FromString(button))
-				]
-			]
-		]*/
+
 		SAssignNew(mainWindow, SWindow)
-		.MaxWidth(widgetWidth)
-		.MaxHeight(widgetWidth)
+		/*.MaxWidth(widgetWidth)
+		.MaxHeight(widgetWidth)*/
+		.IsInitiallyMaximized(false)
+		.SizingRule(ESizingRule::UserSized)
+		.FocusWhenFirstShown(true)
 		.FocusWhenFirstShown(true)
 		.SupportsTransparency(FWindowTransparency(EWindowTransparency::PerWindow))
+		.RenderOpacity(0.5f)
+		.SupportsMinimize(false)
+		.SupportsMaximize(false)
 		.Title(FText::FromString(FString("File Explorer")))
 		[
 			SNew(SOverlay)
@@ -63,5 +46,8 @@ void SFileExplorer::Construct(const FArguments& InArgs)
 			]
 		]
 	];
+	FSlateApplication::Get().AddWindow(mainWindow.ToSharedRef());
+	//mainWindow->Resize(FVector2D(50.0, 50.0));
+	//mainWindow->Invalidate(EInvalidateWidgetReason::Layout);
 }
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
