@@ -3,6 +3,8 @@
 
 #include "SFileExplorer.h"
 #include "SlateOptMacros.h"
+#include "DesktopPlatform/Public/DesktopPlatformModule.h"
+#include "DesktopPlatform/Public/IDesktopPlatform.h"
 
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
@@ -49,19 +51,39 @@ void SFileExplorer::Construct(const FArguments& InArgs)
 				[
 					SNew(SButton)
 					.Text(FText::FromString(button))
-					.OnClicked_Static(&SFileExplorer::OpenFileDialog)
+					.OnClicked(this, &SFileExplorer::OpenFileDialog)
 				]
 			]
 		]
 	];
 	FSlateApplication::Get().AddWindow(mainWindow.ToSharedRef());
-	//mainWindow->Resize(FVector2D(50.0, 50.0));
-	//mainWindow->Invalidate(EInvalidateWidgetReason::Layout);
+
 }
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
 FReply SFileExplorer::OpenFileDialog()
 {
-	UE_LOG(LogTemp, Warning, TEXT("button clicked"));
+	IDesktopPlatform * platform = FDesktopPlatformModule::Get();
+	TArray<FString> filenames;
+	bool result = platform->OpenFileDialog(
+		mainWindow.Get()->GetNativeWindow()->GetOSWindowHandle(),
+		FString("Select a file"),
+		FString("/"),
+		FString(""),
+		FString(""),
+		EFileDialogFlags::Multiple,
+		filenames
+	);
+	if(result)
+	{
+		for(auto element : filenames)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, element);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("dialog closed with no selections"));
+	}
 	return FReply::Handled();
 }

@@ -20,7 +20,7 @@ public:
 
 	SLATE_END_ARGS()
 
-	static FReply OpenFileDialog();
+	FReply OpenFileDialog();
 	
 	void Construct(const FArguments& InArgs);	
 private:
