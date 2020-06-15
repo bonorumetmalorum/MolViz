@@ -12,7 +12,5 @@ void ABaseHUD::BeginPlay()
 	if (GEngine && GEngine->GameViewport)
 	{
 		fileExplorer = SNew(SFileExplorer).fileManager(fileManager);
-		GEngine->GameViewport->AddViewportWidgetContent(SAssignNew(container, SWeakWidget)
-		.PossiblyNullContent(fileExplorer.ToSharedRef()));
 	}
 }

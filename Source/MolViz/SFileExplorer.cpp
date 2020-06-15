@@ -16,7 +16,7 @@ void SFileExplorer::Construct(const FArguments& InArgs)
 	 * a list view of the current directory
 	 */
 	float widgetWidth = 500.0f;
-	FString button = FString("hello");
+	FString button = FString("select a file");
 	ChildSlot
 	[
 
@@ -25,6 +25,8 @@ void SFileExplorer::Construct(const FArguments& InArgs)
 		.MaxHeight(widgetWidth)*/
 		.IsInitiallyMaximized(false)
 		.SizingRule(ESizingRule::UserSized)
+		.MinHeight(widgetWidth)
+		.MinWidth(widgetWidth)
 		.FocusWhenFirstShown(true)
 		.FocusWhenFirstShown(true)
 		.SupportsTransparency(FWindowTransparency(EWindowTransparency::PerWindow))
@@ -43,6 +45,12 @@ void SFileExplorer::Construct(const FArguments& InArgs)
 					SNew(SImage)
 					.ColorAndOpacity(FColor::Black)
 				]
+				+SVerticalBox::Slot()
+				[
+					SNew(SButton)
+					.Text(FText::FromString(button))
+					.OnClicked_Static(&SFileExplorer::OpenFileDialog)
+				]
 			]
 		]
 	];
@@ -51,3 +59,9 @@ void SFileExplorer::Construct(const FArguments& InArgs)
 	//mainWindow->Invalidate(EInvalidateWidgetReason::Layout);
 }
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
+
+FReply SFileExplorer::OpenFileDialog()
+{
+	UE_LOG(LogTemp, Warning, TEXT("button clicked"));
+	return FReply::Handled();
+}

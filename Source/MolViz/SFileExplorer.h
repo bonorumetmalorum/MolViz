@@ -17,9 +17,11 @@ public:
 	SLATE_BEGIN_ARGS(SFileExplorer) {}
 
 	SLATE_ARGUMENT(TWeakObjectPtr<class FFileManagerGeneric>, fileManager)
-		
+
 	SLATE_END_ARGS()
 
+	static FReply OpenFileDialog();
+	
 	void Construct(const FArguments& InArgs);	
 private:
 	TSharedPtr<SWindow> mainWindow;
