@@ -31,4 +31,5 @@ public:
 
 private:
 	LineType getLineType(const uint8 * line);
+	void ParseAtom(uint8* line);
 };

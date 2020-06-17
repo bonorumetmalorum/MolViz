@@ -23,8 +23,8 @@ bool IReader::ReadLine(IFileHandle * Data, uint8* Outbuffer, SIZE_T MaxRead)
 			{ //if we found the end of the line
 				return true;	
 			}
-			Outbuffer++;
 			*Outbuffer = CurrentChar;
+			Outbuffer++;
 			Counter++;
 		}
 		if(Counter == MaxRead)
@@ -33,4 +33,20 @@ bool IReader::ReadLine(IFileHandle * Data, uint8* Outbuffer, SIZE_T MaxRead)
 		}
 	}
 	return false;
+}
+
+FString IReader::BytesToString(const uint8* Bytes, SIZE_T Count)
+{
+	FString Result;
+	Result.Empty(Count);
+
+	while (Count)
+	{
+		// Put the byte into an int16 and add 1 to it, this keeps anything from being put into the string as a null terminator
+		Result += TCHAR(*Bytes);
+
+		++Bytes;
+		Count--;
+	}
+	return Result;
 }

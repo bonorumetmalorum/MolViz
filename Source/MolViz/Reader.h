@@ -15,4 +15,5 @@ public:
 	virtual void read(FString filepath) = 0;
 protected:
 	bool ReadLine(IFileHandle * Data, uint8* OutData, SIZE_T maxRead);
+	FString BytesToString(const uint8* bytes, SIZE_T count);
 };

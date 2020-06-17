@@ -44,23 +44,23 @@ void FPdbReader::read(FString filepath)
 LineType FPdbReader::getLineType(const uint8 * line)
 {
 	FString word = BytesToString(line, 6);
-	if(word.Contains("HEADER", ESearchCase::Type::IgnoreCase))
+	if(word.Equals("HEADER", ESearchCase::Type::IgnoreCase))
 	{
 		return Header;
 	}
-	if (word.Contains("SEQRES", ESearchCase::Type::IgnoreCase))
+	if (word.Equals("SEQRES", ESearchCase::Type::IgnoreCase))
 	{
 		return Seqres;
 	}
-	if (word.Contains("ATOM", ESearchCase::Type::IgnoreCase))
+	if (word.Equals("ATOM", ESearchCase::Type::IgnoreCase))
 	{
 		return Atom;
 	}
-	if (word.Contains("HETATM", ESearchCase::Type::IgnoreCase))
+	if (word.Equals("HETATM", ESearchCase::Type::IgnoreCase))
 	{
 		return Hetatm;
 	}
-	if (word.Contains("END", ESearchCase::Type::IgnoreCase))
+	if (word.Equals("END", ESearchCase::Type::IgnoreCase))
 	{
 		return End;
 	}
