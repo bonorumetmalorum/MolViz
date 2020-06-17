@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Slate.h"
 #include "HAL/FileManagerGeneric.h"
+#include "FPdbReader.h"
 
 /**
  * File explorer ui to be used to load PDB and DCD files from the system in game
@@ -24,5 +25,6 @@ public:
 	
 	void Construct(const FArguments& InArgs);	
 private:
-	TSharedPtr<SWindow> mainWindow;
+	TSharedPtr<SWindow> MainWindow;
+	FPdbReader PDBReader;
 };

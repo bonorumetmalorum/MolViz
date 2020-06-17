@@ -22,7 +22,7 @@ void SFileExplorer::Construct(const FArguments& InArgs)
 	ChildSlot
 	[
 
-		SAssignNew(mainWindow, SWindow)
+		SAssignNew(MainWindow, SWindow)
 		/*.MaxWidth(widgetWidth)
 		.MaxHeight(widgetWidth)*/
 		.IsInitiallyMaximized(false)
@@ -56,34 +56,36 @@ void SFileExplorer::Construct(const FArguments& InArgs)
 			]
 		]
 	];
-	FSlateApplication::Get().AddWindow(mainWindow.ToSharedRef());
+	FSlateApplication::Get().AddWindow(MainWindow.ToSharedRef());
 
 }
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
 FReply SFileExplorer::OpenFileDialog()
 {
-	IDesktopPlatform * platform = FDesktopPlatformModule::Get();
-	TArray<FString> filenames;
-	bool result = platform->OpenFileDialog(
-		mainWindow.Get()->GetNativeWindow()->GetOSWindowHandle(),
+	IDesktopPlatform * Platform = FDesktopPlatformModule::Get();
+	TArray<FString> Filenames;
+	const bool bResult = Platform->OpenFileDialog(
+		MainWindow.Get()->GetNativeWindow()->GetOSWindowHandle(),
 		FString("Select a file"),
 		FString("/"),
 		FString(""),
 		FString(""),
 		EFileDialogFlags::Multiple,
-		filenames
+		Filenames
 	);
-	if(result)
+	if(bResult)
 	{
-		for(auto element : filenames)
+		for(auto Element : Filenames)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, element);
+			GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Blue, Element);
+			PDBReader.read(Element);
 		}
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("dialog closed with no selections"));
 	}
+	
 	return FReply::Handled();
 }
