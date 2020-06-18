@@ -2,6 +2,8 @@
 
 
 #include "FPdbReader.h"
+#include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 FPdbReader::FPdbReader()
 {
@@ -120,4 +122,5 @@ void FPdbReader::ParseAtom(uint8* line)
 	LexFromString(z, *Z);
 	LexFromString(Occupancy, *occupancy);
 	LexFromString(TempFactor, *tempFactor);
+	DrawDebugSphere(GEngine->GetWorldFromContextObject(GEngine->GameViewport, EGetWorldErrorMode::ReturnNull) , FVector(x*10, y*10, z*10), 10.0f, 10, FColor::Red, true, 100, 0, 2.f);
 }
