@@ -80,36 +80,34 @@ void FPdbReader::ParseAtom(uint8* line)
 	//float Occupancy, TempFactor;
 	//uint8 SegID[5] = { '\0' }, Element[3] = { '\0' }, Charge[3] = { '\0' };
 
-	FString type = BytesToString(line, 6); //0-6
-	line += 6;
-	FString serial = BytesToString(line, 4); //7 - 11
-	line += 6;
-	FString name = BytesToString(line, 3);
-	line += 3;
-	FString altLoc = BytesToString(line, 1);
-	line += 1;
-	FString resName = BytesToString(line, 2);
-	line += 4;
-	FString chainID = BytesToString(line, 1);
-	line += 1;
-	FString resSeq = BytesToString(line, 3);
-	line += 3;
-	FString iCode = BytesToString(line, 1);
-	line += 4;
-	FString X = BytesToString(line, 7);
-	line += 7;
-	FString Y = BytesToString(line, 7);
-	line += 7;
-	FString Z = BytesToString(line, 7);
-	line += 7;
-	FString occupancy = BytesToString(line, 5);
-	line += 5;
-	FString tempFactor = BytesToString(line, 5);
-	line += 5;
-	FString element = BytesToString(line, 3);
-	line += 3;
-	FString charge = BytesToString(line, 1);
-	line += 1;
-
-	
+	FString type = BytesToString(line, 6); //0-5
+	line += 6; //6
+	FString serial = BytesToString(line, 5); //6 - 10
+	line += 6; //12
+	FString name = BytesToString(line, 4); //12-15
+	line += 4; //16
+	FString altLoc = BytesToString(line, 1); //16
+	line += 1; //17
+	FString resName = BytesToString(line, 3); //17-19
+	line += 4; //21
+	FString chainID = BytesToString(line, 1); //21
+	line += 1; //22
+	FString resSeq = BytesToString(line, 3); //22-25
+	line += 4; //26
+	FString iCode = BytesToString(line, 1); //26
+	line += 4; //30
+	FString X = BytesToString(line, 8); //30-37
+	line += 8; //38
+	FString Y = BytesToString(line, 8); //38-45
+	line += 8; //46
+	FString Z = BytesToString(line, 8); //46-53
+	line += 8; //54
+	FString occupancy = BytesToString(line, 6); //54-59
+	line += 6; //60
+	FString tempFactor = BytesToString(line, 5); //60-65
+	line += 16; //76
+	FString element = BytesToString(line, 2); //76-77
+	line += 2; //78
+	FString charge = BytesToString(line, 2); //78-79
+	line += 2; 
 }
