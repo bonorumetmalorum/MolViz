@@ -69,22 +69,21 @@ LineType FPdbReader::getLineType(const uint8 * line)
 
 void FPdbReader::ParseAtom(uint8* line)
 {
-	//int32 Snum = -1;
-	//uint8 Name[5] = { '\0' };
-	//uint8 Alt = '\0';
-	//uint8 Resname[4] = { '\0' };
-	//uint8 Chain;
-	//int32 Resnum = -1;
-	//uint8 Insertion_residue_code;
-	//float x, y, z;
-	//float Occupancy, TempFactor;
-	//uint8 SegID[5] = { '\0' }, Element[3] = { '\0' }, Charge[3] = { '\0' };
+	int32 Snum = -1;
+	uint8 Alt = '\0';
+	uint8 Resname[4] = { '\0' };
+	uint8 Chain;
+	int32 Resnum = -1;
+	uint8 Insertion_residue_code;
+	float x, y, z;
+	float Occupancy, TempFactor;
+	uint8 Element[3] = { '\0' }, Charge[3] = { '\0' };
 
 	FString type = BytesToString(line, 6); //0-5
 	line += 6; //6
 	FString serial = BytesToString(line, 5); //6 - 10
 	line += 6; //12
-	FString name = BytesToString(line, 4); //12-15
+	FString name = BytesToString(line, 5); //12-15
 	line += 4; //16
 	FString altLoc = BytesToString(line, 1); //16
 	line += 1; //17
@@ -109,5 +108,16 @@ void FPdbReader::ParseAtom(uint8* line)
 	FString element = BytesToString(line, 2); //76-77
 	line += 2; //78
 	FString charge = BytesToString(line, 2); //78-79
-	line += 2; 
+	line += 2;
+
+	LexFromString(Snum, *serial);
+	LexFromString(Alt, *altLoc);
+	LexFromString(Chain, *chainID);
+	LexFromString(Resnum, *resSeq);
+	LexFromString(Insertion_residue_code, *iCode);
+	LexFromString(x, *X);
+	LexFromString(y, *Y);
+	LexFromString(z, *Z);
+	LexFromString(Occupancy, *occupancy);
+	LexFromString(TempFactor, *tempFactor);
 }
