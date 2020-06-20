@@ -3,9 +3,10 @@
 
 #include "UShape.h"
 
-UShape::UShape()
+UShape::UShape() : USimpleDynamicMeshComponent()
 {
     ConstructShape();
+    bExplicitShowWireframe = true;
 }
 
 UShape::~UShape()
@@ -14,89 +15,112 @@ UShape::~UShape()
 
 void UShape::ConstructShape()
 {
+    UE_LOG(LogTemp, Warning, TEXT("Shape Constructed"));
 	FDynamicMesh3* LocalMesh = GetMesh();
 
-    int i, j;
-    int idx = 0;    /* idx into vertex/normal buffer */
-    float x, y, z;
+ //   int i, j;
+ //   int idx = 0;    /* idx into vertex/normal buffer */
+ //   float x, y, z;
 
-    /* Pre-computed circle */
-    float* sint1, * cost1;
-    float* sint2, * cost2;
+ //   /* Pre-computed circle */
+ //   float* sint1, * cost1;
+ //   float* sint2, * cost2;
 
-    ///* number of unique vertices */
-    //if (slices == 0 || stacks < 2)
-    //{
-    //    /* nothing to generate */
-    //    *nVert = 0;
-    //    return;
-    //}
-    int slices = 10;
-	int stacks = 10;
-    double radius = 5.0;
-    int nVert = slices * (stacks - 1) + 2; //slices then stacks
-    if ((nVert) > 65535)
-        /*
-         * limit of glushort, thats 256*256 subdivisions, should be enough in practice. See note above
-         */
-        UE_LOG(LogTemp, Warning, TEXT("fghGenerateSphere: too many slices or stacks requested, indices will wrap"));
+ //   ///* number of unique vertices */
+ //   //if (slices == 0 || stacks < 2)
+ //   //{
+ //   //    /* nothing to generate */
+ //   //    *nVert = 0;
+ //   //    return;
+ //   //}
+ //   int slices = 10;
+	//int stacks = 10;
+ //   double radius = 100.0;
+ //   int nVert = slices * (stacks - 1) + 2; //slices then stacks
+ //   if ((nVert) > 65535)
+ //       /*
+ //        * limit of glushort, thats 256*256 subdivisions, should be enough in practice. See note above
+ //        */
+ //       UE_LOG(LogTemp, Warning, TEXT("fghGenerateSphere: too many slices or stacks requested, indices will wrap"));
 
-    /* precompute values on unit circle */
-    fghCircleTable(&sint1, &cost1, -slices, false);
-    fghCircleTable(&sint2, &cost2, stacks, true);
+ //   /* precompute values on unit circle */
+ //   fghCircleTable(&sint1, &cost1, -slices, false);
+ //   fghCircleTable(&sint2, &cost2, stacks, true);
 
-    /* Allocate vertex and normal buffers, bail out if memory allocation fails */
-    //*vertices = malloc((*nVert) * 3 * sizeof(GLfloat));
-    //*normals = malloc((*nVert) * 3 * sizeof(GLfloat));
-    //if (!(*vertices) || !(*normals))
-    //{
-    //    free(*vertices);
-    //    free(*normals);
-    //    fgError("Failed to allocate memory in fghGenerateSphere");
-    //}
+ //   /* Allocate vertex and normal buffers, bail out if memory allocation fails */
+ //   //*vertices = malloc((*nVert) * 3 * sizeof(GLfloat));
+ //   //*normals = malloc((*nVert) * 3 * sizeof(GLfloat));
+ //   //if (!(*vertices) || !(*normals))
+ //   //{
+ //   //    free(*vertices);
+ //   //    free(*normals);
+ //   //    fgError("Failed to allocate memory in fghGenerateSphere");
+ //   //}
 
-    ///* top */
-    //(*vertices)[0] = 0.f;
-    //(*vertices)[1] = 0.f;
-    //(*vertices)[2] = radius;
-    //(*normals)[0] = 0.f;
-    //(*normals)[1] = 0.f;
-    //(*normals)[2] = 1.f;
-    idx = 3;
-    LocalMesh->AppendVertex(FVertexInfo(FVector3d(0.0,0.0,radius), FVector3f(0.0, 0.0, 1.0)));
-    /* each stack */
-    for (i = 1; i < stacks; i++)
-    {
-        for (j = 0; j < slices; j++, idx += 3)
-        {
-            x = cost1[j] * sint2[i];
-            y = sint1[j] * sint2[i];
-            z = cost2[i];
+ //   ///* top */
+ //   //(*vertices)[0] = 0.f;
+ //   //(*vertices)[1] = 0.f;
+ //   //(*vertices)[2] = radius;
+ //   //(*normals)[0] = 0.f;
+ //   //(*normals)[1] = 0.f;
+ //   //(*normals)[2] = 1.f;
+ //   idx = 3;
+ //   LocalMesh->AppendVertex(FVertexInfo(FVector3d(0.0,0.0,radius), FVector3f(0.0, 0.0, 1.0), FVector3f(1.0,1.0,1.0)));
+ //   /* each stack */
+ //   for (i = 1; i < stacks; i++)
+ //   {
+ //       for (j = 0; j < slices; j++, idx += 3)
+ //       {
+ //           x = cost1[j] * sint2[i];
+ //           y = sint1[j] * sint2[i];
+ //           z = cost2[i];
 
-            //(*vertices)[idx] = x * radius;
-            //(*vertices)[idx + 1] = y * radius;
-            //(*vertices)[idx + 2] = z * radius;
-            //(*normals)[idx] = x;
-            //(*normals)[idx + 1] = y;
-            //(*normals)[idx + 2] = z;
-            LocalMesh->AppendVertex(FVertexInfo(FVector3d(x * radius, y * radius, z * radius), FVector3f(x, y, z)));
-        }
-    }
+ //           //(*vertices)[idx] = x * radius;
+ //           //(*vertices)[idx + 1] = y * radius;
+ //           //(*vertices)[idx + 2] = z * radius;
+ //           //(*normals)[idx] = x;
+ //           //(*normals)[idx + 1] = y;
+ //           //(*normals)[idx + 2] = z;
+ //           LocalMesh->AppendVertex(FVertexInfo(FVector3d(x * radius, y * radius, z * radius), FVector3f(x, y, z), FVector3f(1.0, 1.0, 1.0)));
+ //       }
+ //   }
 
-    ///* bottom */
-    //(*vertices)[idx] = 0.f;
-    //(*vertices)[idx + 1] = 0.f;
-    //(*vertices)[idx + 2] = -radius;
-    //(*normals)[idx] = 0.f;
-    //(*normals)[idx + 1] = 0.f;
-    //(*normals)[idx + 2] = -1.f;
-    LocalMesh->AppendVertex(FVertexInfo(FVector3d(0.0, 0.0, -radius), FVector3f(0.0, 0.0, -1.0)));
+ //   ///* bottom */
+ //   //(*vertices)[idx] = 0.f;
+ //   //(*vertices)[idx + 1] = 0.f;
+ //   //(*vertices)[idx + 2] = -radius;
+ //   //(*normals)[idx] = 0.f;
+ //   //(*normals)[idx + 1] = 0.f;
+ //   //(*normals)[idx + 2] = -1.f;
+ //   LocalMesh->AppendVertex(FVertexInfo(FVector3d(0.0, 0.0, -radius), FVector3f(0.0, 0.0, -1.0), FVector3f(1.0, 1.0, 1.0)));
+ //   /* Done creating vertices, release sin and cos tables */
+ //   free(sint1);
+ //   free(cost1);
+ //   free(sint2);
+ //   free(cost2);
+ //
 
-    /* Done creating vertices, release sin and cos tables */
-    free(sint1);
-    free(cost1);
-    free(sint2);
-    free(cost2);
+	//I think we need to setup the triangles ourselves here lol
+    LocalMesh->AppendVertex(FVertexInfo(FVector(0, -100, 0), FVector3f(0,1,0), FVector3f(1,1,1))); //lower left - 0
+    LocalMesh->AppendVertex(FVertexInfo(FVector(0, -100, 100), FVector3f(0,-1,1))); //upper left - 1
+    LocalMesh->AppendVertex(FVector(0, 100, 0)); //lower right - 2 
+    LocalMesh->AppendVertex(FVector(0, 100, 100)); //upper right - 3
+
+    LocalMesh->AppendVertex(FVector(100, -100, 0)); //lower front left - 4
+    LocalMesh->AppendVertex(FVector(100, -100, 100)); //upper front left - 5
+
+    LocalMesh->AppendVertex(FVector(100, 100, 100)); //upper front right - 6
+    LocalMesh->AppendVertex(FVector(100, 100, 0)); //lower front right - 7
+
+    UE_LOG(LogTemp, Warning, TEXT("number vertices added: %d"), LocalMesh->VertexCount());
+	
+    //GetMesh()->AppendVertex(FVertexInfo(FVector3d(0.0, 0.0, 0.0), FVector3f(0.0, 0.0, -1.0), FVector3f(1.0, 1.0, 1.0)));
+    //GetMesh()->AppendVertex(FVector3d(0.0, 1.0, 0.0));
+    //GetMesh()->AppendVertex(FVector3d(0.0, 0.0, 1.0));
+
+	
+    NotifyMeshUpdated();
+	
 }
 
 void UShape::fghCircleTable(float** sint, float** cost, const int n, const bool halfCircle)

@@ -13,13 +13,14 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class MOLVIZ_API UShape : public USimpleDynamicMeshComponent
 {
 	GENERATED_BODY()
 public:
 	UShape();
 	~UShape();
+	UFUNCTION(BlueprintCallable)
 	virtual void ConstructShape();
 	void fghCircleTable(float** sint, float** cost, const int n, const bool halfCircle);
 };
