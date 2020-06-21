@@ -20,7 +20,7 @@ class MOLVIZ_API UShape : public USimpleDynamicMeshComponent
 public:
 	UShape();
 	~UShape();
-	UFUNCTION(BlueprintCallable)
+	void BeginPlay() override;
 	virtual void ConstructShape();
 	void fghCircleTable(float** sint, float** cost, const int n, const bool halfCircle);
 };

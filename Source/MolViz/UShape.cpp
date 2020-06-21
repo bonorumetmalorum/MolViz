@@ -5,12 +5,17 @@
 
 UShape::UShape() : USimpleDynamicMeshComponent()
 {
-    ConstructShape();
+    //ConstructShape();
     bExplicitShowWireframe = true;
 }
 
 UShape::~UShape()
 {
+}
+
+void UShape::BeginPlay()
+{
+    ConstructShape();
 }
 
 void UShape::ConstructShape()
@@ -99,27 +104,53 @@ void UShape::ConstructShape()
  //   free(sint2);
  //   free(cost2);
  //
-
+ //
 	//I think we need to setup the triangles ourselves here lol
-    LocalMesh->AppendVertex(FVertexInfo(FVector(0, -100, 0), FVector3f(0,1,0), FVector3f(1,1,1))); //lower left - 0
-    LocalMesh->AppendVertex(FVertexInfo(FVector(0, -100, 100), FVector3f(0,-1,1))); //upper left - 1
-    LocalMesh->AppendVertex(FVector(0, 100, 0)); //lower right - 2 
-    LocalMesh->AppendVertex(FVector(0, 100, 100)); //upper right - 3
+    int index0 = LocalMesh->AppendVertex(FVector(0, -100, 0)); //lower left - 0
+    int index1 = LocalMesh->AppendVertex(FVector(0, -100, 100)); // upper left - 1
+    int index2 = LocalMesh->AppendVertex(FVector(0, 100, 0)); //lower right - 2 
+    int index3 = LocalMesh->AppendVertex(FVector(0, 100, 100)); //upper right - 3
 
-    LocalMesh->AppendVertex(FVector(100, -100, 0)); //lower front left - 4
-    LocalMesh->AppendVertex(FVector(100, -100, 100)); //upper front left - 5
+    int index4 = LocalMesh->AppendVertex(FVector(100, -100, 0)); //lower front left - 4
+    int index5 = LocalMesh->AppendVertex(FVector(100, -100, 100)); //upper front left - 5
 
-    LocalMesh->AppendVertex(FVector(100, 100, 100)); //upper front right - 6
-    LocalMesh->AppendVertex(FVector(100, 100, 0)); //lower front right - 7
+    int index6 = LocalMesh->AppendVertex(FVector(100, 100, 100)); //upper front right - 6
+    int index7 = LocalMesh->AppendVertex(FVector(100, 100, 0)); //lower front right - 7
+
+    LocalMesh->AppendTriangle(FIndex3i(index0, index2, index3));
+    LocalMesh->AppendTriangle(FIndex3i(index3, index1, index0));
+
+    LocalMesh->AppendTriangle(FIndex3i(index0, index1, index4));
+    LocalMesh->AppendTriangle(FIndex3i(index4, index1, index5));
+
+    LocalMesh->AppendTriangle(FIndex3i(index4, index5, index7));
+    LocalMesh->AppendTriangle(FIndex3i(index7, index5, index6));
+
+    LocalMesh->AppendTriangle(FIndex3i(index7, index6, index3));
+    LocalMesh->AppendTriangle(FIndex3i(index3, index2, index7));
+
+	LocalMesh->AppendTriangle(FIndex3i(index1, index3, index5));
+    LocalMesh->AppendTriangle(FIndex3i(index6, index5, index3));
+
+    LocalMesh->AppendTriangle(FIndex3i(index2, index0, index4));
+    LocalMesh->AppendTriangle(FIndex3i(index4, index7, index2));
+
+	
+    LocalMesh->EnableVertexColors(FVector3f(1.0, 1.0, 1.0));
+
+    LocalMesh->SetVertexColor(index0, FVector3f(0.f, 0.f, 1.f));
+    LocalMesh->SetVertexColor(index1, FVector3f(1.f, 0.f, 0.f));
+    LocalMesh->SetVertexColor(index2, FVector3f(1.f, 0.f, 0.f));
+    LocalMesh->SetVertexColor(index3, FVector3f(0.f, 1.f, 0.f));
+    LocalMesh->SetVertexColor(index4, FVector3f(0.5f, 1.0f, 0.5f));
+    LocalMesh->SetVertexColor(index5, FVector3f(0.f, 1.f, 0.f));
+    LocalMesh->SetVertexColor(index6, FVector3f(1.f, 1.f, 0.f));
+    LocalMesh->SetVertexColor(index7, FVector3f(0.f, 1.f, 1.f));
 
     UE_LOG(LogTemp, Warning, TEXT("number vertices added: %d"), LocalMesh->VertexCount());
 	
-    //GetMesh()->AppendVertex(FVertexInfo(FVector3d(0.0, 0.0, 0.0), FVector3f(0.0, 0.0, -1.0), FVector3f(1.0, 1.0, 1.0)));
-    //GetMesh()->AppendVertex(FVector3d(0.0, 1.0, 0.0));
-    //GetMesh()->AppendVertex(FVector3d(0.0, 0.0, 1.0));
-
-	
-    NotifyMeshUpdated();
+    //NotifyMeshUpdated();
+    FastNotifyColorsUpdated();
 	
 }
 
