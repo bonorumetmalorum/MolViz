@@ -13,15 +13,13 @@
 /**
  * 
  */
-UCLASS(Blueprintable)
+UCLASS()
 class MOLVIZ_API UShape : public USimpleDynamicMeshComponent
 {
 	GENERATED_BODY()
 public:
 	UShape();
 	~UShape();
-	void BeginPlay() override;
-	virtual void ConstructShape();
 	void fghCircleTable(float** sint, float** cost, const int n, const bool halfCircle);
 
 protected:
