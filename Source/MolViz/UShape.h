@@ -7,7 +7,7 @@
 #include "SimpleDynamicMeshComponent.h"
 
 #include "DynamicMesh3.h"
-
+#include "EditableMesh.h"
 #include "UShape.generated.h"
 
 /**
@@ -23,4 +23,7 @@ public:
 	void BeginPlay() override;
 	virtual void ConstructShape();
 	void fghCircleTable(float** sint, float** cost, const int n, const bool halfCircle);
+
+protected:
+	UEditableMesh * EMeshInstance;
 };
