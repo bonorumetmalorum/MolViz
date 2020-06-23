@@ -44,7 +44,7 @@ void UProcCylinder::GenerateCylinder(float radius, float height, int slices, int
         UE_LOG(LogTemp, Warning, TEXT("fghGenerateCylinder: too many slices or stacks requested, indices will wrap"));
 
     /* Pre-computed circle */
-    fghCircleTable(&sint, &cost, -slices, false);
+    fghCircleTable(&sint, &cost, slices, false);
 
     /* Allocate vertex and normal buffers, bail out if memory allocation fails */
     //*vertices = malloc((*nVert) * 3 * sizeof(GLfloat));
@@ -63,7 +63,7 @@ void UProcCylinder::GenerateCylinder(float radius, float height, int slices, int
     (*vertices)[2] = 0.f;*/
     LocalMesh->AppendVertex(FVertexInfo(FVector3d(0.f, 0.f, 0.f), FVector3f(0.f, 0.f, -1.f)));
     /*(*normals)[0] = 0.f;
-    (*normals)[1] = 0.f;
+    (*normals)[1] = 0.f;d
     (*normals)[2] = -1.f;*/
     idx = 3;
     /* other on top (get normals right) */
@@ -83,7 +83,7 @@ void UProcCylinder::GenerateCylinder(float radius, float height, int slices, int
     {
         for (j = 0; j < slices; j++, idx += 3)
         {
-            /*           (*vertices)[idx] = cost[j] * radf;
+            /*         (*vertices)[idx] = cost[j] * radf;
                        (*vertices)[idx + 1] = sint[j] * radf;
                        (*vertices)[idx + 2] = z;
                        (*normals)[idx] = cost[j];
@@ -120,22 +120,22 @@ void UProcCylinder::GenerateCylinder(float radius, float height, int slices, int
     free(sint);
     free(cost);
 
-    // code to create index buffer for sphere, but it is parts which is not useful for us	
+    // code to create index buffer for cylinder, but it is parts which is not useful for us	
    /* top stack */
-    for (j = 0, idx = 0; j < slices - 1; j++, idx += 3)
+    for (j = 0, idx = 0; j < slices; j++, idx += 3)
     {
         LocalMesh->AppendTriangle(0, (j + 1), (j + 2));
     }
-    LocalMesh->AppendTriangle(0, ++j, 1);
+    LocalMesh->AppendTriangle(0, j, 1);
     idx += 3;
 
     int stackstart = 0;
     /* middle stacks: */
     /* Strip indices are relative to first index belonging to strip, NOT relative to first vertex/normal pair in array */
-    for (i = 0; i < stacks - 2; i++, idx += 6)
+    for (i = 0; i < stacks; i++, idx += 6)
     {
-        stackstart = 1 + (i * slices);                    /* triangle_strip indices start at 1 (0 is top vertex), and we advance one stack down as we go along */
-        for (j = 0; j < slices - 1; j++, idx += 6)
+        stackstart = 1 + (i + 1) * slices;                    /* triangle_strip indices start at 1 (0 is top vertex), and we advance one stack down as we go along */
+        for (j = 0; j < slices-1; j++, idx += 6)
         {
             //triangle 1
             LocalMesh->AppendTriangle(stackstart + j, stackstart + slices + j, stackstart + j + 1);
@@ -149,12 +149,13 @@ void UProcCylinder::GenerateCylinder(float radius, float height, int slices, int
     }
 
     /* bottom stack */
-    stackstart = 1 + (stacks - 2) * slices;               /* triangle_strip indices start at 1 (0 is top vertex), and we advance one stack down as we go along */
-    for (j = 0; j < slices - 1; j++, idx += 3)
+    stackstart = 1 + (stacks + 2) * slices;               /* triangle_strip indices start at 1 (0 is top vertex), and we advance one stack down as we go along */
+    //stackstart = nVert - slices + 1;               /* triangle_strip indices start at 1 (0 is top vertex), and we advance one stack down as we go along */
+    for (j = 0; j < slices-1; j++, idx += 3)
     {
         LocalMesh->AppendTriangle(nVert - 1, stackstart + j + 1, stackstart + j);
     }
-    LocalMesh->AppendTriangle(nVert - 1, stackstart + ++j, stackstart);
+    LocalMesh->AppendTriangle(nVert - 1, stackstart, stackstart + j);
 
     NotifyMeshUpdated();
 }
