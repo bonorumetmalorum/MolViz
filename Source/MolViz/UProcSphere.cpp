@@ -13,8 +13,10 @@ UProcSphere::~UProcSphere()
 
 void UProcSphere::GenerateSphere(int slices, int stacks, float radius)
 {
+	
     UE_LOG(LogTemp, Warning, TEXT("Shape Constructed"));
     FDynamicMesh3* LocalMesh = GetMesh();
+    LocalMesh->Clear();
 
     int i, j;
     int idx = 0;    /* idx into vertex/normal buffer */

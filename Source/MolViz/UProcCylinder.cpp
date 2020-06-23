@@ -14,6 +14,7 @@ UProcCylinder::~UProcCylinder()
 void UProcCylinder::GenerateCylinder(float radius, float height, int slices, int stacks)
 {
     FDynamicMesh3* LocalMesh = GetMesh();
+    LocalMesh->Clear();
 	
     int nVert = 0;
 
@@ -46,36 +47,13 @@ void UProcCylinder::GenerateCylinder(float radius, float height, int slices, int
     /* Pre-computed circle */
     fghCircleTable(&sint, &cost, slices, false);
 
-    /* Allocate vertex and normal buffers, bail out if memory allocation fails */
-    //*vertices = malloc((*nVert) * 3 * sizeof(GLfloat));
-    //*normals = malloc((*nVert) * 3 * sizeof(GLfloat));
-    //if (!(*vertices) || !(*normals))
-    //{
-    //    free(*vertices);
-    //    free(*normals);
-    //    fgError("Failed to allocate memory in fghGenerateCylinder");
-    //}
-
     z = 0;
-    /* top on Z-axis */
-    /*(*vertices)[0] = 0.f;
-    (*vertices)[1] = 0.f;
-    (*vertices)[2] = 0.f;*/
     LocalMesh->AppendVertex(FVertexInfo(FVector3d(0.f, 0.f, 0.f), FVector3f(0.f, 0.f, -1.f)));
-    /*(*normals)[0] = 0.f;
-    (*normals)[1] = 0.f;d
-    (*normals)[2] = -1.f;*/
     idx = 3;
     /* other on top (get normals right) */
     for (j = 0; j < slices; j++, idx += 3)
     {
-        /*(*vertices)[idx] = cost[j] * radf;
-        (*vertices)[idx + 1] = sint[j] * radf;
-        (*vertices)[idx + 2] = z;*/
         LocalMesh->AppendVertex(FVertexInfo(FVector3d(cost[j] * radf, sint[j] * radf, z), FVector3f(0.f, 0.f, -1.f)));
-        /*(*normals)[idx] = 0.f;
-        (*normals)[idx + 1] = 0.f;
-        (*normals)[idx + 2] = -1.f;*/
     }
 
     /* each stack */
@@ -83,12 +61,6 @@ void UProcCylinder::GenerateCylinder(float radius, float height, int slices, int
     {
         for (j = 0; j < slices; j++, idx += 3)
         {
-            /*         (*vertices)[idx] = cost[j] * radf;
-                       (*vertices)[idx + 1] = sint[j] * radf;
-                       (*vertices)[idx + 2] = z;
-                       (*normals)[idx] = cost[j];
-                       (*normals)[idx + 1] = sint[j];
-                       (*normals)[idx + 2] = 0.f;*/
             LocalMesh->AppendVertex(FVertexInfo(FVector3d(cost[j] * radf, sint[j] * radf, z), FVector3f(cost[j], sint[j], 0.f)));
         }
 
@@ -99,22 +71,10 @@ void UProcCylinder::GenerateCylinder(float radius, float height, int slices, int
     z -= zStep;
     for (j = 0; j < slices; j++, idx += 3)
     {
-        //(*vertices)[idx] = cost[j] * radf;
-        //(*vertices)[idx + 1] = sint[j] * radf;
-        //(*vertices)[idx + 2] = z;
-        //(*normals)[idx] = 0.f;
-        //(*normals)[idx + 1] = 0.f;
-        //(*normals)[idx + 2] = 1.f;
         LocalMesh->AppendVertex(FVertexInfo(FVector3d(cost[j] * radf, sint[j] * radf, z), FVector3f(0, 0, 1.f)));
     }
 
     /* bottom */
-    //(*vertices)[idx] = 0.f;
-    //(*vertices)[idx + 1] = 0.f;
-    //(*vertices)[idx + 2] = height;
-    //(*normals)[idx] = 0.f;
-    //(*normals)[idx + 1] = 0.f;
-    //(*normals)[idx + 2] = 1.f;
     LocalMesh->AppendVertex(FVertexInfo(FVector3d(0.f, 0.f, height), FVector3f(0.f, 0.f, 1.f)));
     /* Release sin and cos tables */
     free(sint);
