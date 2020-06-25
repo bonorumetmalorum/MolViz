@@ -32,7 +32,8 @@ void AProtein::AddAtom(float x, float y, float z)
 	const int NumComponents = GetComponents().Num();
 	UE_LOG(LogTemp, Warning, TEXT("Number of components on protein: %d"), NumComponents);
 	//UProcSphere * Component = Cast<UProcSphere>(AddComponent(FName("ATOM"), false, FTransform(FVector(x, y, z)), UProcSphere::StaticClass()));
-	UProcSphere* Component = NewObject<UProcSphere>(this, UProcSphere::StaticClass(),"Atom");
+	
+	UProcSphere* Component = NewObject<UProcSphere>(this, UProcSphere::StaticClass());
 	if (!Component)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Unable to add component"));
@@ -40,7 +41,7 @@ void AProtein::AddAtom(float x, float y, float z)
 	}
 	Component->RegisterComponent();
 	Component->AttachToComponent(GetRootComponent(),FAttachmentTransformRules::KeepRelativeTransform);
-	Component->AddRelativeLocation(FVector(x, y, x));
+	Component->AddRelativeLocation(FVector(x * 100, y * 100, x * 100));
 	Component->GenerateSphere(10, 10, 10);
 }
 

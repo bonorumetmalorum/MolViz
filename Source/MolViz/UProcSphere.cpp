@@ -15,6 +15,7 @@ void UProcSphere::GenerateSphere(int slices, int stacks, float Radius)
 {
     UE_LOG(LogTemp, Warning, TEXT("Shape Constructed"));
     FDynamicMesh3* LocalMesh = GetMesh();
+	//if this mesh has vertices already, clear it for new vertices
 	if(LocalMesh->VertexCount() > 0)
 		LocalMesh->Clear();
 
@@ -101,5 +102,4 @@ void UProcSphere::GenerateSphere(int slices, int stacks, float Radius)
     UE_LOG(LogTemp, Warning, TEXT("Max vertices: %d Number of verts in mesh: %d"), nVert, LocalMesh->VertexCount());
 
     NotifyMeshUpdated();
-	
 }

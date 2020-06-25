@@ -82,7 +82,7 @@ FReply SMainWindow::OpenFileDialog()
 		for(auto Element : Filenames)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Blue, Element);
-			PDBReader.readStructure(Element, nullptr);
+			PDBReader.readStructure(Element, Cast<AMolVizGameModeBase>(UGameplayStatics::GetGameMode(GEngine->GetWorldFromContextObject(GEngine->GameViewport)))->Protein);
 		}
 	}
 	else
