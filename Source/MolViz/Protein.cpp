@@ -40,8 +40,8 @@ void AProtein::AddAtom(float x, float y, float z)
 		return;
 	}
 	Component->RegisterComponent();
-	Component->AttachToComponent(GetRootComponent(),FAttachmentTransformRules::KeepRelativeTransform);
-	Component->AddRelativeLocation(FVector(x * 100, y * 100, x * 100));
-	Component->GenerateSphere(10, 10, 10);
+	Component->SetWorldLocation(FVector(x, y, z));
+	Component->AttachToComponent(GetRootComponent(),FAttachmentTransformRules::KeepWorldTransform);
+	Component->GenerateSphere(10, 10, 1);
 }
 
