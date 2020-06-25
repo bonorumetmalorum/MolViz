@@ -4,17 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Info.h"
+#include "AAtom.generated.h"
 
 /**
  * Represents 1 atom
  */
 UCLASS()
-class MOLVIZ_API FAtom : AInfo
+class MOLVIZ_API AAtom : public AInfo
 {
 	GENERATED_BODY()
 public:
-	FAtom();
-	~FAtom();
+	AAtom();
+	~AAtom();
 
 private:
 	
