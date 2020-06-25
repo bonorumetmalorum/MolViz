@@ -8,7 +8,8 @@
 #include "MolVizGameModeBase.generated.h"
 
 /**
- * 
+ * Bootstrapping class. Used to setup the main context and UI
+ * we need to add a protein actor to the scene so we can add atom and bond components to it
  */
 UCLASS()
 class MOLVIZ_API AMolVizGameModeBase : public AGameModeBase
@@ -18,4 +19,7 @@ class MOLVIZ_API AMolVizGameModeBase : public AGameModeBase
 public:
 	AMolVizGameModeBase();
 	virtual void BeginPlay() override;
+
+	UPROPERTY()
+	AActor * Protein = nullptr;
 };

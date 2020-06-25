@@ -17,5 +17,7 @@ public:
 	UProcSphere();
 	~UProcSphere();
 	UFUNCTION(BlueprintCallable)
-	void GenerateSphere(int stacks, int slices, float radius);
+	void GenerateSphere(int Stacks, int Slices, float Radius);
+	UPROPERTY()
+	static FMeshDescription BakedMesh;
 };

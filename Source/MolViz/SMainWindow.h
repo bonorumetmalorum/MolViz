@@ -10,12 +10,12 @@
 /**
  * File explorer ui to be used to load PDB and DCD files from the system in game
  */
-class MOLVIZ_API SFileExplorer : public SCompoundWidget
+class MOLVIZ_API SMainWindow : public SCompoundWidget
 {
 
 public:
 
-	SLATE_BEGIN_ARGS(SFileExplorer) {}
+	SLATE_BEGIN_ARGS(SMainWindow) {}
 
 	SLATE_ARGUMENT(TWeakObjectPtr<class FFileManagerGeneric>, fileManager)
 

@@ -11,12 +11,12 @@ UProcSphere::~UProcSphere()
 {
 }
 
-void UProcSphere::GenerateSphere(int slices, int stacks, float radius)
+void UProcSphere::GenerateSphere(int slices, int stacks, float Radius)
 {
-	
     UE_LOG(LogTemp, Warning, TEXT("Shape Constructed"));
     FDynamicMesh3* LocalMesh = GetMesh();
-    LocalMesh->Clear();
+	if(LocalMesh->VertexCount() > 0)
+		LocalMesh->Clear();
 
     int i, j;
     int idx = 0;    /* idx into vertex/normal buffer */
@@ -36,7 +36,7 @@ void UProcSphere::GenerateSphere(int slices, int stacks, float radius)
 
     idx = 3;
     LocalMesh->AppendVertex(FVertexInfo(
-        FVector3d(0.0, 0.0, radius),
+        FVector3d(0.0, 0.0, Radius),
         FVector3f(0.0, 0.0, 1.0),
         FVector3f(1.0, 1.0, 1.0)));
     /* each stack */
@@ -49,14 +49,14 @@ void UProcSphere::GenerateSphere(int slices, int stacks, float radius)
             z = cost2[i];
 
             LocalMesh->AppendVertex(FVertexInfo(
-                FVector3d(x * radius, y * radius, z * radius),
+                FVector3d(x * Radius, y * Radius, z * Radius),
                 FVector3f(x, y, z),
                 FVector3f(1.0, 1.0, 1.0)));
         }
     }
 
     ///* bottom */
-    LocalMesh->AppendVertex(FVertexInfo(FVector3d(0.0, 0.0, -radius), FVector3f(0.0, 0.0, -1.0), FVector3f(1.0, 1.0, 1.0)));
+    LocalMesh->AppendVertex(FVertexInfo(FVector3d(0.0, 0.0, -Radius), FVector3f(0.0, 0.0, -1.0), FVector3f(1.0, 1.0, 1.0)));
     /* Done creating vertices, release sin and cos tables */
     free(sint1);
     free(cost1);
@@ -101,4 +101,5 @@ void UProcSphere::GenerateSphere(int slices, int stacks, float radius)
     UE_LOG(LogTemp, Warning, TEXT("Max vertices: %d Number of verts in mesh: %d"), nVert, LocalMesh->VertexCount());
 
     NotifyMeshUpdated();
+	
 }

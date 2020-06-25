@@ -7,6 +7,8 @@
 #include "Runtime/Core/Public/GenericPlatform/GenericPlatformFile.h"
 #include "HAL/PlatformFilemanager.h"
 
+class AProtein;
+
 enum LineType
 {
 	Header,
@@ -27,9 +29,9 @@ class MOLVIZ_API FPdbReader : public IReader
 public:
 	FPdbReader();
 	~FPdbReader();
-	void read(FString filepath) override;
+	void readStructure(FString filepath, AActor * protein) override;
 
 private:
 	LineType getLineType(const uint8 * line);
-	void ParseAtom(uint8* line);
+	void ParseAtom(uint8* line, AProtein * Protein);
 };

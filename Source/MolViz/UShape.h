@@ -21,7 +21,4 @@ public:
 	UShape();
 	~UShape();
 	void fghCircleTable(float** sint, float** cost, const int n, const bool halfCircle);
-
-protected:
-	UEditableMesh * EMeshInstance;
 };

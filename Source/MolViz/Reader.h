@@ -12,7 +12,7 @@ class MOLVIZ_API IReader
 public:
 	IReader();
 	virtual ~IReader();
-	virtual void read(FString filepath) = 0;
+	virtual void readStructure(FString filepath, AActor * Structure) = 0;
 protected:
 	bool ReadLine(IFileHandle * Data, uint8* OutData, SIZE_T maxRead);
 	FString BytesToString(const uint8* bytes, SIZE_T count);

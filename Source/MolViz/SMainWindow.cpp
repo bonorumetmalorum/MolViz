@@ -1,14 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "SFileExplorer.h"
+#include "SMainWindow.h"
+
+#include "MolVizGameModeBase.h"
 #include "SlateOptMacros.h"
 #include "DesktopPlatform/Public/DesktopPlatformModule.h"
+#include "Protein.h"
 #include "DesktopPlatform/Public/IDesktopPlatform.h"
 
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
-void SFileExplorer::Construct(const FArguments& InArgs)
+void SMainWindow::Construct(const FArguments& InArgs)
 {
 	/*
 	 * We need to create a UI where we have
@@ -51,7 +54,7 @@ void SFileExplorer::Construct(const FArguments& InArgs)
 				[
 					SNew(SButton)
 					.Text(FText::FromString(button))
-					.OnClicked(this, &SFileExplorer::OpenFileDialog)
+					.OnClicked(this, &SMainWindow::OpenFileDialog)
 				]
 			]
 		]
@@ -61,7 +64,7 @@ void SFileExplorer::Construct(const FArguments& InArgs)
 }
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
-FReply SFileExplorer::OpenFileDialog()
+FReply SMainWindow::OpenFileDialog()
 {
 	IDesktopPlatform * Platform = FDesktopPlatformModule::Get();
 	TArray<FString> Filenames;
@@ -79,7 +82,7 @@ FReply SFileExplorer::OpenFileDialog()
 		for(auto Element : Filenames)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Blue, Element);
-			PDBReader.read(Element);
+			PDBReader.readStructure(Element, nullptr);
 		}
 	}
 	else

@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
 #include "HAL/FileManagerGeneric.h"
-#include "SFileExplorer.h"
+#include "SMainWindow.h"
 #include "MolViz.h"
 #include "BaseHUD.generated.h"
 
@@ -23,6 +23,6 @@ protected:
 	virtual void BeginPlay() override;
 
 	TWeakObjectPtr<FFileManagerGeneric> fileManager;
-	TSharedPtr<SFileExplorer> fileExplorer;
+	TSharedPtr<SMainWindow> fileExplorer;
 	TSharedPtr<SWidget> container;
 };

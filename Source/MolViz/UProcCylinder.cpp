@@ -14,7 +14,8 @@ UProcCylinder::~UProcCylinder()
 void UProcCylinder::GenerateCylinder(float radius, float height, int slices, int stacks)
 {
     FDynamicMesh3* LocalMesh = GetMesh();
-    LocalMesh->Clear();
+	if(LocalMesh->VertexCount() > 0)
+		LocalMesh->Clear();
 	
     int nVert = 0;
 
@@ -61,7 +62,7 @@ void UProcCylinder::GenerateCylinder(float radius, float height, int slices, int
     {
         for (j = 0; j < slices; j++, idx += 3)
         {
-            LocalMesh->AppendVertex(FVertexInfo(FVector3d(cost[j] * radf, sint[j] * radf, z), FVector3f(cost[j], sint[j], 0.f)));
+            LocalMesh->AppendVertex(FVertexInfo(FVector3d(cost[j] * radf, sint[j] * radf, z), FVector3f(-cost[j], -sint[j], 0.f)));
         }
 
         z += zStep;

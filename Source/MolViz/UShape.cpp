@@ -6,9 +6,7 @@
 
 UShape::UShape() : USimpleDynamicMeshComponent()
 {
-    //ConstructShape();
-    bExplicitShowWireframe = true;
-    this->EMeshInstance = reinterpret_cast<UEditableMesh*>(UEditableMesh::StaticClass());
+    bExplicitShowWireframe = false;
 }
 
 UShape::~UShape()
