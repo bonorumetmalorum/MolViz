@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Info.h"
-#include "AAtom.generated.h"
+#include "FAtom.generated.h"
 
 /**
  * Represents 1 atom and all of its associated data
