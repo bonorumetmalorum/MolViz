@@ -6,10 +6,12 @@
 #include "GameFramework/Info.h"
 
 /**
- * 
+ * Represents 1 atom
  */
+UCLASS()
 class MOLVIZ_API FAtom : AInfo
 {
+	GENERATED_BODY()
 public:
 	FAtom();
 	~FAtom();
