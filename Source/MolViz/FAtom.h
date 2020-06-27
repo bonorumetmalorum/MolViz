@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Info.h"
 #include "FAtom.generated.h"
 
 /**
