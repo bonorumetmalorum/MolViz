@@ -76,7 +76,7 @@ void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 {
 	int32 Snum = -1;
 	uint8 Alt = '\0';
-	uint8 Resname[4] = { '\0' };
+	FString Resname = "";
 	uint8 Chain;
 	int32 Resnum = -1;
 	uint8 Insertion_residue_code;
@@ -127,6 +127,6 @@ void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 	LexFromString(TempFactor, *tempFactor);
 
 	//DrawDebugSphere(GEngine->GetWorldFromContextObject(GEngine->GameViewport, EGetWorldErrorMode::ReturnNull) , FVector(x*10, y*10, z*10), 10.0f, 10, FColor::Red, true, 100, 0, 2.f);
-
+	Protein->AddResidue(Resname, Resnum);
 	Protein->AddAtom(Snum, Alt, Chain, Resnum, Insertion_residue_code, FVector(x, y, z), Occupancy, TempFactor, Element);
 }

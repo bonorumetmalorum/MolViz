@@ -42,8 +42,24 @@ void AProteinData::CreateBonds()
 	}
 }
 
+void AProteinData::AddResidue(FString Resname, int32 Resnum)
+{
+	if(Resnum < Residues.Num())
+	{
+		return;
+	}
+	Residues.Add(FResidue(Resname, Resnum));
+}
+
 void AProteinData::AddAtom(int32 Snum, uint8 Alt, uint8 Chain, int32 Resnum, uint8 Insertion_residue_code, FVector position, float Occupancy, float TempFactor, FString Element)
 {
+	//check if the residue of this atom exists, if so add the atom to the atom array and get its index added to the residue
+	if(Residues.Num() < Resnum) //we have not added this residue yet
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unable to add atom %d, non-existant residue: %d"), Snum, Resnum);
+		return;
+	}
+	//if the residue does not exist yet then create a new residue to add it to.
 	Atoms.Add(FAtomData(Snum, Alt, Chain, Resnum, Insertion_residue_code, position, Occupancy, TempFactor, Element));
 }
 

@@ -15,7 +15,10 @@ struct FResidue
 	GENERATED_BODY()
 
 	FResidue();
+	FResidue(const FString& Resname, int32 Resseq);
 	~FResidue();
 
 	TArray<FAtomData *> atoms;
+	FString Resname;
+	int32 Resseq;
 };

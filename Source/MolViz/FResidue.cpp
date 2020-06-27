@@ -3,7 +3,11 @@
 
 #include "FResidue.h"
 
-FResidue::FResidue()
+FResidue::FResidue(): Resseq(0)
+{
+}
+
+FResidue::FResidue(const FString& Resname, int32 Resseq): Resseq(Resseq), Resname(Resname)
 {
 }
 

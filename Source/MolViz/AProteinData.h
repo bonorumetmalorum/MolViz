@@ -21,6 +21,7 @@ public:
 	~AProteinData();
 
 	void CreateBonds();
+	void AddResidue(FString Resname, int32 Resnum);
 	void AddAtom(int32 Snum, uint8 Alt, uint8 Chain, int32 Resnum, uint8 Insertion_residue_code, FVector position, float Occupancy, float TempFactor, FString Element);
 	TArray<FAtomData> Atoms;
 	TArray<FResidue> Residues;
