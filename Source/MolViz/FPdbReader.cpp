@@ -2,6 +2,8 @@
 
 
 #include "FPdbReader.h"
+
+#include "AProteinData.h"
 #include "DrawDebugHelpers.h"
 #include "Protein.h"
 #include "Kismet/GameplayStatics.h"
@@ -29,7 +31,7 @@ void FPdbReader::readStructure(FString filepath, AActor * Protein)
 			case Seqres:
 				break;
 			case Atom:
-				ParseAtom(buffer, Cast<AProtein>(Protein));
+				ParseAtom(buffer, Cast<AProteinData>(Protein));
 				break;
 			case Hetatm:
 				break;
@@ -70,7 +72,7 @@ LineType FPdbReader::getLineType(const uint8 * line)
 	return Other;
 }
 
-void FPdbReader::ParseAtom(uint8* line, AProtein * Protein)
+void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 {
 	int32 Snum = -1;
 	uint8 Alt = '\0';

@@ -7,6 +7,7 @@
 #include "Runtime/Core/Public/GenericPlatform/GenericPlatformFile.h"
 #include "HAL/PlatformFilemanager.h"
 
+class AProteinData;
 class AProtein;
 
 enum LineType
@@ -33,5 +34,5 @@ public:
 
 private:
 	LineType getLineType(const uint8 * line);
-	void ParseAtom(uint8* line, AProtein * Protein);
+	void ParseAtom(uint8* line, AProteinData * Protein);
 };

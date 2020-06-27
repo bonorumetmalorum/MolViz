@@ -22,6 +22,7 @@ void SMainWindow::Construct(const FArguments& InArgs)
 	 */
 	float widgetWidth = 500.0f;
 	FString button = FString("select a file");
+	AppManager = InArgs._AppManager;
 	ChildSlot
 	[
 
@@ -81,8 +82,9 @@ FReply SMainWindow::OpenFileDialog()
 	{
 		for(auto Element : Filenames)
 		{
+			
 			GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Blue, Element);
-			PDBReader.readStructure(Element, Cast<AMolVizGameModeBase>(UGameplayStatics::GetGameMode(GEngine->GetWorldFromContextObject(GEngine->GameViewport)))->Protein);
+			PDBReader.readStructure(Element, this->AppManager->ProteinData);
 		}
 	}
 	else

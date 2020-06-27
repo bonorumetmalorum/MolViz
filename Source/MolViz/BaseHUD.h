@@ -4,14 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
-#include "HAL/FileManagerGeneric.h"
 #include "SMainWindow.h"
 #include "MolViz.h"
+#include "AppManager.h"
 #include "BaseHUD.generated.h"
 
 
 /**
- * 
+ * Class to manage UI context
+ * sets up the UI and initializes all of its variables
  */
 UCLASS()
 class MOLVIZ_API ABaseHUD : public AHUD
@@ -20,9 +21,8 @@ class MOLVIZ_API ABaseHUD : public AHUD
 
 protected:
 
-	virtual void BeginPlay() override;
+	void BeginPlay() override;
 
-	TWeakObjectPtr<FFileManagerGeneric> fileManager;
 	TSharedPtr<SMainWindow> fileExplorer;
 	TSharedPtr<SWidget> container;
 };

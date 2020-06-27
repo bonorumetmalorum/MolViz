@@ -17,7 +17,7 @@ public:
 
 	SLATE_BEGIN_ARGS(SMainWindow) {}
 
-	SLATE_ARGUMENT(TWeakObjectPtr<class FFileManagerGeneric>, fileManager)
+	SLATE_ARGUMENT(TWeakObjectPtr<class UAppManager>, AppManager)
 
 	SLATE_END_ARGS()
 
@@ -27,4 +27,5 @@ public:
 private:
 	TSharedPtr<SWindow> MainWindow;
 	FPdbReader PDBReader;
+	TWeakObjectPtr<class UAppManager> AppManager;
 };

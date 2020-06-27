@@ -8,7 +8,9 @@
 #include "AppManager.generated.h"
 
 /**
- * 
+ * App instance manages everything the app has to keep track off
+ * this includes instances of proteins in a macro molecule for example
+ * at the moment it will keep track of one protein / chain
  */
 UCLASS()
 class MOLVIZ_API UAppManager : public UGameInstance

@@ -11,6 +11,6 @@ void ABaseHUD::BeginPlay()
 	UE_LOG(LogTemp, Log, TEXT("Hello world"));
 	if (GEngine && GEngine->GameViewport)
 	{
-		fileExplorer = SNew(SMainWindow).fileManager(fileManager);
+		fileExplorer = SNew(SMainWindow).AppManager(TWeakObjectPtr<UAppManager>(GetGameInstance<UAppManager>()));
 	}
 }

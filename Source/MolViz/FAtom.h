@@ -14,6 +14,7 @@ struct FAtomData
 	GENERATED_BODY()
 
 	FAtomData();
+	FAtomData(int32 Snum, uint8 Alt, uint8 Chain, int32 Resnum,	uint8 Insertion_residue_code, FVector position, float Occupancy, float TempFactor, FString Element);
 	~FAtomData();
 	
 	//uint8_t nameindex;              ///< atom name string index
@@ -51,5 +52,5 @@ struct FAtomData
 	FVector position;
 	float Occupancy;
 	float TempFactor;
-	uint8 Element[3];
+	FString Element;
 };
