@@ -82,7 +82,7 @@ void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 	uint8 Insertion_residue_code;
 	float x, y, z;
 	float Occupancy, TempFactor;
-	uint8 Element[3] = { '\0' }, Charge[3] = { '\0' };
+	//uint8 Charge[3] = { '\0' };
 
 	FString type = BytesToString(line, 6); //0-5
 	line += 6; //6
@@ -110,10 +110,10 @@ void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 	line += 6; //60
 	FString tempFactor = BytesToString(line, 5); //60-65
 	line += 16; //76
-	FString element = BytesToString(line, 2); //76-77
+	FString Element = BytesToString(line, 2); //76-77
 	line += 2; //78
-	FString charge = BytesToString(line, 2); //78-79
-	line += 2;
+	//FString charge = BytesToString(line, 2); //78-79
+	//line += 2;
 
 	LexFromString(Snum, *serial);
 	LexFromString(Alt, *altLoc);
@@ -128,5 +128,5 @@ void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 
 	//DrawDebugSphere(GEngine->GetWorldFromContextObject(GEngine->GameViewport, EGetWorldErrorMode::ReturnNull) , FVector(x*10, y*10, z*10), 10.0f, 10, FColor::Red, true, 100, 0, 2.f);
 
-	Protein->AddAtom(x,y,z);
+	Protein->AddAtom(Snum, Alt, Chain, Resnum, Insertion_residue_code, FVector(x, y, z), Occupancy, TempFactor, Element);
 }
