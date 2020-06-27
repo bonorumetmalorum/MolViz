@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "AProteinData.h"
 #include "AppManager.generated.h"
 
 /**
@@ -13,5 +14,7 @@ UCLASS()
 class MOLVIZ_API UAppManager : public UGameInstance
 {
 	GENERATED_BODY()
-	
+public:
+	AProteinData* ProteinData;
+	void Init() override;
 };

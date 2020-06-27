@@ -3,3 +3,7 @@
 
 #include "AppManager.h"
 
+void UAppManager::Init()
+{
+	ProteinData = Cast<AProteinData>(GetWorld()->SpawnActor(AProteinData::StaticClass()));
+}

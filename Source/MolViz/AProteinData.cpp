@@ -10,3 +10,13 @@ AProteinData::AProteinData()
 AProteinData::~AProteinData()
 {
 }
+
+void AProteinData::CreateBonds()
+{
+}
+
+void AProteinData::BeginPlay()
+{
+	Atoms.Reset();
+	Residues.Reset();
+}

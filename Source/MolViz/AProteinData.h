@@ -20,6 +20,8 @@ public:
 	~AProteinData();
 
 	void CreateBonds();
-	TArray<FAtomData> atoms;
-	TArray<FResidue> residues;
+	TArray<FAtomData> Atoms;
+	TArray<FResidue> Residues;
+
+	void BeginPlay() override;
 };
