@@ -15,8 +15,9 @@ struct FBondData
 	GENERATED_BODY()
 	
 	FBondData();
+	FBondData(int GetIndex, int GetIndex1);
 	~FBondData();
 
-	FAtomData* AtomA;
-	FAtomData* AtomB;
+	int AtomA;
+	int AtomB;
 };

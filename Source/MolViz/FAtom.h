@@ -16,7 +16,8 @@ struct FAtomData
 	FAtomData();
 	FAtomData(int32 Snum, uint8 Alt, uint8 Chain, int32 Resnum,	uint8 Insertion_residue_code, FVector position, float Occupancy, float TempFactor, FString Element);
 	~FAtomData();
-	
+	bool IsHydrogen() const;
+
 	//uint8_t nameindex;              ///< atom name string index
 	//uint8_t typeindex;              ///< atom type string index
 	//uint32_t uniq_resid;               ///< unique resid, since there can be dups

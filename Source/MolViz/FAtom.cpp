@@ -34,3 +34,8 @@ FAtomData::FAtomData(int32 Snum, uint8 Alt, uint8 Chain, int32 Resnum, uint8 Ins
 FAtomData::~FAtomData()
 {
 }
+
+bool FAtomData::IsHydrogen() const
+{
+	return Element.Contains("H");
+}
