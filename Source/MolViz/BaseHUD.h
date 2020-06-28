@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
-#include "SMainWindow.h"
 #include "MolViz.h"
-#include "AppManager.h"
 #include "BaseHUD.generated.h"
 
+
+class SMainWindow;
 
 /**
  * Class to manage UI context

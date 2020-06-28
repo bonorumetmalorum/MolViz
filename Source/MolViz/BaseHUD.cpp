@@ -2,6 +2,7 @@
 
 
 #include "BaseHUD.h"
+#include "SMainWindow.h"
 #include "Widgets/SWeakWidget.h"
 
 void ABaseHUD::BeginPlay()
@@ -11,6 +12,6 @@ void ABaseHUD::BeginPlay()
 	UE_LOG(LogTemp, Log, TEXT("Hello world"));
 	if (GEngine && GEngine->GameViewport)
 	{
-		fileExplorer = SNew(SMainWindow).AppManager(TWeakObjectPtr<UAppManager>(GetGameInstance<UAppManager>()));
+		fileExplorer = SNew(SMainWindow).AppManager(TWeakObjectPtr<AMolVizGameModeBase>(Cast<AMolVizGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))));
 	}
 }

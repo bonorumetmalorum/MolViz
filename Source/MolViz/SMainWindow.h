@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Slate.h"
-#include "HAL/FileManagerGeneric.h"
 #include "FPdbReader.h"
+#include "MolVizGameModeBase.h"
 
 /**
  * File explorer ui to be used to load PDB and DCD files from the system in game
@@ -17,7 +17,7 @@ public:
 
 	SLATE_BEGIN_ARGS(SMainWindow) {}
 
-	SLATE_ARGUMENT(TWeakObjectPtr<class UAppManager>, AppManager)
+	SLATE_ARGUMENT(TWeakObjectPtr<class AMolVizGameModeBase>, AppManager)
 
 	SLATE_END_ARGS()
 
@@ -27,5 +27,5 @@ public:
 private:
 	TSharedPtr<SWindow> MainWindow;
 	FPdbReader PDBReader;
-	TWeakObjectPtr<class UAppManager> AppManager;
+	TWeakObjectPtr<class AMolVizGameModeBase> AppManager;
 };

@@ -9,6 +9,8 @@
 #include "GameFramework/Info.h"
 #include "AProteinData.generated.h"
 
+DECLARE_EVENT(AProteinData, FLoadComplete)
+
 /**
  * holds residue information and all atoms in this protein
  */
@@ -20,6 +22,7 @@ public:
 	AProteinData();
 	~AProteinData();
 
+	void LoadComplete();
 	void CreateBonds();
 	void AddResidue(FString Resname, int32 Resnum);
 	void AddAtom(int32 Snum, uint8 Alt, uint8 Chain, int32 Resnum, uint8 Insertion_residue_code, FVector position, float Occupancy, float TempFactor, FString Element);
@@ -27,4 +30,5 @@ public:
 	TArray<FResidue> Residues;
 	TArray<FBondData> Bonds;
 	void BeginPlay() override;
+	FLoadComplete LoadCompleteDelegate;
 };

@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "AProteinData.h"
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "BaseHUD.h"
@@ -21,5 +22,7 @@ public:
 	virtual void BeginPlay() override;
 
 	UPROPERTY()
-	AActor * Protein = nullptr;
+	AActor * ProteinRepresentation = nullptr;
+	UPROPERTY()
+	AProteinData* ProteinData = nullptr;
 };

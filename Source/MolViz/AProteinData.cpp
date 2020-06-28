@@ -11,6 +11,11 @@ AProteinData::~AProteinData()
 {
 }
 
+void AProteinData::LoadComplete()
+{
+	LoadCompleteDelegate.Broadcast();
+}
+
 void AProteinData::CreateBonds()
 {
 	for(auto AtomA = Atoms.CreateConstIterator(); AtomA.GetIndex() < Atoms.Num(); ++AtomA)

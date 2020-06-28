@@ -3,7 +3,11 @@
 
 #include "ProteinRepresentation.h"
 
+
+#include "AppManager.h"
+#include "MolVizGameModeBase.h"
 #include "UProcSphere.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AProteinRepresentation::AProteinRepresentation() : AActor()
@@ -29,8 +33,8 @@ void AProteinRepresentation::Tick(float DeltaTime)
 
 void AProteinRepresentation::AddAtom(float x, float y, float z)
 {
-	const int NumComponents = GetComponents().Num();
-	UE_LOG(LogTemp, Warning, TEXT("Number of components on protein: %d"), NumComponents);
+	//const int NumComponents = GetComponents().Num();
+	//UE_LOG(LogTemp, Warning, TEXT("Number of components on protein: %d"), NumComponents);
 	//UProcSphere * Component = Cast<UProcSphere>(AddComponent(FName("ATOM"), false, FTransform(FVector(x, y, z)), UProcSphere::StaticClass()));
 	
 	UProcSphere* Component = NewObject<UProcSphere>(this, UProcSphere::StaticClass());
@@ -43,5 +47,17 @@ void AProteinRepresentation::AddAtom(float x, float y, float z)
 	Component->SetWorldLocation(FVector(x, y, z));
 	Component->AttachToComponent(GetRootComponent(),FAttachmentTransformRules::KeepWorldTransform);
 	Component->GenerateSphere(10, 10, 1);
+}
+
+void AProteinRepresentation::CreateNewRepresentation()
+{
+	AProteinData* Protein = Cast<AMolVizGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))->ProteinData;
+	for(auto iter = Protein->Residues.CreateConstIterator(); iter.GetIndex() < Protein->Residues.Num(); ++iter)
+	{
+		for(auto atomiter = iter->atoms.CreateConstIterator(); atomiter.GetIndex() < iter->atoms.Num(); ++atomiter)
+		{
+			AddAtom((*atomiter)->position.X, (*atomiter)->position.Y, (*atomiter)->position.Z);
+		}
+	}
 }
 

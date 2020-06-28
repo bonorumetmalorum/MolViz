@@ -16,7 +16,9 @@ AMolVizGameModeBase::AMolVizGameModeBase() : Super()
 void AMolVizGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	Protein = GetWorld()->SpawnActor((AProteinRepresentation::StaticClass()));
+	ProteinRepresentation = GetWorld()->SpawnActor((AProteinRepresentation::StaticClass()));
+	ProteinData = Cast<AProteinData>(GetWorld()->SpawnActor((AProteinData::StaticClass())));
+	ProteinData->LoadCompleteDelegate.AddUFunction(ProteinRepresentation, "CreateNewRepresentation");
 	//Cast<AProteinRepresentation>(Protein)->AddAtom(10, 10, 10);
 	//UE_LOG(LogTemp, Log, TEXT("Hello from game mode"));
 }
