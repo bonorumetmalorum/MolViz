@@ -6,7 +6,6 @@
 #include "MolVizGameModeBase.h"
 #include "SlateOptMacros.h"
 #include "DesktopPlatform/Public/DesktopPlatformModule.h"
-#include "Protein.h"
 #include "DesktopPlatform/Public/IDesktopPlatform.h"
 
 

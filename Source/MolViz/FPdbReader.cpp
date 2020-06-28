@@ -5,7 +5,6 @@
 
 #include "AProteinData.h"
 #include "DrawDebugHelpers.h"
-#include "Protein.h"
 #include "Kismet/GameplayStatics.h"
 
 FPdbReader::FPdbReader()
