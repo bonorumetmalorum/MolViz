@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Protein.h"
+#include "ProteinRepresentation.h"
 
 #include "UProcSphere.h"
 
 // Sets default values
-AProtein::AProtein() : AActor()
+AProteinRepresentation::AProteinRepresentation() : AActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -14,20 +14,20 @@ AProtein::AProtein() : AActor()
 }
 
 // Called when the game starts or when spawned
-void AProtein::BeginPlay()
+void AProteinRepresentation::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void AProtein::Tick(float DeltaTime)
+void AProteinRepresentation::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
-void AProtein::AddAtom(float x, float y, float z)
+void AProteinRepresentation::AddAtom(float x, float y, float z)
 {
 	const int NumComponents = GetComponents().Num();
 	UE_LOG(LogTemp, Warning, TEXT("Number of components on protein: %d"), NumComponents);

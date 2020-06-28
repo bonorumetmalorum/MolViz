@@ -4,7 +4,7 @@
 #include "MolVizGameModeBase.h"
 
 #include "MousePlayerController.h"
-#include "Protein.h"
+#include "ProteinRepresentation.h"
 
 AMolVizGameModeBase::AMolVizGameModeBase() : Super()
 {
@@ -16,7 +16,7 @@ AMolVizGameModeBase::AMolVizGameModeBase() : Super()
 void AMolVizGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	Protein = GetWorld()->SpawnActor((AProtein::StaticClass()));
-	Cast<AProtein>(Protein)->AddAtom(10, 10, 10);
+	Protein = GetWorld()->SpawnActor((AProteinRepresentation::StaticClass()));
+	//Cast<AProteinRepresentation>(Protein)->AddAtom(10, 10, 10);
 	//UE_LOG(LogTemp, Log, TEXT("Hello from game mode"));
 }

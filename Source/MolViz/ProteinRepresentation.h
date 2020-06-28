@@ -4,20 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Protein.generated.h"
+#include "ProteinRepresentation.generated.h"
 /*
- * this class represents one protein / chain
+ * this class represents one protein / chain representation
+ * it will have a root for each 
  * It will have many residues
  * residues will have many atoms
  */
+
+//create delegates for
+/*
+ * update representation selection
+ */
 UCLASS()
-class MOLVIZ_API AProtein : public AActor
+class MOLVIZ_API AProteinRepresentation : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AProtein();
+	AProteinRepresentation();
+	void AddAtom(float x, float y, float z);
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,6 +33,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void AddAtom(float x, float y, float z);
 
 };
