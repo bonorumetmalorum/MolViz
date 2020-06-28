@@ -43,6 +43,7 @@ void FPdbReader::readStructure(FString filepath, AActor * Protein)
 				UE_LOG(LogTemp, Warning, TEXT("No support for: %s"),  *(BytesToString(buffer, 6)));
 		}
 	}
+	Cast<AProteinData>(Protein)->CreateBonds();
 	UE_LOG(LogTemp, Warning, TEXT("finished parsing file"));
 }
 
@@ -96,7 +97,7 @@ void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 	line += 4; //21
 	FString chainID = BytesToString(line, 1); //21
 	line += 1; //22
-	FString resSeq = BytesToString(line, 3); //22-25
+	FString resSeq = BytesToString(line, 4); //22-25 - issue with this one
 	line += 4; //26
 	FString iCode = BytesToString(line, 1); //26
 	line += 4; //30
@@ -127,6 +128,6 @@ void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 	LexFromString(TempFactor, *tempFactor);
 
 	//DrawDebugSphere(GEngine->GetWorldFromContextObject(GEngine->GameViewport, EGetWorldErrorMode::ReturnNull) , FVector(x*10, y*10, z*10), 10.0f, 10, FColor::Red, true, 100, 0, 2.f);
-	Protein->AddResidue(Resname, Resnum);
+	Protein->AddResidue(resName, Resnum);
 	Protein->AddAtom(Snum, Alt, Chain, Resnum, Insertion_residue_code, FVector(x, y, z), Occupancy, TempFactor, Element);
 }

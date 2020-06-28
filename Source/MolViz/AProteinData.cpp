@@ -24,7 +24,7 @@ void AProteinData::CreateBonds()
 			{ 
 				auto InterAtomVec = AtomA->position - AtomB->position;
 				auto SquaredLength = InterAtomVec.SizeSquared();
-				if(0.16 <= SquaredLength <= 1.44)
+				if((0.16 <= SquaredLength) && (SquaredLength <= 1.44))
 				{ //if they are within this squared distance, add a bond
 					Bonds.Add(FBondData(AtomA.GetIndex(), AtomB.GetIndex()));
 				}
@@ -33,7 +33,7 @@ void AProteinData::CreateBonds()
 			{ //if they are not hydrogens, do...
 				auto InterAtomVec = AtomA->position - AtomB->position;
 				auto SquaredLength = InterAtomVec.SizeSquared();
-				if (0.16 <= SquaredLength <= 3.61)
+				if ((0.16 <= SquaredLength) && (SquaredLength <= 3.61))
 				{ //add a bond if the squared distance is in this range
 					Bonds.Add(FBondData(AtomA.GetIndex(), AtomB.GetIndex()));
 				}
@@ -44,7 +44,7 @@ void AProteinData::CreateBonds()
 
 void AProteinData::AddResidue(FString Resname, int32 Resnum)
 {
-	if(Resnum < Residues.Num())
+	if(Resnum <= Residues.Num())
 	{
 		return;
 	}
@@ -60,7 +60,8 @@ void AProteinData::AddAtom(int32 Snum, uint8 Alt, uint8 Chain, int32 Resnum, uin
 		return;
 	}
 	//if the residue does not exist yet then create a new residue to add it to.
-	Atoms.Add(FAtomData(Snum, Alt, Chain, Resnum, Insertion_residue_code, position, Occupancy, TempFactor, Element));
+	int index = Atoms.Add(FAtomData(Snum, Alt, Chain, Resnum, Insertion_residue_code, position, Occupancy, TempFactor, Element));
+	Residues[Resnum-1].atoms.Add(&Atoms[index]);
 }
 
 void AProteinData::BeginPlay()
