@@ -31,7 +31,7 @@ void AProteinData::CreateBonds()
 				auto SquaredLength = InterAtomVec.SizeSquared();
 				if((0.16 <= SquaredLength) && (SquaredLength <= 1.44))
 				{ //if they are within this squared distance, add a bond
-					Bonds.Add(FBondData(AtomA.GetIndex(), AtomB.GetIndex()));
+					Bonds.Add(FBondData(AtomA.GetIndex(), AtomB.GetIndex(), InterAtomVec));
 				}
 			}
 			else
@@ -40,7 +40,7 @@ void AProteinData::CreateBonds()
 				auto SquaredLength = InterAtomVec.SizeSquared();
 				if ((0.16 <= SquaredLength) && (SquaredLength <= 3.61))
 				{ //add a bond if the squared distance is in this range
-					Bonds.Add(FBondData(AtomA.GetIndex(), AtomB.GetIndex()));
+					Bonds.Add(FBondData(AtomA.GetIndex(), AtomB.GetIndex(), InterAtomVec));
 				}
 			}
 		}

@@ -7,6 +7,7 @@
 #include "Representation.generated.h"
 
 
+class AProteinData;
 UCLASS(ClassGroup=(Representation), Abstract)
 class MOLVIZ_API URepresentation : public USceneComponent
 {
@@ -23,6 +24,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	//create the representation
-	virtual void ConstructRepresentation(TArray<FResidue> & residues/*, FColourScheme ColourScheme*/); //TODO IMPLEMENT COLOUR SCHEME
+	virtual void ConstructRepresentation(AProteinData * ProteinData/*, FColourScheme ColourScheme*/); //TODO IMPLEMENT COLOUR SCHEME
 	/*virtual void UpdateRepresentation() = 0;*/ //TODO implement this when UI is in progress
 };

@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "FAtom.h"
+#include "FBondData.h"
+
 #include "FResidue.generated.h"
 
 /**
@@ -19,6 +21,7 @@ struct FResidue
 	~FResidue();
 
 	TArray<FAtomData *> atoms;
+	TArray<FBondData*> bonds;
 	FString Resname;
 	int32 Resseq;
 };

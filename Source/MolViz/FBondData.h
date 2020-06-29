@@ -15,9 +15,10 @@ struct FBondData
 	GENERATED_BODY()
 	
 	FBondData();
-	FBondData(int GetIndex, int GetIndex1);
+	FBondData(int GetIndex, int GetIndex1, FVector Direction);
 	~FBondData();
 
 	int AtomA;
 	int AtomB;
+	FVector Direction;
 };

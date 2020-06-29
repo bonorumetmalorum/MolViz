@@ -2,7 +2,7 @@
 
 
 #include "VDW.h"
-
+#include "AProteinData.h"
 #include "UProcSphere.h"
 
 UVDW::UVDW()
@@ -10,6 +10,7 @@ UVDW::UVDW()
 	
 }
 
+//TODO change to using FAtomData rather than X y z
 void UVDW::AddAtom(float x, float y, float z)
 {
 	//const int NumComponents = GetComponents().Num();
@@ -28,9 +29,9 @@ void UVDW::AddAtom(float x, float y, float z)
 	Component->GenerateSphere(Stacks, Slices, SphereRadius);
 }
 
-void UVDW::ConstructRepresentation(TArray<FResidue>& residues)
+void UVDW::ConstructRepresentation(AProteinData * ProteinData)
 {
-	for (auto iter = residues.CreateConstIterator(); iter.GetIndex() < residues.Num(); ++iter)
+	for (auto iter = ProteinData->Residues.CreateConstIterator(); iter.GetIndex() < ProteinData->Residues.Num(); ++iter)
 	{
 		for (auto atomiter = iter->atoms.CreateConstIterator(); atomiter.GetIndex() < iter->atoms.Num(); ++atomiter)
 		{

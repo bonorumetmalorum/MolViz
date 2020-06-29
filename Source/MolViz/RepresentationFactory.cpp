@@ -40,6 +40,6 @@ UVDW* URepresentationFactory::CreateNewVdwRep(AProteinRepresentation* InParent, 
 	UVDW* rep = NewObject<UVDW>(InParent, InName);
 	rep->SetSphereRes(10, 10, 10.f);
 	//TODO pass in selection data
-	rep->ConstructRepresentation(InProteinData->Residues);
+	rep->ConstructRepresentation(InProteinData);
 	return rep;
 }

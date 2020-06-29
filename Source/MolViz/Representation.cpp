@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "AProteinData.h"
 #include "Representation.h"
 
 // Sets default values for this component's properties
@@ -32,7 +32,7 @@ void URepresentation::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	// ...
 }
 
-void URepresentation::ConstructRepresentation(TArray<FResidue>& residues)
+void URepresentation::ConstructRepresentation(AProteinData * residues)
 {
 
 }
