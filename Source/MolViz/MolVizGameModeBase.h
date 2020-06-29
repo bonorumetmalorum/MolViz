@@ -6,6 +6,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "BaseHUD.h"
+#include "RepresentationFactory.h"
+
 #include "MolVizGameModeBase.generated.h"
 
 /**
@@ -25,4 +27,8 @@ public:
 	AActor * ProteinRepresentation = nullptr;
 	UPROPERTY()
 	AProteinData* ProteinData = nullptr;
+	UPROPERTY()
+	URepresentationFactory * RepresentationFactory = nullptr;
+	UFUNCTION()
+	void OnLoadComplete() const;
 };

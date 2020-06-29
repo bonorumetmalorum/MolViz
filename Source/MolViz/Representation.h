@@ -4,12 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "FResidue.h"
-#include "Components/ActorComponent.h"
 #include "Representation.generated.h"
 
 
 UCLASS(ClassGroup=(Representation), Abstract)
-class MOLVIZ_API URepresentation : public UActorComponent
+class MOLVIZ_API URepresentation : public USceneComponent
 {
 	GENERATED_BODY()
 

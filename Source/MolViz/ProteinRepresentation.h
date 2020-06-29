@@ -18,6 +18,7 @@
  * update representation selection
  */
 
+class AProteinData;
 USTRUCT()
 struct FRepOptions
 {
@@ -32,10 +33,9 @@ class MOLVIZ_API AProteinRepresentation : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AProteinRepresentation();
-	void AddAtom(float x, float y, float z);
-	UFUNCTION()
-	void CreateNewRepresentation();
 
+	//make methods to activate / deactive a representation
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

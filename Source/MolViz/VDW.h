@@ -16,5 +16,10 @@ class MOLVIZ_API UVDW : public URepresentation
 
 public:
 	UVDW();
+	void AddAtom(float x, float y, float z);
 	void ConstructRepresentation(TArray<FResidue>& residues) override;
+	void SetSphereRes(int Stacks, int Slices, float Radius);
+	int Stacks = 5;
+	int Slices = 5;
+	float SphereRadius = 5.0f;
 };
