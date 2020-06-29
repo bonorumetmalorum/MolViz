@@ -3,17 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FResidue.h"
 #include "Components/ActorComponent.h"
 #include "Representation.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), Abstract )
+UCLASS(ClassGroup=(Representation), Abstract)
 class MOLVIZ_API URepresentation : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
-	// Sets default values for this component's properties
+public:
 	URepresentation();
 
 protected:
@@ -23,6 +23,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
+	//create the representation
+	virtual void ConstructRepresentation(TArray<FResidue> & residues/*, FColourScheme ColourScheme*/); //TODO IMPLEMENT COLOUR SCHEME
+	/*virtual void UpdateRepresentation() = 0;*/ //TODO implement this when UI is in progress
 };

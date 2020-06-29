@@ -32,3 +32,7 @@ void URepresentation::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	// ...
 }
 
+void URepresentation::ConstructRepresentation(TArray<FResidue>& residues)
+{
+}
+
