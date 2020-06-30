@@ -9,6 +9,7 @@
 class AProteinData;
 class AProteinRepresentation;
 class UVDW;
+class UCPK;
 /**
  * 
  */
@@ -26,8 +27,8 @@ public:
 	UObject* FactoryCreateNew(UClass* InClass, UObject* InParent, FName InName, EObjectFlags Flags, UObject* Context, FFeedbackContext* Warn, FName CallingContext) override;
 
 	UVDW* CreateNewVdwRep(AProteinRepresentation* InParent, AProteinData * InProteinData, /*TODO pass in protein rep selections*/ FName InName) const;
+	UCPK* CreateNewCpkRep(AProteinRepresentation* InParent, AProteinData* InProteinData, FName InName) const;
 
 private:
-	//TODO: UCPK* CreateNewCPKRep(UClass* InClass, UObject* InParent, FName InName, EObjectFlags Flags, UObject* Context, FFeedbackContext* Warn, FName CallingContext);
 	
 };

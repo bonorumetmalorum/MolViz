@@ -22,12 +22,14 @@ void UCPK::AddAtom(const FAtomData& Atom)
 
 void UCPK::AddBond(const FVector& Position, const FVector& Direction)
 {
-	UProcCylinder* Component = NewObject<UProcCylinder>(this, UProcSphere::StaticClass());
+	UProcCylinder* Component = NewObject<UProcCylinder>(this, UProcCylinder::StaticClass());
 	if (!Component)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Unable to add component"));
 		return;
 	}
+	FMatrix Rotation = ComputeRotation(Direction);
+	Component->SetWorldRotation(Rotation.Rotator());
 	Component->RegisterComponent();
 	Component->SetWorldLocation(Position);
 	Component->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
@@ -49,6 +51,17 @@ void UCPK::ConstructRepresentation(AProteinData * ProteinData)
 void UCPK::SetBondData(TArray<FBondData> *  InBondData)
 {
 	this->BondData = InBondData;
+}
+
+void UCPK::Config(const int InSphereStacks, const int InSphereSlices, const float InSphereRadius, const float InCylinderRadius, const int InCylinderSlices,
+                  const int InCylinderStacks)
+{
+	this->SphereRadius = InSphereRadius;
+	this->SphereSlices = InSphereSlices;
+	this->SphereStacks = InSphereStacks;
+	this->CylinderRadius = InCylinderRadius;
+	this->CylinderSlices = InCylinderSlices;
+	this->CylinderStacks = InCylinderStacks;
 }
 
 

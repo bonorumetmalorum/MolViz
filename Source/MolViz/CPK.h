@@ -19,6 +19,7 @@ public:
 	void AddBond(const FVector& Position, const FVector& Direction);
 	void ConstructRepresentation(AProteinData * ProteinData/*, FColourScheme ColourScheme*/) override;
 	void SetBondData(TArray<FBondData> * InBondData);
+	void Config(int InSphereStacks, int InSphereSlices, float InSphereRadius, float InCylinderRadius, int InCylinderSlices, int InCylinderStacks);
 	
 private:
 	static FMatrix ComputeRotation(FVector A);

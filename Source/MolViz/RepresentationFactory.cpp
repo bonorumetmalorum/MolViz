@@ -5,6 +5,7 @@
 #include "ProteinRepresentation.h"
 #include "AProteinData.h"
 #include "VDW.h"
+#include "CPK.h"
 #include "Representation.h"
 
 URepresentationFactory::URepresentationFactory()
@@ -40,6 +41,14 @@ UVDW* URepresentationFactory::CreateNewVdwRep(AProteinRepresentation* InParent, 
 	UVDW* rep = NewObject<UVDW>(InParent, InName);
 	rep->SetSphereRes(10, 10, 10.f);
 	//TODO pass in selection data
+	rep->ConstructRepresentation(InProteinData);
+	return rep;
+}
+
+UCPK* URepresentationFactory::CreateNewCpkRep(AProteinRepresentation* InParent, AProteinData* InProteinData, FName InName) const
+{
+	UCPK* rep = NewObject<UCPK>(InParent, InName);
+	rep->Config(5, 5, 1.0f, 0.5f, 5, 5);
 	rep->ConstructRepresentation(InProteinData);
 	return rep;
 }
