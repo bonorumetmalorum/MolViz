@@ -13,19 +13,21 @@ FSSReader::~FSSReader()
 {
 }
 
-void FSSReader::ParseStructureType(unsigned char Buffer[600], AProteinData* ProteinData)
+void FSSReader::ParseStructureType(unsigned char Buffer[100], AProteinData* ProteinData)
 {
+	
 }
 
 /*
- * Typical stride line //ASG  THR -    9    9    B        Bridge   -113.85    157.34      21.9      ~~~~
+ *						 
+ * Typical stride line //ASG  THR -    9    9    B        Bridge   -113.85    157.34      21.9      ~~~~ 80 characters in length
  */
 void FSSReader::readStructure(FString filepath, AActor* Structure)
 {
 	IPlatformFile& file = FPlatformFileManager::Get().GetPlatformFile();
 	IFileHandle* fhandle = file.OpenRead(*filepath, false);
-	uint8 buffer[600];
-	while (ReadLine(fhandle, buffer, 600))
+	uint8 buffer[100];
+	while (ReadLine(fhandle, buffer, 100))
 	{
 		LineType linetype = GetLineType(buffer);
 		switch (linetype)
@@ -44,7 +46,7 @@ void FSSReader::readStructure(FString filepath, AActor* Structure)
 		case Seq:
 			break;
 		case Other:
-			UE_LOG(LogTemp, Warning, TEXT("No support for: %s"), *(BytesToString(buffer, 6)));
+			UE_LOG(LogTemp, Warning, TEXT("No support for: %s"), *(BytesToString(buffer, 3)));
 		}
 	}
 }

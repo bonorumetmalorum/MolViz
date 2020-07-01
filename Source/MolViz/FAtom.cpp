@@ -16,10 +16,11 @@ FAtomData::FAtomData():
 	
 }
 
-FAtomData::FAtomData(int32 Snum, uint8 Alt, uint8 Chain, int32 Resnum, uint8 Insertion_residue_code, FVector position,
+FAtomData::FAtomData(int32 Snum, uint8 Alt, FString Name, uint8 Chain, int32 Resnum, uint8 Insertion_residue_code, FVector position,
 	float Occupancy, float TempFactor, FString Element) :
 		Snum(Snum),
 		Alt(Alt),
+		Name(Name),
 		Chain(Chain),
 		Resnum(Resnum),
 		Insertion_residue_code(Insertion_residue_code),
