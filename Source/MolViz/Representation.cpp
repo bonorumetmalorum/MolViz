@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "AProteinData.h"
 #include "Representation.h"
+#include "AProteinData.h"
 
 // Sets default values for this component's properties
 URepresentation::URepresentation()

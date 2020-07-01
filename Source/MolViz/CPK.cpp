@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "AProteinData.h"
 #include "CPK.h"
+#include "AProteinData.h"
 
 #include "UProcCylinder.h"
 #include "UProcSphere.h"
@@ -36,15 +36,19 @@ void UCPK::AddBond(const FVector& Position, const FVector& Direction)
 	Component->GenerateCylinder(CylinderRadius, Direction.Size() , CylinderSlices, CylinderStacks);
 }
 
-void UCPK::ConstructRepresentation(AProteinData * ProteinData)
+void UCPK::ConstructRepresentation(AProteinData* ProteinData)
 {
-	for(auto BondIter = ProteinData->Bonds.CreateConstIterator(); BondIter.GetIndex() < ProteinData->Bonds.Num(); ++BondIter)
+	for (auto BondIter = ProteinData->Bonds.CreateConstIterator(); BondIter.GetIndex() < ProteinData->Bonds.Num(); ++BondIter)
 	{
 		FAtomData AtomA = ProteinData->Atoms[BondIter->AtomA];
 		FAtomData AtomB = ProteinData->Atoms[BondIter->AtomB];
-		AddAtom(AtomA);
-		AddAtom(AtomB);
-		AddBond(AtomA.position, BondIter->Direction);
+		//AddAtom(AtomA);
+		//AddAtom(AtomB);
+		AddBond(AtomB.position, BondIter->Direction);
+	}
+	for (auto AtomIter = ProteinData->Atoms.CreateConstIterator(); AtomIter.GetIndex() < ProteinData->Atoms.Num(); ++AtomIter)
+	{
+		AddAtom(*AtomIter);
 	}
 }
 
