@@ -30,6 +30,9 @@ public:
 	TArray<FAtomData> Atoms;
 	TArray<FResidue> Residues;
 	TArray<FBondData> Bonds;
+	TSet<int> BackBone;
 	void BeginPlay() override;
 	FLoadComplete LoadCompleteDelegate;
+private:
+	bool AtomHasInterResidueBond(int Atom);
 };

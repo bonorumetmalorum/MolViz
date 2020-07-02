@@ -18,9 +18,9 @@ void AProteinData::LoadComplete()
 
 void AProteinData::CreateBonds()
 {
-	for(auto AtomA = Atoms.CreateConstIterator(); AtomA.GetIndex() < Atoms.Num(); ++AtomA)
+	for(auto AtomA = Atoms.CreateIterator(); AtomA.GetIndex() < Atoms.Num(); ++AtomA)
 	{
-		for(auto AtomB = Atoms.CreateConstIterator(); AtomB.GetIndex() < Atoms.Num(); ++AtomB)
+		for(auto AtomB = Atoms.CreateIterator(); AtomB.GetIndex() < Atoms.Num(); ++AtomB)
 		{
 			if (AtomA->Snum == AtomB->Snum)
 				continue; //if we have the same atom, skip
@@ -31,7 +31,11 @@ void AProteinData::CreateBonds()
 				auto SquaredLength = InterAtomVec.SizeSquared();
 				if((0.16 <= SquaredLength) && (SquaredLength <= 1.44))
 				{ //if they are within this squared distance, add a bond
-					Bonds.Add(FBondData(AtomA.GetIndex(), AtomB.GetIndex(), InterAtomVec));
+					auto index = Bonds.Add(FBondData(AtomA.GetIndex(), AtomB.GetIndex(), InterAtomVec));
+					Residues[AtomA->Resnum].bonds.Add(index);
+					Residues[AtomB->Resnum].bonds.Add(index);
+					AtomA->Bonds.Add(index);
+					AtomB->Bonds.Add(index);
 				}
 			}
 			else
@@ -40,7 +44,11 @@ void AProteinData::CreateBonds()
 				auto SquaredLength = InterAtomVec.SizeSquared();
 				if ((0.16 <= SquaredLength) && (SquaredLength <= 3.61))
 				{ //add a bond if the squared distance is in this range
-					Bonds.Add(FBondData(AtomA.GetIndex(), AtomB.GetIndex(), InterAtomVec));
+					auto index = Bonds.Add(FBondData(AtomA.GetIndex(), AtomB.GetIndex(), InterAtomVec));
+					Residues[AtomA->Resnum].bonds.Add(index);
+					Residues[AtomB->Resnum].bonds.Add(index);
+					AtomA->Bonds.Add(index);
+					AtomB->Bonds.Add(index);
 				}
 			}
 		}
@@ -60,30 +68,68 @@ void AProteinData::FindBackBone()
 	{
 		
 	}*/
-	for(auto ResIter = Residues.CreateConstIterator(); ResIter.GetIndex() < Residues.Num(); ++ResIter)
+	for(auto ResIter = Residues.CreateIterator(); ResIter.GetIndex() < Residues.Num(); ++ResIter)
 	{
 		if (ResIter.GetIndex() == 0 || ResIter.GetIndex() == Residues.Num() - 1) //first residue
 		{
-			//find backbone atom
-			for (auto AtomIter = ResIter->atoms.CreateConstIterator(); AtomIter.GetIndex() < ResIter->atoms.Num(); ++AtomIter)
+			//find backbone atoms
+			int AtomCA = -1, AtomN = -1, AtomC = -1;
+			for (auto AtomIter = ResIter->atoms.CreateIterator(); AtomIter.GetIndex() < ResIter->atoms.Num(); ++AtomIter)
 			{
-
-				if(Atoms[*AtomIter].Element.Contains("C"))
+				FAtomData Data = Atoms[*AtomIter];
+				if(Data.Name.Contains("CA"))
 				{
-					//add this atom and the following atom which makes up the bridge to the next residue
-					for (auto AtomIterB = ResIter->atoms.CreateConstIterator(); AtomIterB.GetIndex() < ResIter->atoms.Num(); ++AtomIterB)
+					AtomCA = AtomIter.GetIndex();
+				}
+				if (Data.Name.Contains("C"))
+				{
+					AtomC = AtomIter.GetIndex();
+				}
+				if (Data.Name.Contains("N"))
+				{
+					AtomN = AtomIter.GetIndex();
+				}
+			}
+			if(AtomHasInterResidueBond(AtomC))
+			{ // N terminus
+				BackBone.Add(AtomN);
+				BackBone.Add(AtomCA);
+				BackBone.Add(AtomC);
+			}
+			else
+			{// N Terminus
+				BackBone.Add(AtomN);
+				BackBone.Add(AtomCA);
+				BackBone.Add(AtomC);
+			}
+		}
+		else
+		{
+			//middle residues
+			int NCount = 0;
+			for(auto AtomIter = ResIter->atoms.CreateIterator(); AtomIter; ++AtomIter)
+			{
+				auto AtomNeighborIter = Atoms[*AtomIter].Bonds.CreateIterator();
+				while(AtomNeighborIter)
+				{
+					if(AtomHasInterResidueBond(*AtomNeighborIter))
 					{
-						//TODO add some data to atoms to figure out their neighbours directly, List of bonds??
+						NCount++;
 					}
 				}
-				else if(Atoms[*AtomIter].Element.Contains("N"))
-				{
-					//TODO
+				if(NCount == 2)
+				{//this is part of the backbone
+					AtomNeighborIter.Reset();
+					for (; AtomNeighborIter; ++AtomNeighborIter)
+					{
+						if(AtomHasInterResidueBond(*AtomNeighborIter))
+						{
+							BackBone.Add(*AtomNeighborIter);
+						}
+					}
 				}
-				//we need to iterate over the bonds of this residue and find the one which has one side in this residue and the other in the next residue
-				//
+				NCount = 0;
 			}
-
 		}
 
 	}
@@ -115,4 +161,14 @@ void AProteinData::BeginPlay()
 {
 	Atoms.Reset();
 	Residues.Reset();
+}
+
+bool AProteinData::AtomHasInterResidueBond(int Atom)
+{
+	FAtomData AtomData = Atoms[Atom];
+	for(auto Iter = AtomData.Bonds.CreateIterator(); Iter; ++Iter)
+	{
+		if (Atoms[Bonds[*Iter].AtomB].Resnum != AtomData.Resnum) return true;
+	}
+	return false;
 }

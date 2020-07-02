@@ -130,5 +130,5 @@ void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 
 	//DrawDebugSphere(GEngine->GetWorldFromContextObject(GEngine->GameViewport, EGetWorldErrorMode::ReturnNull) , FVector(x*10, y*10, z*10), 10.0f, 10, FColor::Red, true, 100, 0, 2.f);
 	Protein->AddResidue(resName, Resnum);
-	Protein->AddAtom(Snum, Alt, Chain, Resnum, Insertion_residue_code, FVector(x, y, z), Occupancy, TempFactor, Element);
+	Protein->AddAtom(Snum, Alt, name, Chain, Resnum, Insertion_residue_code, FVector(x, y, z), Occupancy, TempFactor, Element);
 }

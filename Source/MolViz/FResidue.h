@@ -21,7 +21,7 @@ struct FResidue
 	~FResidue();
 
 	TArray<int> atoms;
-	TArray<FBondData*> bonds;
+	TArray<int> bonds;
 	FString Resname;
 	int32 Resseq;
 };
