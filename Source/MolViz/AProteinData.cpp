@@ -53,17 +53,6 @@ void AProteinData::CreateBonds()
 
 void AProteinData::FindBackBone()
 {
-	//for(auto AtomIterA = Atoms.CreateConstIterator(); AtomIterA.GetIndex() < Atoms.Num(); ++AtomIterA)
-	//{
-	//	for (auto AtomIterB = Atoms.CreateConstIterator(); AtomIterB.GetIndex() < Atoms.Num(); ++AtomIterB)
-	//	{
-	//		
-	//	}
-	//}
-	/*for(auto BondIter = Bonds.CreateConstIterator(); BondIter.GetIndex() < Bonds.Num(); ++Bonds)
-	{
-		
-	}*/
 	for(auto ResIter = Residues.CreateIterator(); ResIter.GetIndex() < Residues.Num(); ++ResIter)
 	{
 		if (ResIter.GetIndex() == 0 || ResIter.GetIndex() == Residues.Num() - 1) //first residue
