@@ -8,11 +8,12 @@
 UTube::UTube()
 {
 	//set the static mesh of this part of the tube
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>Mesh(TEXT("StaticMesh'/Game/Cylinder"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>Mesh(TEXT("StaticMesh'/Game/Cylinder.Cylinder'"));
 	UStaticMesh* Asset = Mesh.Object;
-	SetForwardAxis(ESplineMeshAxis::Y);
+	SetForwardAxis(ESplineMeshAxis::Y); 
 	USplineMeshComponent::SetStaticMesh(Asset);
 	Backbone.Reserve(4);
+	bAllowSplineEditingPerInstance = true;
 }
 
 void UTube::SetBackbone(FAtomData* StartAtom, FAtomData* ControlAtom, FAtomData* EndAtom)
@@ -20,7 +21,7 @@ void UTube::SetBackbone(FAtomData* StartAtom, FAtomData* ControlAtom, FAtomData*
 	this->Backbone[0] = StartAtom;
 	this->Backbone[1] = ControlAtom;
 	this->Backbone[2] = EndAtom;
-	this->BackBone[3] = ControlAtom;
+	this->Backbone[3] = ControlAtom;
 
 	//TODO compute correct control points
 	SetStartAndEnd(StartAtom->position, ControlAtom->position, EndAtom->position, ControlAtom->position);
@@ -31,7 +32,7 @@ void UTube::SetBackbone(FAtomData* StartAtom, FAtomData* StartControlAtom, FAtom
 	this->Backbone[0] = StartAtom;
 	this->Backbone[1] = StartControlAtom;
 	this->Backbone[2] = EndAtom;
-	this->BackBone[3] = EndControlAtom;
+	this->Backbone[3] = EndControlAtom;
 	
 	//TODO compute the correct control points
 	SetStartAndEnd(StartAtom->position, StartControlAtom->position, EndAtom->position, EndControlAtom->position);

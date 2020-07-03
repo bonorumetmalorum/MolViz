@@ -18,10 +18,12 @@ class MOLVIZ_API UTube : public USplineMeshComponent
 public:
 
 	UTube();
-	UFUNCTION()
+	
 	void SetBackbone(FAtomData* StartAtom, FAtomData* ControlAtom, FAtomData* EndAtom);
-	UFUNCTION()
+
 	void SetBackbone(FAtomData* StartAtom, FAtomData* StartControlAtom, FAtomData* EndAtom, FAtomData* EndControlAtom);
+	void UpdateBackBone();
+
 private:
 	TArray<FAtomData*> Backbone;
 };
