@@ -30,7 +30,7 @@ public:
 	TArray<FAtomData> Atoms;
 	TArray<FResidue> Residues;
 	TArray<FBondData> Bonds;
-	TSet<FAtomData *> BackBone;
+	TArray<FAtomData *> BackBone;
 	void BeginPlay() override;
 	FLoadComplete LoadCompleteDelegate;
 private:

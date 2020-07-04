@@ -7,15 +7,21 @@
 
 void UTubeRepresentation::ConstructRepresentation(AProteinData* ProteinData)
 {
-	for(auto BBIter = ProteinData->BackBone.CreateIterator(); BBIter;)
+	const int NumResidues = ProteinData->BackBone.Num() / 3;
+	for(int Res = 0; Res < NumResidues; Res++)
 	{ //increment by residue
-		if(BBIter.GetId().AsInteger() == 0)
+		if(Res == 0)
 		{//this is the first tube component, so we do not have access to a previous
-			AddTubeSection(*BBIter, *(++BBIter), *(++BBIter));
+			AddTubeSection(ProteinData->BackBone[Res*3], ProteinData->BackBone[(Res*3)+1], ProteinData->BackBone[(Res*3)+2]);
 		}
 		else
 		{//normal residue
-			AddTubeSection(*BBIter, *(++BBIter), *(++BBIter));
+			AddTubeSection(
+				ProteinData->BackBone[((Res-1)*3)+2], 
+				ProteinData->BackBone[((Res - 1) * 3) + 1], 
+				ProteinData->BackBone[(Res * 3) + 1], 
+				ProteinData->BackBone[(Res * 3) + 2]
+			);
 		}
 	}
 }
@@ -31,7 +37,7 @@ void UTubeRepresentation::AddTubeSection(FAtomData* StartAtom, FAtomData* Contro
 	Component->SetStartingBackbone(StartAtom, ControlAtom, EndAtom);
 }
 
-void UTubeRepresentation::AddTubeSection(FAtomData* StartAtom, FAtomData* StartControlAtom, FAtomData* EndControlAtom, FAtomData* EndAtom)
+void UTubeRepresentation::AddTubeSection(FAtomData* PreviousResLastAtom, FAtomData* PreviousResControlAtom, FAtomData* CurrentResControlAtom, FAtomData* CurrentResEndAtom)
 {
 	UTubeComponent* Component = NewObject<UTubeComponent>(this, UTubeComponent::StaticClass());
 	if (!Component)
@@ -39,5 +45,5 @@ void UTubeRepresentation::AddTubeSection(FAtomData* StartAtom, FAtomData* StartC
 		UE_LOG(LogTemp, Warning, TEXT("Unable to add component"));
 		return;
 	}
-	Component->SetBackbone(StartAtom, StartControlAtom, EndControlAtom, EndAtom); //refactor this into one method, which takes a boolean for start tube or not.
+	Component->SetBackbone(PreviousResLastAtom, PreviousResControlAtom, CurrentResControlAtom, CurrentResEndAtom); //refactor this into one method, which takes a boolean for start tube or not.
 }
