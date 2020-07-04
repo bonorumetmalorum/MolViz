@@ -92,6 +92,7 @@ void AProteinData::FindBackBone()
 		{
 			//middle residues
 			int NCount = 0;
+			TArray<FAtomData*> Neighbors; //TODO find another way to do this maybe??
 			for(auto AtomIter = ResIter->atoms.CreateIterator(); AtomIter; ++AtomIter)
 			{
 				auto AtomNeighborIter = (*AtomIter)->Bonds.CreateIterator();
@@ -99,21 +100,26 @@ void AProteinData::FindBackBone()
 				{
 					if(AtomHasInterResidueBond(*AtomNeighborIter))
 					{
+						Neighbors.Add(*AtomNeighborIter);
 						NCount++;
 					}
 				}
 				if(NCount == 2)
 				{//this is part of the backbone
-					AtomNeighborIter.Reset();
-					for (; AtomNeighborIter; ++AtomNeighborIter)
-					{
-						if(AtomHasInterResidueBond(*AtomNeighborIter))
-						{
-							BackBone.Add(*AtomNeighborIter);
-						}
-					}
+					//AtomNeighborIter.Reset();
+					//for (; AtomNeighborIter; ++AtomNeighborIter)
+					//{
+					//	if(AtomHasInterResidueBond(*AtomNeighborIter))
+					//	{
+					//		BackBone.Add(*AtomNeighborIter);
+					//	}
+					//}
+					BackBone.Add(Neighbors[0]);
+					BackBone.Add(*AtomIter);
+					BackBone.Add(Neighbors[1]);
 				}
 				NCount = 0;
+				Neighbors.Reset();
 			}
 		}
 
