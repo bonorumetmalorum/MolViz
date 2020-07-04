@@ -7,6 +7,11 @@
 
 void UTubeRepresentation::ConstructRepresentation(AProteinData* ProteinData)
 {
+	if(ProteinData->BackBone.Num() == 0)
+	{
+		ProteinData->FindBackBone();
+	}
+	
 	const int NumResidues = ProteinData->BackBone.Num() / 3;
 	for(int Res = 0; Res < NumResidues; Res++)
 	{ //increment by residue

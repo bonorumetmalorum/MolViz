@@ -7,6 +7,7 @@
 #include "VDW.h"
 #include "CPK.h"
 #include "Representation.h"
+#include "TubeRepresentation.h"
 
 URepresentationFactory::URepresentationFactory()
 {
@@ -49,6 +50,13 @@ UCPK* URepresentationFactory::CreateNewCpkRep(AProteinRepresentation* InParent, 
 {
 	UCPK* rep = NewObject<UCPK>(InParent, InName);
 	rep->Config(5, 5, 0.2f, 0.1f, 5, 5);
+	rep->ConstructRepresentation(InProteinData);
+	return rep;
+}
+
+UTubeRepresentation* URepresentationFactory::CreateNewTubeRep(AProteinRepresentation* InParent, AProteinData* InProteinData, FName InName) const
+{
+	UTubeRepresentation* rep = NewObject<UTubeRepresentation>(InParent, InName);
 	rep->ConstructRepresentation(InProteinData);
 	return rep;
 }

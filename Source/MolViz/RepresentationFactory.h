@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TubeRepresentation.h"
 #include "Factories/Factory.h"
 #include "RepresentationFactory.generated.h"
 
@@ -28,6 +29,7 @@ public:
 
 	UVDW* CreateNewVdwRep(AProteinRepresentation* InParent, AProteinData * InProteinData, /*TODO pass in protein rep selections*/ FName InName) const;
 	UCPK* CreateNewCpkRep(AProteinRepresentation* InParent, AProteinData* InProteinData, FName InName) const;
+	UTubeRepresentation* CreateNewTubeRep(AProteinRepresentation* InParent, AProteinData* InProteinData, FName InName) const;
 
 private:
 	
