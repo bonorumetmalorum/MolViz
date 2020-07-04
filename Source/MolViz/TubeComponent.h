@@ -5,25 +5,26 @@
 #include "CoreMinimal.h"
 #include "FAtom.h"
 #include "Components/SplineMeshComponent.h"
-#include "Tube.generated.h"
+#include "TubeComponent.generated.h"
 
 /**
  * we need to get the spline
  */
 UCLASS()
-class MOLVIZ_API UTube : public USplineMeshComponent
+class MOLVIZ_API UTubeComponent : public USplineMeshComponent
 {
 	GENERATED_BODY()
 
 public:
 
-	UTube();
+	UTubeComponent();
 	
-	void SetBackbone(FAtomData* StartAtom, FAtomData* ControlAtom, FAtomData* EndAtom);
+	void SetStartingBackbone(FAtomData* StartAtom, FAtomData* ControlAtom, FAtomData* EndAtom);
 
 	void SetBackbone(FAtomData* StartAtom, FAtomData* StartControlAtom, FAtomData* EndAtom, FAtomData* EndControlAtom);
 	void UpdateBackBone();
 
 private:
 	TArray<FAtomData*> Backbone;
+	bool IsStartingBackBone = false;
 };
