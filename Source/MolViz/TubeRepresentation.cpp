@@ -40,6 +40,8 @@ void UTubeRepresentation::AddTubeSection(FAtomData* StartAtom, FAtomData* Contro
 		return;
 	}
 	Component->SetStartingBackbone(StartAtom, ControlAtom, EndAtom);
+	Component->RegisterComponent();
+	//Component->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
 }
 
 void UTubeRepresentation::AddTubeSection(FAtomData* PreviousResLastAtom, FAtomData* PreviousResControlAtom, FAtomData* CurrentResControlAtom, FAtomData* CurrentResEndAtom)
@@ -51,4 +53,6 @@ void UTubeRepresentation::AddTubeSection(FAtomData* PreviousResLastAtom, FAtomDa
 		return;
 	}
 	Component->SetBackbone(PreviousResLastAtom, PreviousResControlAtom, CurrentResControlAtom, CurrentResEndAtom); //refactor this into one method, which takes a boolean for start tube or not.
+	Component->RegisterComponent();
+	//Component->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
 }
