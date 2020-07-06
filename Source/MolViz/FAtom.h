@@ -54,5 +54,5 @@ struct FAtomData
 	float Occupancy;
 	float TempFactor;
 	FString Element;
-	TArray<FAtomData *> Bonds;
+	TArray<int> Neighbours;
 };

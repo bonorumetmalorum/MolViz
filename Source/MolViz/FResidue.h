@@ -20,7 +20,7 @@ struct FResidue
 	FResidue(const FString& Resname, int32 Resseq);
 	~FResidue();
 
-	TArray<FAtomData*> atoms;
+	TArray<int> atoms;
 	TArray<int> bonds;
 	FString Resname;
 	int32 Resseq;

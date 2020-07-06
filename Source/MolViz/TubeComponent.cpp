@@ -12,7 +12,7 @@ UTubeComponent::UTubeComponent()
 	UStaticMesh* Asset = Mesh.Object;
 	SetForwardAxis(ESplineMeshAxis::Y); 
 	USplineMeshComponent::SetStaticMesh(Asset);
-	Backbone.Reserve(4);
+	Backbone.Init(nullptr, 4);
 	bAllowSplineEditingPerInstance = true;
 }
 

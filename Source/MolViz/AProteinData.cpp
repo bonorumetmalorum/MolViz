@@ -18,9 +18,9 @@ void AProteinData::LoadComplete()
 
 void AProteinData::CreateBonds()
 {
-	for(auto AtomA = Atoms.CreateIterator(); AtomA.GetIndex() < Atoms.Num(); ++AtomA)
+	for(auto AtomA = Atoms.CreateIterator(); AtomA; ++AtomA)
 	{
-		for(auto AtomB = Atoms.CreateIterator(); AtomB.GetIndex() < Atoms.Num(); ++AtomB)
+		for(auto AtomB = Atoms.CreateIterator(); AtomB; ++AtomB)
 		{
 			if (AtomA->Snum == AtomB->Snum)
 				continue; //if we have the same atom, skip
@@ -33,7 +33,7 @@ void AProteinData::CreateBonds()
 				{ //if they are within this squared distance, add a bond
 					auto index = Bonds.Add(FBondData(AtomA.GetIndex(), AtomB.GetIndex(), InterAtomVec));
 					Residues[AtomA->Resnum-1].bonds.Add(index);
-					AtomA->Bonds.Add(&Atoms[AtomB.GetIndex()]);
+					AtomA->Neighbours.Add(AtomB.GetIndex());
 				}
 			}
 			else
@@ -44,7 +44,7 @@ void AProteinData::CreateBonds()
 				{ //add a bond if the squared distance is in this range
 					auto index = Bonds.Add(FBondData(AtomA.GetIndex(), AtomB.GetIndex(), InterAtomVec));
 					Residues[AtomA->Resnum-1].bonds.Add(index);
-					AtomA->Bonds.Add(&Atoms[AtomB.GetIndex()]);
+					AtomA->Neighbours.Add(AtomB.GetIndex());
 				}
 			}
 		}
@@ -53,7 +53,7 @@ void AProteinData::CreateBonds()
 
 void AProteinData::FindBackBone()
 {
-	for(auto ResIter = Residues.CreateIterator(); ResIter.GetIndex() < Residues.Num(); ++ResIter)
+	for(auto ResIter = Residues.CreateIterator(); ResIter.GetIndex() < Residues.Num(); ResIter++)
 	{
 		if (ResIter.GetIndex() == 0 || ResIter.GetIndex() == Residues.Num() - 1) //first residue
 		{
@@ -61,31 +61,35 @@ void AProteinData::FindBackBone()
 			FAtomData * AtomCA = nullptr, * AtomN = nullptr, * AtomC = nullptr;
 			for (auto AtomIter = ResIter->atoms.CreateIterator(); AtomIter.GetIndex() < ResIter->atoms.Num(); ++AtomIter)
 			{
-				FAtomData * Data = *AtomIter;
-				if(Data->Name.Contains("CA"))
+				int Data = *AtomIter;
+				if(Atoms[Data].Name.Equals("CA"))
 				{
-					AtomCA = *AtomIter;
+					AtomCA = &Atoms[Data];
 				}
-				if (Data->Name.Contains("C"))
+				if (Atoms[Data].Name.Equals("C")) //issue with this and the if statement above it
 				{
-					AtomC = *AtomIter;
+					AtomC = &Atoms[Data];
 				}
-				if (Data->Name.Contains("N"))
+				if (Atoms[Data].Name.Equals("N"))
 				{
-					AtomN = *AtomIter;
+					AtomN = &Atoms[Data];
 				}
 			}
-			if(AtomHasInterResidueBond(AtomC))
+			if(AtomC && AtomHasInterResidueBond(*AtomC))
 			{ // N terminus
 				BackBone.Add(AtomN);
 				BackBone.Add(AtomCA);
 				BackBone.Add(AtomC);
 			}
-			else
+			else if(AtomN && AtomHasInterResidueBond(*AtomN))
 			{// N Terminus
 				BackBone.Add(AtomN);
 				BackBone.Add(AtomCA);
 				BackBone.Add(AtomC);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("no carboxyl / amine group detected"));
 			}
 		}
 		else
@@ -95,15 +99,26 @@ void AProteinData::FindBackBone()
 			TArray<FAtomData*> Neighbors; //TODO find another way to do this maybe??
 			for(auto AtomIter = ResIter->atoms.CreateIterator(); AtomIter; ++AtomIter)
 			{
-				auto AtomNeighborIter = (*AtomIter)->Bonds.CreateIterator();
-				while(AtomNeighborIter)
+				FAtomData & AtomData = Atoms[*AtomIter];
+				//auto AtomNeighborIter = AtomData->Neighbours.CreateIterator();
+				for (int j = 0; j < AtomData.Neighbours.Num(); j++)
 				{
-					if(AtomHasInterResidueBond(*AtomNeighborIter))
+					if (AtomHasInterResidueBond(Atoms[AtomData.Neighbours[j]]))
 					{
-						Neighbors.Add(*AtomNeighborIter);
+						Neighbors.Add(&(Atoms[AtomData.Neighbours[j]]));
 						NCount++;
 					}
 				}
+				
+				/*while(AtomNeighborIter.GetIndex() < (*AtomIter)->Neighbours.Num())
+				{
+					if(AtomHasInterResidueBond(Atoms[*AtomNeighborIter]))
+					{
+						Neighbors.Add(&Atoms[*AtomNeighborIter]);
+						NCount++;
+					}
+					++AtomNeighborIter;
+				}*/
 				if(NCount == 2)
 				{//this is part of the backbone
 					//AtomNeighborIter.Reset();
@@ -115,7 +130,7 @@ void AProteinData::FindBackBone()
 					//	}
 					//}
 					BackBone.Add(Neighbors[0]);
-					BackBone.Add(*AtomIter);
+					BackBone.Add(&Atoms[*AtomIter]);
 					BackBone.Add(Neighbors[1]);
 				}
 				NCount = 0;
@@ -144,8 +159,9 @@ void AProteinData::AddAtom(int32 Snum, uint8 Alt, FString Name, uint8 Chain, int
 		return;
 	}
 	//if the residue does not exist yet then create a new residue to add it to.
+	Name.RemoveSpacesInline();
 	int index = Atoms.Add(FAtomData(Snum, Alt, Name, Chain, Resnum, Insertion_residue_code, position, Occupancy, TempFactor, Element));
-	Residues[Resnum-1].atoms.Add(&Atoms[index]);
+	Residues[Resnum-1].atoms.Add(index);
 }
 
 void AProteinData::BeginPlay()
@@ -154,11 +170,11 @@ void AProteinData::BeginPlay()
 	Residues.Reset();
 }
 
-bool AProteinData::AtomHasInterResidueBond(FAtomData * Atom)
+bool AProteinData::AtomHasInterResidueBond(FAtomData & Atom)
 {
-	for(auto Iter = Atom->Bonds.CreateIterator(); Iter; ++Iter)
+	for(auto Iter = Atom.Neighbours.CreateIterator(); Iter; ++Iter)
 	{
-		if ((*Iter)->Resnum != Atom->Resnum) return true;
+		if (Atoms[*Iter].Resnum != Atom.Resnum) return true; //index out of bounds error, possibly because the indeces stored here are not to the atoms??
 	}
 	return false;
 }

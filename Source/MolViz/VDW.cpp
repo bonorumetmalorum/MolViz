@@ -35,7 +35,7 @@ void UVDW::ConstructRepresentation(AProteinData * ProteinData)
 	{
 		for (auto atomiter = iter->atoms.CreateConstIterator(); atomiter.GetIndex() < iter->atoms.Num(); ++atomiter)
 		{
-			AddAtom((*atomiter)->position.X, (*atomiter)->position.Y, (*atomiter)->position.Z);
+			AddAtom(ProteinData->Atoms[*atomiter].position.X, ProteinData->Atoms[*atomiter].position.Y, ProteinData->Atoms[*atomiter].position.Z);
 		}
 	}
 }
