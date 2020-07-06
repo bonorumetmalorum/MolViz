@@ -58,6 +58,7 @@ void AProteinData::FindBackBone()
 		if (ResIter.GetIndex() == 0 || ResIter.GetIndex() == Residues.Num() - 1) //first residue
 		{
 			//find backbone atoms
+			int N = -1, C = -1;
 			FAtomData * AtomCA = nullptr, * AtomN = nullptr, * AtomC = nullptr;
 			for (auto AtomIter = ResIter->atoms.CreateIterator(); AtomIter.GetIndex() < ResIter->atoms.Num(); ++AtomIter)
 			{
@@ -66,7 +67,7 @@ void AProteinData::FindBackBone()
 				{
 					AtomCA = &Atoms[Data];
 				}
-				if (Atoms[Data].Name.Equals("C")) //issue with this and the if statement above it
+				if (Atoms[Data].Name.Equals("C"))
 				{
 					AtomC = &Atoms[Data];
 				}
@@ -75,17 +76,18 @@ void AProteinData::FindBackBone()
 					AtomN = &Atoms[Data];
 				}
 			}
-			if(AtomC && AtomHasInterResidueBond(*AtomC))
+			if(AtomC && AtomHasInterResidueBond(*AtomC, N))
 			{ // N terminus
-				BackBone.Add(AtomN);
+				//BackBone.Add(AtomN); // because we have an n terminus, N is part of another residue which is bonded to the C in this residue, we need to add it otherwise N is null :(
+				BackBone.Add(&Atoms[N]);
 				BackBone.Add(AtomCA);
 				BackBone.Add(AtomC);
 			}
-			else if(AtomN && AtomHasInterResidueBond(*AtomN))
+			else if(AtomN && AtomHasInterResidueBond(*AtomN, C))
 			{// N Terminus
-				BackBone.Add(AtomN);
+				BackBone.Add(AtomN); 
 				BackBone.Add(AtomCA);
-				BackBone.Add(AtomC);
+				BackBone.Add(&Atoms[C]); // like wise the C in this case is null because it is in another residue, we need to find it and add it 
 			}
 			else
 			{
@@ -176,5 +178,18 @@ bool AProteinData::AtomHasInterResidueBond(FAtomData & Atom)
 	{
 		if (Atoms[*Iter].Resnum != Atom.Resnum) return true; //index out of bounds error, possibly because the indeces stored here are not to the atoms??
 	}
+	return false;
+}
+
+bool AProteinData::AtomHasInterResidueBond(FAtomData& Atom, int & OutAtom){
+	for (auto Iter = Atom.Neighbours.CreateIterator(); Iter; ++Iter)
+	{
+		if (Atoms[*Iter].Resnum != Atom.Resnum)
+		{
+			OutAtom = *Iter;
+			return true;
+		}
+	}
+	OutAtom = -1;
 	return false;
 }

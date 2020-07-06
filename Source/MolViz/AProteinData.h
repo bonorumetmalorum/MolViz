@@ -35,4 +35,5 @@ public:
 	FLoadComplete LoadCompleteDelegate;
 private:
 	bool AtomHasInterResidueBond(FAtomData & Atom);
+	bool AtomHasInterResidueBond(FAtomData& Atom, int & Bonds);
 };
