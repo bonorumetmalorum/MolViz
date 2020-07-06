@@ -79,15 +79,15 @@ void AProteinData::FindBackBone()
 			if(AtomC && AtomHasInterResidueBond(*AtomC, N))
 			{ // N terminus
 				//BackBone.Add(AtomN); // because we have an n terminus, N is part of another residue which is bonded to the C in this residue, we need to add it otherwise N is null :(
-				BackBone.Add(&Atoms[N]);
 				BackBone.Add(AtomCA);
+				BackBone.Add(&Atoms[N]);
 				BackBone.Add(AtomC);
 			}
 			else if(AtomN && AtomHasInterResidueBond(*AtomN, C))
 			{// N Terminus
 				BackBone.Add(AtomN); 
-				BackBone.Add(AtomCA);
 				BackBone.Add(&Atoms[C]); // like wise the C in this case is null because it is in another residue, we need to find it and add it 
+				BackBone.Add(AtomCA);
 			}
 			else
 			{
@@ -131,8 +131,8 @@ void AProteinData::FindBackBone()
 					//		BackBone.Add(*AtomNeighborIter);
 					//	}
 					//}
-					BackBone.Add(Neighbors[0]);
 					BackBone.Add(&Atoms[*AtomIter]);
+					BackBone.Add(Neighbors[0]);
 					BackBone.Add(Neighbors[1]);
 				}
 				NCount = 0;

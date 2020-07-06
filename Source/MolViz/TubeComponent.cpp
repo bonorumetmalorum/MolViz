@@ -33,7 +33,9 @@ void UTubeComponent::SetStartingBackbone(FAtomData* StartAtom, FAtomData* Contro
 	
 	this->IsStartingBackBone = true;
 	//TODO compute correct control points
-	SetStartAndEnd(StartAtom->position, StartAtom->position + (TWOBYTHREE * (ControlAtom->position - StartAtom->position)), EndAtom->position, EndAtom->position + (TWOBYTHREE * (ControlAtom->position - EndAtom->position)));
+	//SetStartAndEnd(StartAtom->position, StartAtom->position + (TWOBYTHREE * (ControlAtom->position - StartAtom->position)), EndAtom->position, EndAtom->position + (TWOBYTHREE * (ControlAtom->position - EndAtom->position)));
+	SetStartAndEnd(StartAtom->position, FVector(0), EndAtom->position, FVector(0));
+
 }
 
 void UTubeComponent::SetBackbone(FAtomData* PreviousResLastAtom, FAtomData* PreviousResControlAtom, FAtomData* CurrentResControlAtom, FAtomData * CurrentResEndAtom)
@@ -44,8 +46,11 @@ void UTubeComponent::SetBackbone(FAtomData* PreviousResLastAtom, FAtomData* Prev
 	this->Backbone[3] = CurrentResEndAtom;
 	
 	//TODO compute the correct control points
-	SetStartAndEnd(PreviousResLastAtom->position, PreviousResLastAtom->position + (PreviousResLastAtom->position - PreviousResControlAtom->position), 
-		CurrentResEndAtom->position, CurrentResControlAtom->position);
+	/*SetStartAndEnd(PreviousResLastAtom->position, PreviousResLastAtom->position + (PreviousResLastAtom->position - PreviousResControlAtom->position), 
+		CurrentResEndAtom->position, CurrentResControlAtom->position);*/
+
+	SetStartAndEnd(PreviousResLastAtom->position, FVector(0),
+		CurrentResEndAtom->position, FVector(0));
 }
 
 void UTubeComponent::UpdateBackBone()
