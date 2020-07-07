@@ -10,7 +10,8 @@ UTubeComponent::UTubeComponent()
 	//set the static mesh of this part of the tube
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>Mesh(TEXT("StaticMesh'/Game/Cylinder.Cylinder'"));
 	UStaticMesh* Asset = Mesh.Object;
-	SetForwardAxis(ESplineMeshAxis::Y); 
+	SetForwardAxis(ESplineMeshAxis::Y);
+	SetSplineUpDir(FVector(0,0,1));
 	USplineMeshComponent::SetStaticMesh(Asset);
 	Backbone.Init(nullptr, 4);
 	bAllowSplineEditingPerInstance = true;
@@ -34,7 +35,7 @@ void UTubeComponent::SetStartingBackbone(FAtomData* StartAtom, FAtomData* Contro
 	this->IsStartingBackBone = true;
 	//TODO compute correct control points
 	//SetStartAndEnd(StartAtom->position, StartAtom->position + (TWOBYTHREE * (ControlAtom->position - StartAtom->position)), EndAtom->position, EndAtom->position + (TWOBYTHREE * (ControlAtom->position - EndAtom->position)));
-	SetStartAndEnd(StartAtom->position, FVector(0), EndAtom->position, FVector(0));
+	SetStartAndEnd(StartAtom->position, FVector(1), EndAtom->position, FVector(1));
 
 }
 
@@ -46,11 +47,11 @@ void UTubeComponent::SetBackbone(FAtomData* PreviousResLastAtom, FAtomData* Prev
 	this->Backbone[3] = CurrentResEndAtom;
 	
 	//TODO compute the correct control points
-	/*SetStartAndEnd(PreviousResLastAtom->position, PreviousResLastAtom->position + (PreviousResLastAtom->position - PreviousResControlAtom->position), 
-		CurrentResEndAtom->position, CurrentResControlAtom->position);*/
-
-	SetStartAndEnd(PreviousResLastAtom->position, FVector(0),
-		CurrentResEndAtom->position, FVector(0));
+	SetStartAndEnd(PreviousResLastAtom->position, (PreviousResLastAtom->position - PreviousResControlAtom->position)/*FVector(0)*/, 
+		CurrentResEndAtom->position, (PreviousResLastAtom->position - PreviousResControlAtom->position) /*FVector(0)*/);
+	
+	/*SetStartAndEnd(PreviousResLastAtom->position, FVector(1),
+		CurrentResEndAtom->position, FVector(1));*/
 }
 
 void UTubeComponent::UpdateBackBone()
