@@ -15,6 +15,6 @@ public:
 	virtual void readStructure(FString filepath, AActor * Structure) = 0;
 protected:
 	bool ReadLine(IFileHandle * Data, uint8* OutData, SIZE_T maxRead);
-	bool ReadLine(FString& Data, uint8* Outbuffer, SIZE_T MaxRead);
+	bool ReadLine(FString& Data, uint8* Outbuffer, SIZE_T & ReadFrom, SIZE_T MaxRead);
 	FString BytesToString(const uint8* bytes, SIZE_T count);
 };

@@ -43,6 +43,7 @@ void FPdbReader::readStructure(FString filepath, AActor * Protein)
 		}
 	}
 	Cast<AProteinData>(Protein)->CreateBonds();
+	
 	//broadcast "load succeeded"
 	Cast<AProteinData>(Protein)->LoadComplete();
 	UE_LOG(LogTemp, Warning, TEXT("finished parsing file"));

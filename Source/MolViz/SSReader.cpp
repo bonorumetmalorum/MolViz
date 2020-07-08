@@ -21,29 +21,28 @@ void FSSReader::ParseStructureType(unsigned char Buffer[100], AProteinData* Prot
 	//beta sheet needs beta and beta end for arrow head.
 	FString Resnum = "";
 	FString Chainnum = "";
-	char SStype = ' ';
 
 	int32 ResidueNumber = -1;
 	int32 ChainNumber = -1;
 
-	Resnum = BytesToString(Buffer + 5, 2);
+	Resnum = BytesToString(Buffer + 11, 4);
 	LexFromString(ResidueNumber, *Resnum);
-	Chainnum = BytesToString(Buffer + 11, 3);
+	Chainnum = BytesToString(Buffer + 16, 4);
 	LexFromString(ChainNumber, *Chainnum);
-	SStype = Buffer[24];
+	uint8 SStype = Buffer[24];
 
 	switch(SStype)
 	{
 		case 'E':
-			ProteinData->Residues[ResidueNumber].SSResType = SSType::BStrand;
+			ProteinData->Residues[ResidueNumber-1].SSResType = SSType::BStrand;
 			break;
 
 		case 'H':
-			ProteinData->Residues[ResidueNumber].SSResType = SSType::AHelix;
+			ProteinData->Residues[ResidueNumber-1].SSResType = SSType::AHelix;
 			break;
 		
 		default:
-			ProteinData->Residues[ResidueNumber].SSResType = SSType::Coil;
+			ProteinData->Residues[ResidueNumber-1].SSResType = SSType::Coil;
 			break;
 	}
 }
@@ -56,7 +55,8 @@ void FSSReader::readStructure(FString filepath, AActor* Structure)
 {
 	FString SSInfo = Stride.RunStrideCommand(filepath);
 	uint8 buffer[100];
-	while (ReadLine(SSInfo, buffer, 100))
+	SIZE_T offset = 0;
+	while (ReadLine(SSInfo, buffer, offset, 100))
 	{
 		SSLineType linetype = GetLineType(buffer);
 		switch (linetype)

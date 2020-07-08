@@ -84,6 +84,7 @@ FReply SMainWindow::OpenFileDialog()
 			
 			GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Blue, Element);
 			PDBReader.readStructure(Element, this->AppManager->ProteinData);
+			SSReader.readStructure(Element, this->AppManager->ProteinData);
 		}
 	}
 	else

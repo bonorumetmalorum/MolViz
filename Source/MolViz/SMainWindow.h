@@ -27,5 +27,6 @@ public:
 private:
 	TSharedPtr<SWindow> MainWindow;
 	FPdbReader PDBReader;
+	FSSReader SSReader;
 	TWeakObjectPtr<class AMolVizGameModeBase> AppManager;
 };

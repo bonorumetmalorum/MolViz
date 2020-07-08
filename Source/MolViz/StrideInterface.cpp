@@ -5,22 +5,22 @@
 
 FStrideInterface::FStrideInterface()
 {
-	Command = *(FGenericPlatformMisc::GetEnvironmentVariable(TEXT("Stride")));
-	FGenericPlatformProcess::CreatePipe(RPipe, WPipe);
+	Command = TEXT("C:/Program Files (x86)/University of Illinois/VMD/stride_WIN32.exe");
+	FWindowsPlatformProcess::CreatePipe(RPipe, WPipe);
 }
 
 FStrideInterface::~FStrideInterface()
 {
-	if(FGenericPlatformProcess::IsProcRunning(Handle))
+	if(FWindowsPlatformProcess::IsProcRunning(Handle))
 	{
-		FGenericPlatformProcess::WaitForProc(Handle);
-		FGenericPlatformProcess::ClosePipe(RPipe, WPipe);
-		FGenericPlatformProcess::TerminateProc(Handle);
+		FWindowsPlatformProcess::WaitForProc(Handle);
+		FWindowsPlatformProcess::ClosePipe(RPipe, WPipe);
+		FWindowsPlatformProcess::TerminateProc(Handle);
 	}
 }
 
 FString FStrideInterface::RunStrideCommand(FString & PdbFile)
 {
-	Handle = FGenericPlatformProcess::CreateProc(Command,  *PdbFile, false, true, true, &ProcID, 2, 0, WPipe, RPipe);
-	return FGenericPlatformProcess::ReadPipe(RPipe);
+	Handle = FWindowsPlatformProcess::CreateProc(Command,  *PdbFile, false, true, true, &ProcID, 2, 0, WPipe, RPipe);
+	return FWindowsPlatformProcess::ReadPipe(RPipe);
 }
