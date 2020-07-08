@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "FAtom.h"
 #include "FBondData.h"
+#include "SSReader.h"
+
 
 #include "FResidue.generated.h"
 
@@ -24,4 +26,5 @@ struct FResidue
 	TArray<int> bonds;
 	FString Resname;
 	int32 Resseq;
+	SSType SSResType;
 };

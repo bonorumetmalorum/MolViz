@@ -7,7 +7,7 @@
 
 class AProteinData;
 
-enum LineType
+enum SSLineType
 {
 	Asg,
 	Rem,
@@ -15,7 +15,14 @@ enum LineType
 	Str,
 	Chn,
 	Seq,
-	Other
+	NotSupported
+};
+
+enum SSType
+{
+	AHelix,
+	BStrand,
+	Coil
 };
 
 /**
@@ -31,6 +38,6 @@ public:
 	void readStructure(FString filepath, AActor* Structure) override;
 
 private:
-	LineType GetLineType(const uint8* line);
+	SSLineType GetLineType(const uint8* line);
 	
 };
