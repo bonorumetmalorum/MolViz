@@ -23,7 +23,7 @@ void UTubeRepresentation::ConstructRepresentation(AProteinData* ProteinData)
 		{//normal residue
 			AddTubeSection(
 				ProteinData->BackBone[((Res-1)*3)+2], 
-				ProteinData->BackBone[((Res) * 3) + 1], 
+				ProteinData->BackBone[((Res) * 3)], 
 				ProteinData->BackBone[(Res * 3) + 1], 
 				ProteinData->BackBone[(Res * 3) + 2]
 			);
