@@ -54,10 +54,9 @@ void FSSReader::ParseStructureType(unsigned char Buffer[100], AProteinData* Prot
  */
 void FSSReader::readStructure(FString filepath, AActor* Structure)
 {
-	IPlatformFile& file = FPlatformFileManager::Get().GetPlatformFile();
-	IFileHandle* fhandle = file.OpenRead(*filepath, false);
+	FString SSInfo = Stride.RunStrideCommand(filepath);
 	uint8 buffer[100];
-	while (ReadLine(fhandle, buffer, 100))
+	while (ReadLine(SSInfo, buffer, 100))
 	{
 		SSLineType linetype = GetLineType(buffer);
 		switch (linetype)

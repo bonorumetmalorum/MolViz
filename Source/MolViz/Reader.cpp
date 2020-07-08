@@ -35,6 +35,32 @@ bool IReader::ReadLine(IFileHandle * Data, uint8* Outbuffer, SIZE_T MaxRead)
 	return false;
 }
 
+bool IReader::ReadLine(FString & Data, uint8* Outbuffer, SIZE_T MaxRead)
+{
+	if (!Data.IsEmpty() && Outbuffer)
+	{ //if we have a valid pointer to a file data and storage buffer
+		int Counter = 0;
+		uint8 CurrentChar = ' ';
+		auto DataIter = Data.CreateConstIterator();
+		while (DataIter && Counter < MaxRead)
+		{
+			if (CurrentChar == '\n')
+			{ //if we found the end of the line
+				return true;
+			}
+			*Outbuffer = CurrentChar;
+			Outbuffer++;
+			++DataIter;
+			Counter++;
+		}
+		if (Counter == MaxRead)
+		{// we were able to read the full amount
+			return true;
+		}
+	}
+	return false;
+}
+
 FString IReader::BytesToString(const uint8* Bytes, SIZE_T Count)
 {
 	FString Result;

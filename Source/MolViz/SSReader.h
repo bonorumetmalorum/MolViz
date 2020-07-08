@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Reader.h"
+#include "StrideInterface.h"
 
 class AProteinData;
 
@@ -39,5 +40,5 @@ public:
 
 private:
 	SSLineType GetLineType(const uint8* line);
-	
+	FStrideInterface Stride;
 };

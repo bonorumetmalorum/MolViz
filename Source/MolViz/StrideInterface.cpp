@@ -14,6 +14,7 @@ FStrideInterface::~FStrideInterface()
 	if(FGenericPlatformProcess::IsProcRunning(Handle))
 	{
 		FGenericPlatformProcess::WaitForProc(Handle);
+		FGenericPlatformProcess::ClosePipe(RPipe, WPipe);
 		FGenericPlatformProcess::TerminateProc(Handle);
 	}
 }
