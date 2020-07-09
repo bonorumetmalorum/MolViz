@@ -6,13 +6,7 @@
 #include "Representation.h"
 #include "NewCartoonRepresentation.generated.h"
 
-enum ChainState
-{
-	Start,
-	Middle,
-	End,
-	Invalid
-};
+
 
 /**
  * 
@@ -22,6 +16,14 @@ class MOLVIZ_API UNewCartoonRepresentation : public URepresentation
 {
 	GENERATED_BODY()
 
+	enum ChainState
+	{
+		Start,
+		Middle,
+		End,
+		Invalid
+	};
+public:
 	void ConstructRepresentation(AProteinData* ProteinData) override;
 private:
 	template<class T>

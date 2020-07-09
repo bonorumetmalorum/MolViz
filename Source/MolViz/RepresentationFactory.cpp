@@ -60,3 +60,11 @@ UTubeRepresentation* URepresentationFactory::CreateNewTubeRep(AProteinRepresenta
 	rep->ConstructRepresentation(InProteinData);
 	return rep;
 }
+
+UNewCartoonRepresentation* URepresentationFactory::CreateNewNCartoonRep(AProteinRepresentation* InParent,
+	AProteinData* const InProteinData, const char* InName)
+{
+	UNewCartoonRepresentation* rep = NewObject<UNewCartoonRepresentation>(InParent, InName);
+	rep->ConstructRepresentation(InProteinData);
+	return rep;
+}

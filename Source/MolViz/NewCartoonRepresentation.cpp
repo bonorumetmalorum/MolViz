@@ -85,7 +85,7 @@ void UNewCartoonRepresentation::AddCoilComponent(ChainState CurrentChainState, F
 	AddBackBoneComponent<UTubeComponent>(StartAtom, ControlAtom, EndAtom);
 }
 
-ChainState UNewCartoonRepresentation::UpdateChainState(AProteinData* ProteindData, int CurrentResidue)
+UNewCartoonRepresentation::ChainState UNewCartoonRepresentation::UpdateChainState(AProteinData* ProteindData, int CurrentResidue)
 {
 	if (CurrentResidue == 0) return Start;
 	if (ProteindData->Residues[CurrentResidue - 1].SSResType != ProteindData->Residues[CurrentResidue].SSResType) return Start;
