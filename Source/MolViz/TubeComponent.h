@@ -3,28 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FAtom.h"
-#include "Components/SplineMeshComponent.h"
+#include "BackBoneComponent.h"
 #include "TubeComponent.generated.h"
 
 /**
- * we need to get the spline
+ * 
  */
 UCLASS()
-class MOLVIZ_API UTubeComponent : public USplineMeshComponent
+class MOLVIZ_API UTubeComponent : public UBackBoneComponent
 {
 	GENERATED_BODY()
 
-public:
-
 	UTubeComponent();
-	
-	void SetStartingBackbone(FAtomData* StartAtom, FAtomData* ControlAtom, FAtomData* EndAtom);
-
-	void SetBackbone(FAtomData* StartAtom, FAtomData* StartControlAtom, FAtomData* EndAtom, FAtomData* EndControlAtom);
-	void UpdateBackBone();
-
-private:
-	TArray<FAtomData*> Backbone;
-	bool IsStartingBackBone = false;
 };

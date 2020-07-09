@@ -3,6 +3,7 @@
 
 #include "TubeRepresentation.h"
 #include "AProteinData.h"
+#include "BackBoneComponent.h"
 #include "TubeComponent.h"
 
 void UTubeRepresentation::ConstructRepresentation(AProteinData* ProteinData)
