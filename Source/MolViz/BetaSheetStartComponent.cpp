@@ -5,7 +5,7 @@
 
 #include "UObject/ConstructorHelpers.h"
 
-UBetaSheetStartComponent::UBetaSheetStartComponent() :UBackBoneComponent()
+UBetaSheetStartComponent::UBetaSheetStartComponent() : UBackBoneComponent()
 {
 	//set the static mesh of this part of the tube
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>Mesh(TEXT("StaticMesh'/Game/SheetBegin.SheetBegin'"));
