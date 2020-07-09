@@ -23,12 +23,13 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 		switch(ProteinData->Residues[i].SSResType)
 		{
 		case SSType::AHelix:
-			//check previous and next if possible
-			//if previous is different ss type, this is
+			AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 1]);
 			break;
 		case SSType::BStrand:
+			AddBetaSheetComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 1]);
 			break;
 		case SSType::Coil:
+			AddCoilComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 1]);
 			break;
 		}
 	}
