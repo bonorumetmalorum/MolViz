@@ -16,6 +16,7 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 {
 	//iterate through the residues
 	//find out what kind of ss rep is used in this residue
+	ProteinData->FindBackBone();
 	ChainState CurrentChainState = Invalid;
 	for (int i = 0; i < ProteinData->Residues.Num(); i++)
 	{
@@ -23,13 +24,24 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 		switch(ProteinData->Residues[i].SSResType)
 		{
 		case SSType::AHelix:
-			AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 1]);
+			if(i == 0)
+				AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 2]);
+			else
+				AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBone[(i - 1) * 3 + 2], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 2]);
+
 			break;
 		case SSType::BStrand:
-			AddBetaSheetComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 1]);
+			if(i == 0)
+				AddBetaSheetComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 2]);
+			else
+				AddBetaSheetComponent(CurrentChainState, ProteinData->BackBone[(i-1) * 3 + 2], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 2]);
+
 			break;
 		case SSType::Coil:
-			AddCoilComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 1]);
+			if(i == 0)
+				AddCoilComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 2]);
+			else
+				AddCoilComponent(CurrentChainState, ProteinData->BackBone[(i-1) * 3 + 2], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 2]);
 			break;
 		}
 	}
@@ -88,9 +100,9 @@ void UNewCartoonRepresentation::AddCoilComponent(ChainState CurrentChainState, F
 UNewCartoonRepresentation::ChainState UNewCartoonRepresentation::UpdateChainState(AProteinData* ProteindData, int CurrentResidue)
 {
 	if (CurrentResidue == 0) return Start;
+	if (CurrentResidue == ProteindData->Residues.Num() - 1) return End;
 	if (ProteindData->Residues[CurrentResidue - 1].SSResType != ProteindData->Residues[CurrentResidue].SSResType) return Start;
 	if (ProteindData->Residues[CurrentResidue + 1].SSResType != ProteindData->Residues[CurrentResidue].SSResType) return End;
-	if (CurrentResidue == ProteindData->Residues.Num() - 1) return End;
 	return Middle;
 }
 
