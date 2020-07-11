@@ -49,7 +49,7 @@ void UCPK::ConstructRepresentation(AProteinData* ProteinData)
 		//AddAtom(AtomA);
 		//AddAtom(AtomB);
 		//AddBond(AtomB.position, BondIter->Direction);
-		BondComponent->AddBond(AtomA.position + AtomB.position / 2, *BondIter);
+		BondComponent->AddBond((AtomA.position + AtomB.position) / 2, *BondIter);
 	}
 	for (auto AtomIter = ProteinData->Atoms.CreateConstIterator(); AtomIter.GetIndex() < ProteinData->Atoms.Num(); ++AtomIter)
 	{
