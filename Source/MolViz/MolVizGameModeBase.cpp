@@ -26,5 +26,5 @@ void AMolVizGameModeBase::BeginPlay()
 
 void AMolVizGameModeBase::OnLoadComplete() const
 {
-	RepresentationFactory->CreateNewTubeRep(Cast<AProteinRepresentation>(ProteinRepresentation), ProteinData, "VDW");
+	RepresentationFactory->CreateNewCpkRep(Cast<AProteinRepresentation>(ProteinRepresentation), ProteinData, "VDW");
 }

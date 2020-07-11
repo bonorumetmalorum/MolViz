@@ -40,7 +40,7 @@ void UBackBoneComponent::SetBackbone(FAtomData* CurrentCA, FAtomData* CurrentC, 
 	this->Backbone[3] = NextC;
 	
 	//TODO compute the correct control points
-#define SPLINE_FACTOR 2.0
+#define SPLINE_FACTOR 5.0
 	SetStartAndEnd(CurrentCA->position, (CurrentC->position - CurrentCA->position) * SPLINE_FACTOR /*C - CA*/, NextCA->position, (NextC->position - NextCA->position) * SPLINE_FACTOR /*C - CA*/);
 }
 

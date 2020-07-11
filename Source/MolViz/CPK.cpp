@@ -2,6 +2,8 @@
 
 #include "CPK.h"
 #include "AProteinData.h"
+#include "InstancedAtomMesh.h"
+#include "InstancedBondMesh.h"
 
 #include "UProcCylinder.h"
 #include "UProcSphere.h"
@@ -38,18 +40,26 @@ void UCPK::AddBond(const FVector& Position, const FVector& Direction)
 
 void UCPK::ConstructRepresentation(AProteinData* ProteinData)
 {
+	UInstancedBondMesh* BondComponent = NewObject<UInstancedBondMesh>(this, UInstancedBondMesh::StaticClass());
+	UInstancedAtomMesh* AtomComponent = NewObject<UInstancedAtomMesh>(this, UInstancedAtomMesh::StaticClass());
 	for (auto BondIter = ProteinData->Bonds.CreateConstIterator(); BondIter.GetIndex() < ProteinData->Bonds.Num(); ++BondIter)
 	{
 		FAtomData AtomA = ProteinData->Atoms[BondIter->AtomA];
 		FAtomData AtomB = ProteinData->Atoms[BondIter->AtomB];
 		//AddAtom(AtomA);
 		//AddAtom(AtomB);
-		AddBond(AtomB.position, BondIter->Direction);
+		//AddBond(AtomB.position, BondIter->Direction);
+		BondComponent->AddBond(AtomA.position + AtomB.position / 2, *BondIter);
 	}
 	for (auto AtomIter = ProteinData->Atoms.CreateConstIterator(); AtomIter.GetIndex() < ProteinData->Atoms.Num(); ++AtomIter)
 	{
 		AddAtom(*AtomIter);
+		AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()]);
 	}
+	BondComponent->RegisterComponent();
+	//BondComponent->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+	AtomComponent->RegisterComponent();
+	//AtomComponent->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
 }
 
 void UCPK::SetBondData(TArray<FBondData> *  InBondData)

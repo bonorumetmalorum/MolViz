@@ -3,6 +3,7 @@
 
 #include "VDW.h"
 #include "AProteinData.h"
+#include "InstancedAtomMesh.h"
 #include "UProcSphere.h"
 
 UVDW::UVDW()
@@ -31,13 +32,17 @@ void UVDW::AddAtom(float x, float y, float z)
 
 void UVDW::ConstructRepresentation(AProteinData * ProteinData)
 {
+	UInstancedAtomMesh* Component = NewObject<UInstancedAtomMesh>(this, UInstancedAtomMesh::StaticClass());
 	for (auto iter = ProteinData->Residues.CreateConstIterator(); iter.GetIndex() < ProteinData->Residues.Num(); ++iter)
 	{
 		for (auto atomiter = iter->atoms.CreateConstIterator(); atomiter.GetIndex() < iter->atoms.Num(); ++atomiter)
 		{
-			AddAtom(ProteinData->Atoms[*atomiter].position.X, ProteinData->Atoms[*atomiter].position.Y, ProteinData->Atoms[*atomiter].position.Z);
+			//AddAtom(ProteinData->Atoms[*atomiter].position.X, ProteinData->Atoms[*atomiter].position.Y, ProteinData->Atoms[*atomiter].position.Z);
+			Component->AddAtom(&ProteinData->Atoms[*atomiter]);
 		}
 	}
+	Component->RegisterComponent();
+	Component->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
 }
 
 void UVDW::SetSphereRes(int InStacks, int InSlices, float Radius)
