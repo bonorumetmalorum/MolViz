@@ -28,25 +28,20 @@ void UBackBoneComponent::SetStartingBackbone(FAtomData* StartAtom, FAtomData* Co
 	#define TWOBYTHREE 0.6666666666666667
 	
 	this->IsStartingBackBone = true;
-	//TODO compute correct control points
-	//SetStartAndEnd(StartAtom->position, StartAtom->position + (TWOBYTHREE * (ControlAtom->position - StartAtom->position)), EndAtom->position, EndAtom->position + (TWOBYTHREE * (ControlAtom->position - EndAtom->position)));
 	SetStartAndEnd(StartAtom->position, FVector(1), EndAtom->position, FVector(1));
 
 }
 
-void UBackBoneComponent::SetBackbone(FAtomData* PreviousResLastAtom, FAtomData* PreviousResControlAtom, FAtomData* CurrentResControlAtom, FAtomData * CurrentResEndAtom)
+void UBackBoneComponent::SetBackbone(FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC)
 {
-	this->Backbone[0] = PreviousResLastAtom;
-	this->Backbone[1] = PreviousResControlAtom;
-	this->Backbone[2] = CurrentResControlAtom;
-	this->Backbone[3] = CurrentResEndAtom;
+	this->Backbone[0] = CurrentCA;
+	this->Backbone[1] = CurrentC;
+	this->Backbone[2] = NextCA;
+	this->Backbone[3] = NextC;
 	
 	//TODO compute the correct control points
-	SetStartAndEnd(PreviousResLastAtom->position, (PreviousResLastAtom->position - PreviousResControlAtom->position)/*FVector(0)*/, 
-		CurrentResEndAtom->position, (PreviousResLastAtom->position - PreviousResControlAtom->position) /*FVector(0)*/);
-	
-	/*SetStartAndEnd(PreviousResLastAtom->position, FVector(1),
-		CurrentResEndAtom->position, FVector(1));*/
+#define SPLINE_FACTOR 2.0
+	SetStartAndEnd(CurrentCA->position, (CurrentC->position - CurrentCA->position) * SPLINE_FACTOR /*C - CA*/, NextCA->position, (NextC->position - NextCA->position) * SPLINE_FACTOR /*C - CA*/);
 }
 
 void UBackBoneComponent::UpdateBackBone()

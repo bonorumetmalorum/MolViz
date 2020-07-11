@@ -17,5 +17,5 @@ class MOLVIZ_API UTubeRepresentation : public URepresentation
 public:
 	virtual void ConstructRepresentation(AProteinData* ProteinData/*, FColourScheme ColourScheme*/) override; //TODO IMPLEMENT COLOUR SCHEME
 	void AddTubeSection( FAtomData* StartAtom,  FAtomData* ControlAtom,  FAtomData* EndAtom);
-	void AddTubeSection(FAtomData* PreviousResLastAtom, FAtomData* PreviousResControlAtom, FAtomData* CurrentResControlAtom, FAtomData* CurrentResEndAtom);
+	void AddTubeSection(FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC);
 };
