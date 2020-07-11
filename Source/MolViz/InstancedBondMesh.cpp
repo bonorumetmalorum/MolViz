@@ -19,4 +19,5 @@ void UInstancedBondMesh::AddBond(FVector Position, FBondData BondData)
 	FMatrix Rotation = FRotationMatrix::MakeFromY(BondData.Direction);
 	float mag = BondData.Direction.Size();
 	AddInstance(FTransform(Rotation.Rotator(), Position, FVector(0.5, mag, 0.5)));
+	
 }
