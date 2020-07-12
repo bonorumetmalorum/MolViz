@@ -8,7 +8,7 @@
 #include "UProcCylinder.h"
 #include "UProcSphere.h"
 
-void UCPK::AddAtom(const FAtomData& Atom)
+void UCPK::AddAtom(const FAtomData& Atom, FLinearColor Color)
 {
 	UProcSphere* Component = NewObject<UProcSphere>(this, UProcSphere::StaticClass());
 	if (!Component)
@@ -51,10 +51,13 @@ void UCPK::ConstructRepresentation(AProteinData* ProteinData)
 		//AddBond(AtomB.position, BondIter->Direction);
 		BondComponent->AddBond((AtomA.position + AtomB.position) / 2, *BondIter);
 	}
-	for (auto AtomIter = ProteinData->Atoms.CreateConstIterator(); AtomIter.GetIndex() < ProteinData->Atoms.Num(); ++AtomIter)
+	for (auto AtomIter = ProteinData->Atoms.CreateConstIterator(); AtomIter.GetIndex() < ProteinData->Atoms.Num(); AtomIter++)
 	{
-		AddAtom(*AtomIter);
-		AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()]);
+		FColorData * RowData = AtomColors->FindRow<FColorData>(FName(*(AtomIter->Name)), AtomIter->Name, true);
+		if (RowData)
+			AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], RowData->color);
+		else
+			AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], FLinearColor(102, 95, 37));
 	}
 	BondComponent->RegisterComponent();
 	//BondComponent->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);

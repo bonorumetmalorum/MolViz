@@ -16,5 +16,5 @@ class MOLVIZ_API UInstancedAtomMesh : public UInstancedStaticMeshComponent
 	GENERATED_BODY()
 public:
 	UInstancedAtomMesh();
-	void AddAtom(FAtomData* Atom);
+	void AddAtom(FAtomData* Atom, FLinearColor Color);
 };

@@ -37,8 +37,12 @@ void UVDW::ConstructRepresentation(AProteinData * ProteinData)
 	{
 		for (auto atomiter = iter->atoms.CreateConstIterator(); atomiter.GetIndex() < iter->atoms.Num(); ++atomiter)
 		{
+			FColorData* RowData = AtomColors->FindRow<FColorData>(FName(*(ProteinData->Atoms[*atomiter].Name)), ProteinData->Atoms[*atomiter].Name, true);
+			if (RowData)
+				Component->AddAtom(&ProteinData->Atoms[*atomiter], RowData->color);
+			else
+				Component->AddAtom(&ProteinData->Atoms[*atomiter], FLinearColor(102, 95, 37));
 			//AddAtom(ProteinData->Atoms[*atomiter].position.X, ProteinData->Atoms[*atomiter].position.Y, ProteinData->Atoms[*atomiter].position.Z);
-			Component->AddAtom(&ProteinData->Atoms[*atomiter]);
 		}
 	}
 	Component->RegisterComponent();

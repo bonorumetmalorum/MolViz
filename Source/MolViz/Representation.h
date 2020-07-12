@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FColorData.h"
 #include "FResidue.h"
 #include "Representation.generated.h"
 
@@ -20,6 +21,9 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	static AtomType NameToType(FString name);
+
+	UDataTable* AtomColors;
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

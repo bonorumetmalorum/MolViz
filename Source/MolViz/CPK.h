@@ -15,7 +15,7 @@ class MOLVIZ_API UCPK : public URepresentation
 	GENERATED_BODY()
 
 public:
-	void AddAtom(const FAtomData& Atom);
+	void AddAtom(const FAtomData& Atom, FLinearColor Color);
 	void AddBond(const FVector& Position, const FVector& Direction);
 	void ConstructRepresentation(AProteinData * ProteinData/*, FColourScheme ColourScheme*/) override;
 	void SetBondData(TArray<FBondData> * InBondData);
