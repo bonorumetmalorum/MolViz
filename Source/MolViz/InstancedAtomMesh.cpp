@@ -16,5 +16,6 @@ UInstancedAtomMesh::UInstancedAtomMesh()
 
 void UInstancedAtomMesh::AddAtom(FAtomData* Atom)
 {
-	AddInstance(FTransform(Atom->position));
+	int InstanceID = AddInstance(FTransform(Atom->position));
+	SetCustomPrimitiveDataVector4(InstanceID, FVector4(1.0, 1.0, 1.0, 1.0));
 }
