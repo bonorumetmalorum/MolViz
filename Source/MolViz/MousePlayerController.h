@@ -16,4 +16,13 @@ class MOLVIZ_API AMousePlayerController : public APlayerController
 public:
 	
 	AMousePlayerController();
+
+	void Tick(float DeltaSeconds) override;
+	void SetupInputComponent() override;
+	void RotateStart();
+	void RotateEnd();
+	void RotateX(float X);
+	void RotateY(float Y);
+	void Zoom(float ScrollValue);
+	bool Rotating;
 };
