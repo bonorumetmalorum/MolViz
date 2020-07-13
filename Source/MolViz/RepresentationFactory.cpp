@@ -49,6 +49,8 @@ UVDW* URepresentationFactory::CreateNewVdwRep(AProteinRepresentation* InParent, 
 UCPK* URepresentationFactory::CreateNewCpkRep(AProteinRepresentation* InParent, AProteinData* InProteinData, FName InName) const
 {
 	UCPK* rep = NewObject<UCPK>(InParent, InName);
+	rep->AttachToComponent(InParent->GetRootComponent(),FAttachmentTransformRules::KeepWorldTransform);
+	
 	rep->Config(5, 5, 0.2f, 0.1f, 5, 5);
 	rep->ConstructRepresentation(InProteinData);
 	return rep;

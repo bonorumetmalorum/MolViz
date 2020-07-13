@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FArcBall.h"
 #include "GameFramework/PlayerController.h"
 #include "MousePlayerController.generated.h"
 
@@ -25,4 +26,16 @@ public:
 	void RotateY(float Y);
 	void Zoom(float ScrollValue);
 	bool Rotating;
+
+	UPROPERTY()
+	UArcBall * ArcBallController;
+	UPROPERTY()
+	AActor * ProteinRep;
+	UPROPERTY()
+	FVector From;
+	FVector FromDirection;
+	FVector To;
+	FVector ToDirection;
+	FVector4 CurrentTranslation;
+	FQuat CurrenRotation;
 };

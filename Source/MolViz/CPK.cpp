@@ -59,10 +59,12 @@ void UCPK::ConstructRepresentation(AProteinData* ProteinData)
 		else
 			AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], FLinearColor(102, 95, 37));
 	}
+	BondComponent->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
 	BondComponent->RegisterComponent();
-	//BondComponent->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+	AtomComponent->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
 	AtomComponent->RegisterComponent();
-	//AtomComponent->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+	BondComponent->SetMobility(EComponentMobility::Movable);
+	AtomComponent->SetMobility(EComponentMobility::Movable);
 }
 
 void UCPK::SetBondData(TArray<FBondData> *  InBondData)
