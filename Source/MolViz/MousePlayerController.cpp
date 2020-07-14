@@ -123,7 +123,7 @@ void AMousePlayerController::RotateY(float Y)
 		float theta = acos(FVector::DotProduct(From, To));
 		FQuat Rotation(cross, theta);
 		Rotation.Normalize();
-		CurrenRotation *= Rotation;
+		CurrenRotation *= Rotation * 2.0;
 		CurrenRotation.Normalize();
 		To = From;
 		ProteinRep->SetActorRotation(CurrenRotation);

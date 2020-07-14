@@ -8,10 +8,10 @@
 void ABaseHUD::BeginPlay()
 {
 	Super::BeginPlay();
-
-	UE_LOG(LogTemp, Log, TEXT("Hello world"));
 	if (GEngine && GEngine->GameViewport)
 	{
-		fileExplorer = SNew(SMainWindow).AppManager(TWeakObjectPtr<AMolVizGameModeBase>(Cast<AMolVizGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))));
+		fileExplorer = SNew(SMainWindow)
+		.AppManager(TWeakObjectPtr<AMolVizGameModeBase>(Cast<AMolVizGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))))
+		.Proteins(&Cast<AMolVizGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))->ProteinReps);
 	}
 }

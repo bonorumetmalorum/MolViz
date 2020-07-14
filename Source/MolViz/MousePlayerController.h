@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "FArcBall.h"
+#include "ProteinRepresentation.h"
 #include "GameFramework/PlayerController.h"
 #include "MousePlayerController.generated.h"
 
@@ -29,8 +30,8 @@ public:
 
 	UPROPERTY()
 	UArcBall * ArcBallController;
-	UPROPERTY()
-	AActor * ProteinRep;
+
+	TWeakObjectPtr<AProteinRepresentation> ProteinRep;
 	UPROPERTY()
 	FVector From;
 	FVector FromDirection;

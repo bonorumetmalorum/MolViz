@@ -33,7 +33,7 @@ class MOLVIZ_API AProteinRepresentation : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AProteinRepresentation();
-
+	FString FileName;
 	//make methods to activate / deactive a representation
 	
 protected:

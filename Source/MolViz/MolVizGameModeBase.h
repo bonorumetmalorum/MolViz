@@ -23,8 +23,8 @@ public:
 	AMolVizGameModeBase();
 	virtual void BeginPlay() override;
 
-	UPROPERTY()
-	AActor * ProteinRepresentation = nullptr;
+	
+	TArray<TWeakObjectPtr<AProteinRepresentation>> ProteinReps;
 	UPROPERTY()
 	AProteinData* ProteinData = nullptr;
 	UPROPERTY()

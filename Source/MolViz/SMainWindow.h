@@ -19,12 +19,17 @@ public:
 
 	SLATE_ARGUMENT(TWeakObjectPtr<class AMolVizGameModeBase>, AppManager)
 
+	SLATE_ARGUMENT(TArray<TWeakObjectPtr<AProteinRepresentation>>*, Proteins)
+
 	SLATE_END_ARGS()
 
 	FReply OpenFileDialog();
 	
-	void Construct(const FArguments& InArgs);	
+	void Construct(const FArguments& InArgs);
+
+	TSharedRef<ITableRow> CreateListItem(TWeakObjectPtr<AProteinRepresentation> Item, const TSharedRef<STableViewBase>& OwnerTable);
 private:
+	TArray <TWeakObjectPtr<AProteinRepresentation>> * Proteins;
 	TSharedPtr<SWindow> MainWindow;
 	FPdbReader PDBReader;
 	FSSReader SSReader;

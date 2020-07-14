@@ -2,11 +2,13 @@
 
 
 #include "SMainWindow.h"
-
+#include "Slate/Private/Framework/MultiBox/SMenuEntryBlock.h"
 #include "MolVizGameModeBase.h"
 #include "SlateOptMacros.h"
 #include "DesktopPlatform/Public/DesktopPlatformModule.h"
 #include "DesktopPlatform/Public/IDesktopPlatform.h"
+#include "ProteinRepresentation.h"
+#include "Slate/Private/Framework/MultiBox/SClippingHorizontalBox.h"
 
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
@@ -22,6 +24,7 @@ void SMainWindow::Construct(const FArguments& InArgs)
 	float widgetWidth = 500.0f;
 	FString button = FString("select a file");
 	AppManager = InArgs._AppManager;
+	Proteins = InArgs._Proteins;
 	ChildSlot
 	[
 
@@ -38,7 +41,7 @@ void SMainWindow::Construct(const FArguments& InArgs)
 		.RenderOpacity(0.5f)
 		.SupportsMinimize(false)
 		.SupportsMaximize(false)
-		.Title(FText::FromString(FString("File Explorer")))
+		.Title(FText::FromString(FString("MolViz")))
 		[
 			SNew(SOverlay)
 			+SOverlay::Slot()
@@ -47,14 +50,43 @@ void SMainWindow::Construct(const FArguments& InArgs)
 				+ SVerticalBox::Slot()
 				.AutoHeight()
 				[
-					SNew(SImage)
-					.ColorAndOpacity(FColor::Black)
+					SNew(SOverlay)
+					+SOverlay::Slot()
+					[
+						SNew(SBox)
+						[
+							SNew(SMenuOwner)
+							[
+								SNew(SHorizontalBox)
+								+SHorizontalBox::Slot()
+								[
+									SNew(SVerticalBox)
+									+ SVerticalBox::Slot()
+									[
+										SNew(SButton)
+										.Text(FText::FromString("Open PDB"))
+										.OnClicked(this, &SMainWindow::OpenFileDialog)
+									]
+								]
+								+SHorizontalBox::Slot()
+								[
+									SNew(SVerticalBox)
+									+ SVerticalBox::Slot()
+									[
+										SNew(SButton)
+										.Text(FText::FromString("Open XTC"))
+									]
+								]
+							]
+						]
+					]
 				]
-				+SVerticalBox::Slot()
-				[
-					SNew(SButton)
-					.Text(FText::FromString(button))
-					.OnClicked(this, &SMainWindow::OpenFileDialog)
+	+ SVerticalBox::Slot()
+		[
+			SNew(SListView<TWeakObjectPtr<AProteinRepresentation>>)
+			.ListItemsSource(Proteins)
+			.OnGenerateRow(this, &SMainWindow::CreateListItem)
+			.SelectionMode(ESelectionMode::Single)
 				]
 			]
 		]
@@ -93,4 +125,14 @@ FReply SMainWindow::OpenFileDialog()
 	}
 	
 	return FReply::Handled();
+}
+
+TSharedRef<ITableRow> SMainWindow::CreateListItem(TWeakObjectPtr<AProteinRepresentation> Item, const TSharedRef<STableViewBase>& OwnerTable)
+{
+	return SNew(STableRow<TSharedPtr<AProteinRepresentation>>, OwnerTable)
+		.Content()
+		[
+			SNew(STextBlock)
+			.Text(FText::FromString(Item->GetName()))
+		];
 }
