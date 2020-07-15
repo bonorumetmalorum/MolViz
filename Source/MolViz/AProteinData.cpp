@@ -11,11 +11,6 @@ AProteinData::~AProteinData()
 {
 }
 
-void AProteinData::LoadComplete()
-{
-	LoadCompleteDelegate.Broadcast();
-}
-
 void AProteinData::CreateBonds()
 {
 	for(auto AtomA = Atoms.CreateIterator(); AtomA; ++AtomA)

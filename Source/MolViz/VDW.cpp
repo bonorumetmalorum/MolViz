@@ -47,6 +47,7 @@ void UVDW::ConstructRepresentation(AProteinData * ProteinData)
 	}
 	Component->RegisterComponent();
 	Component->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+	Component->SetMobility(EComponentMobility::Movable);
 }
 
 void UVDW::SetSphereRes(int InStacks, int InSlices, float Radius)

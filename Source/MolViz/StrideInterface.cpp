@@ -13,9 +13,8 @@ FStrideInterface::~FStrideInterface()
 {
 	if(FWindowsPlatformProcess::IsProcRunning(Handle))
 	{
-		FWindowsPlatformProcess::WaitForProc(Handle);
-		FWindowsPlatformProcess::ClosePipe(RPipe, WPipe);
 		FWindowsPlatformProcess::TerminateProc(Handle);
+		FWindowsPlatformProcess::ClosePipe(RPipe, WPipe);
 	}
 }
 

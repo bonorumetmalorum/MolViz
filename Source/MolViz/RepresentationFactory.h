@@ -28,7 +28,7 @@ public:
 
 	UObject* FactoryCreateNew(UClass* InClass, UObject* InParent, FName InName, EObjectFlags Flags, UObject* Context, FFeedbackContext* Warn, FName CallingContext) override;
 
-	UVDW* CreateNewVdwRep(AProteinRepresentation* InParent, AProteinData * InProteinData, /*TODO pass in protein rep selections*/ FName InName) const;
+	UVDW* CreateNewVdwRep(AProteinData * InProteinData, /*TODO pass in protein rep selections*/ FName InName) const;
 	UCPK* CreateNewCpkRep(AProteinRepresentation* InParent, AProteinData* InProteinData, FName InName) const;
 	UTubeRepresentation* CreateNewTubeRep(AProteinRepresentation* InParent, AProteinData* InProteinData, FName InName) const;
 	UNewCartoonRepresentation* CreateNewNCartoonRep(AProteinRepresentation* Cast, AProteinData* const ProteinData, const char* Str);

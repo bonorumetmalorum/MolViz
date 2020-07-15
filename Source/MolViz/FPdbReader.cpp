@@ -42,10 +42,9 @@ void FPdbReader::readStructure(FString filepath, AActor * Protein)
 				UE_LOG(LogTemp, Warning, TEXT("No support for: %s"),  *(BytesToString(buffer, 6)));
 		}
 	}
+	Cast<AProteinData>(Protein)->FilePath = filepath;
 	Cast<AProteinData>(Protein)->CreateBonds();
-	
 	//broadcast "load succeeded"
-	Cast<AProteinData>(Protein)->LoadComplete();
 	UE_LOG(LogTemp, Warning, TEXT("finished parsing file"));
 }
 

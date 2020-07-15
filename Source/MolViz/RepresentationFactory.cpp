@@ -37,9 +37,10 @@ UObject* URepresentationFactory::FactoryCreateNew(UClass* InClass, UObject* InPa
 	return vdw;
 }
 
-UVDW* URepresentationFactory::CreateNewVdwRep(AProteinRepresentation* InParent, AProteinData * InProteinData, FName InName) const
+UVDW* URepresentationFactory::CreateNewVdwRep(AProteinData * InProteinData, FName InName) const
 {
-	UVDW* rep = NewObject<UVDW>(InParent, InName);
+	UVDW* rep = NewObject<UVDW>(InProteinData->Representation.Get(), InName);
+	rep->AttachToComponent(InProteinData->Representation.Get()->GetRootComponent(), FAttachmentTransformRules::KeepWorldTransform);
 	rep->SetSphereRes(10, 10, 10.f);
 	//TODO pass in selection data
 	rep->ConstructRepresentation(InProteinData);

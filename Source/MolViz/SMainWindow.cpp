@@ -25,6 +25,7 @@ void SMainWindow::Construct(const FArguments& InArgs)
 	FString button = FString("select a file");
 	AppManager = InArgs._AppManager;
 	Proteins = InArgs._Proteins;
+	bCanTick = true;
 	ChildSlot
 	[
 
@@ -81,21 +82,30 @@ void SMainWindow::Construct(const FArguments& InArgs)
 						]
 					]
 				]
-	+ SVerticalBox::Slot()
-		[
-			SNew(SListView<TWeakObjectPtr<AProteinRepresentation>>)
-			.ListItemsSource(Proteins)
-			.OnGenerateRow(this, &SMainWindow::CreateListItem)
-			.SelectionMode(ESelectionMode::Single)
+				+ SVerticalBox::Slot()
+					[
+						SNew(SListView<TWeakObjectPtr<AProteinData>>)
+						.ListItemsSource(Proteins)
+						.OnGenerateRow(this, &SMainWindow::CreateListItem)
+						.SelectionMode(ESelectionMode::Single)
+					]	
+				+ SVerticalBox::Slot()
+					[
+						SNew(SButton)
+						.Text(FText::FromString("Add Representation"))
+						.OnClicked(this, &SMainWindow::AddNewRepresentation)
+					]
 				]
 			]
-		]
 	];
 	FSlateApplication::Get().AddWindow(MainWindow.ToSharedRef());
 
 }
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
+//TODO I need to allow for file type recognition, and switching to parse DSSP / PDB info.
+//TODO I also need to create a list of protein datas rather than a single one and pass the list in here, adding a new one
+//TODO I also need to reconsider storing a reference to the AtomData instead of teh ProteinRep in the UI.
 FReply SMainWindow::OpenFileDialog()
 {
 	IDesktopPlatform * Platform = FDesktopPlatformModule::Get();
@@ -106,7 +116,7 @@ FReply SMainWindow::OpenFileDialog()
 		FString("/"),
 		FString(""),
 		FString(""),
-		EFileDialogFlags::Multiple,
+		EFileDialogFlags::None,
 		Filenames
 	);
 	if(bResult)
@@ -115,8 +125,12 @@ FReply SMainWindow::OpenFileDialog()
 		{
 			
 			GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Blue, Element);
-			PDBReader.readStructure(Element, this->AppManager->ProteinData);
-			SSReader.readStructure(Element, this->AppManager->ProteinData);
+			TWeakObjectPtr<AProteinData> ProteinData = this->AppManager->CreateNewProteinData();
+			PDBReader.readStructure(Element, ProteinData.Get());
+			SSReader.readStructure(Element, ProteinData.Get());
+			//broadcast the event
+			//ProteinDataLoadComplete.Broadcast(ProteinData.Get());
+			AppManager->OnLoadComplete(ProteinData.Get());
 		}
 	}
 	else
@@ -127,7 +141,7 @@ FReply SMainWindow::OpenFileDialog()
 	return FReply::Handled();
 }
 
-TSharedRef<ITableRow> SMainWindow::CreateListItem(TWeakObjectPtr<AProteinRepresentation> Item, const TSharedRef<STableViewBase>& OwnerTable)
+TSharedRef<ITableRow> SMainWindow::CreateListItem(TWeakObjectPtr<AProteinData> Item, const TSharedRef<STableViewBase>& OwnerTable)
 {
 	return SNew(STableRow<TSharedPtr<AProteinRepresentation>>, OwnerTable)
 		.Content()
@@ -135,4 +149,11 @@ TSharedRef<ITableRow> SMainWindow::CreateListItem(TWeakObjectPtr<AProteinReprese
 			SNew(STextBlock)
 			.Text(FText::FromString(Item->GetName()))
 		];
+}
+
+FReply SMainWindow::AddNewRepresentation() const
+{
+	//NewProteinRep.Broadcast(SelectedProtein.Get());
+	//add a new representation
+	return FReply::Handled();
 }

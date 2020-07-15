@@ -22,13 +22,16 @@ class MOLVIZ_API AMolVizGameModeBase : public AGameModeBase
 public:
 	AMolVizGameModeBase();
 	virtual void BeginPlay() override;
+	TWeakObjectPtr<AProteinData> CreateNewProteinData();
 
-	
+
 	TArray<TWeakObjectPtr<AProteinRepresentation>> ProteinReps;
-	UPROPERTY()
-	AProteinData* ProteinData = nullptr;
+	TArray<TWeakObjectPtr<AProteinData>> Proteins;
 	UPROPERTY()
 	URepresentationFactory * RepresentationFactory = nullptr;
 	UFUNCTION()
-	void OnLoadComplete() const;
+	void OnLoadComplete(AProteinData * ProteinData);
+	/*
+	 * TODO create methods to add protein data and protein reps
+	 */
 };

@@ -17,7 +17,7 @@ void AMolVizGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	RepresentationFactory = NewObject<URepresentationFactory>(this);
-	ProteinReps.Add(
+	/*ProteinReps.Add(
 		TWeakObjectPtr<AProteinRepresentation>(
 				
 						Cast<AProteinRepresentation>(GetWorld()->SpawnActor(
@@ -25,15 +25,39 @@ void AMolVizGameModeBase::BeginPlay()
 						)
 					)
 			)
-	);
-	Cast<AMousePlayerController>(UGameplayStatics::GetPlayerController(this, 0))->ProteinRep = ProteinReps[0];
-	ProteinData = Cast<AProteinData>(GetWorld()->SpawnActor((AProteinData::StaticClass())));
-	ProteinData->LoadCompleteDelegate.AddUFunction(this, "OnLoadComplete");
+	);*/
+	//Cast<AMousePlayerController>(UGameplayStatics::GetPlayerController(this, 0))->ProteinRep = ProteinReps[0];
+	//Proteins.Add(TWeakObjectPtr<AProteinData>(Cast<AProteinData>(GetWorld()->SpawnActor((AProteinData::StaticClass())))));
+	//ProteinData->LoadCompleteDelegate.AddUFunction(this, "OnLoadComplete");
 	//Cast<AProteinRepresentation>(Protein)->AddAtom(10, 10, 10);
 	//UE_LOG(LogTemp, Log, TEXT("Hello from game mode"));
 }
 
-void AMolVizGameModeBase::OnLoadComplete() const
+TWeakObjectPtr<AProteinData> AMolVizGameModeBase::CreateNewProteinData()
 {
-	RepresentationFactory->CreateNewCpkRep(ProteinReps[0].Get(), ProteinData, "CPK");
+	return this->Proteins[
+		this->Proteins.Add(
+		TWeakObjectPtr<AProteinData>(
+				Cast<AProteinData>(
+					GetWorld()->SpawnActor(AProteinData::StaticClass()
+					)
+				)
+			)
+		)
+	];
+}
+
+void AMolVizGameModeBase::OnLoadComplete(AProteinData * ProteinData)
+{
+	int Index = ProteinReps.Add(
+		TWeakObjectPtr<AProteinRepresentation>(
+			Cast<AProteinRepresentation>(GetWorld()->SpawnActor(
+				AProteinRepresentation::StaticClass()
+			)
+				)
+			)
+	);
+	ProteinData->Representation = ProteinReps[Index];
+	RepresentationFactory->CreateNewVdwRep(ProteinData, "VDW");
+	Cast<AMousePlayerController>(UGameplayStatics::GetPlayerController(this, 0))->ProteinRep = ProteinReps[Index];
 }

@@ -12,6 +12,6 @@ void ABaseHUD::BeginPlay()
 	{
 		fileExplorer = SNew(SMainWindow)
 		.AppManager(TWeakObjectPtr<AMolVizGameModeBase>(Cast<AMolVizGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))))
-		.Proteins(&Cast<AMolVizGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))->ProteinReps);
+		.Proteins(&Cast<AMolVizGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))->Proteins);
 	}
 }

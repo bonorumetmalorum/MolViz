@@ -9,8 +9,7 @@
 #include "GameFramework/Info.h"
 #include "AProteinData.generated.h"
 
-DECLARE_EVENT(AProteinData, FLoadComplete)
-
+class AProteinRepresentation;
 /**
  * holds residue information and all atoms in this protein
  */
@@ -22,7 +21,6 @@ public:
 	AProteinData();
 	~AProteinData();
 
-	void LoadComplete();
 	void CreateBonds();
 	void FindBackBone();
 	void AddResidue(FString Resname, int32 Resnum);
@@ -31,8 +29,9 @@ public:
 	TArray<FResidue> Residues;
 	TArray<FBondData> Bonds;
 	TArray<FAtomData *> BackBone;
+	TWeakObjectPtr<AProteinRepresentation> Representation;
+	FString FilePath;
 	void BeginPlay() override;
-	FLoadComplete LoadCompleteDelegate;
 private:
 	bool AtomHasInterResidueBond(FAtomData & Atom);
 	bool AtomHasInterResidueBond(FAtomData& Atom, int & Bonds);

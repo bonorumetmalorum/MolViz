@@ -58,8 +58,11 @@ void AMousePlayerController::RotateEnd()
 void AMousePlayerController::Zoom(float ScrollValue)
 {
 	//UE_LOG(LogTemp, Warning, TEXT("scroll started %f"), ScrollValue);
-	CurrentTranslation.X += ScrollValue;
-	ProteinRep->AddActorWorldTransform(FTransform(CurrentTranslation));
+	if(ProteinRep.IsValid())
+	{
+		CurrentTranslation.X += ScrollValue;
+		ProteinRep->AddActorWorldTransform(FTransform(CurrentTranslation));
+	}
 }
 
 void AMousePlayerController::RotateX(float X)
@@ -77,7 +80,7 @@ void AMousePlayerController::RotateX(float X)
 		FRotator Rot = ArcBallController->Ball_Value();
 		ProteinRep->SetActorRotation(Rot);
 	}*/
-	if(Rotating)
+	if(Rotating && ProteinRep.IsValid())
 	{
 		float x, y;
 		GetMousePosition(x, y);
@@ -91,6 +94,7 @@ void AMousePlayerController::RotateX(float X)
 		Rotation.Normalize();
 		CurrenRotation *= Rotation;
 		CurrenRotation.Normalize();
+		CurrenRotation *= 10.0;
 		To = From;
 		ProteinRep->SetActorRotation(CurrenRotation);
 	}
@@ -111,7 +115,7 @@ void AMousePlayerController::RotateY(float Y)
 		FRotator Rot = ArcBallController->Ball_Value();
 		ProteinRep->SetActorRotation(Rot);
 	}*/
-	if (Rotating)
+	if (Rotating && ProteinRep.IsValid())
 	{
 		float x, y;
 		GetMousePosition(x, y);
@@ -123,8 +127,9 @@ void AMousePlayerController::RotateY(float Y)
 		float theta = acos(FVector::DotProduct(From, To));
 		FQuat Rotation(cross, theta);
 		Rotation.Normalize();
-		CurrenRotation *= Rotation * 2.0;
+		CurrenRotation *= Rotation;
 		CurrenRotation.Normalize();
+		CurrenRotation *= 10.0;
 		To = From;
 		ProteinRep->SetActorRotation(CurrenRotation);
 		//https://cgmath.blogspot.com/2009/03/arc-ball-rotation-using-quaternion.html
