@@ -84,7 +84,7 @@ void SMainWindow::Construct(const FArguments& InArgs)
 				]
 				+ SVerticalBox::Slot()
 					[
-						SNew(SListView<TWeakObjectPtr<AProteinData>>)
+						SAssignNew(ProteinListView, SListView<TWeakObjectPtr<AProteinData>>)
 						.ListItemsSource(Proteins)
 						.OnGenerateRow(this, &SMainWindow::CreateListItem)
 						.SelectionMode(ESelectionMode::Single)
@@ -131,6 +131,7 @@ FReply SMainWindow::OpenFileDialog()
 			//broadcast the event
 			//ProteinDataLoadComplete.Broadcast(ProteinData.Get());
 			AppManager->OnLoadComplete(ProteinData.Get());
+			ProteinListView->RequestListRefresh();
 		}
 	}
 	else
@@ -143,11 +144,11 @@ FReply SMainWindow::OpenFileDialog()
 
 TSharedRef<ITableRow> SMainWindow::CreateListItem(TWeakObjectPtr<AProteinData> Item, const TSharedRef<STableViewBase>& OwnerTable)
 {
-	return SNew(STableRow<TSharedPtr<AProteinRepresentation>>, OwnerTable)
+	return SNew(STableRow<TWeakObjectPtr<AProteinData>>, OwnerTable)
 		.Content()
 		[
 			SNew(STextBlock)
-			.Text(FText::FromString(Item->GetName()))
+			.Text(FText::FromString(Item->FilePath))
 		];
 }
 

@@ -42,6 +42,7 @@ private:
 	FSSReader SSReader;
 	TWeakObjectPtr<class AMolVizGameModeBase> AppManager;
 	TWeakObjectPtr<AProteinData> SelectedProtein;
+	TSharedPtr<SListView<TWeakObjectPtr<AProteinData>>> ProteinListView;
 
 public:
 	//EVENTS
