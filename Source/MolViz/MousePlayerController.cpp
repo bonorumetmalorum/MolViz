@@ -10,10 +10,10 @@ AMousePlayerController::AMousePlayerController()
 	this->bShowMouseCursor = true;
 	this->ArcBallController = NewObject<UArcBall>();
 	ArcBallController->Ball_Place(FVector(0, 0, 0), 0.80);
-	this->From = FVector4(0,0,0,1);
-	this->To = FVector4(0, 0, 0, 1);
+	this->CurrentPostion = FVector4(0,0,0,1);
+	this->PreviousPosition = FVector4(0, 0, 0, 1);
 	this->CurrenRotation = FQuat::Identity;
-	
+	TransformMode = ETransformMode::Rotate;
 }
 
 void AMousePlayerController::Tick(float DeltaSeconds)
@@ -26,32 +26,39 @@ void AMousePlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 	InputComponent->BindAction("EnableRotation", EInputEvent::IE_Pressed, this, &AMousePlayerController::RotateStart);
 	InputComponent->BindAction("EnableRotation", EInputEvent::IE_Released, this, &AMousePlayerController::RotateEnd);
+	InputComponent->BindAction("Scale", EInputEvent::IE_Released, this, &AMousePlayerController::ModeScale);
+	InputComponent->BindAction("Rotate", EInputEvent::IE_Released, this, &AMousePlayerController::ModeRotate);
+	InputComponent->BindAction("Translate", EInputEvent::IE_Released, this, &AMousePlayerController::ModeTranslate);
 	InputComponent->BindAxis("Zoom", this, &AMousePlayerController::Zoom);
 	InputComponent->BindAxis("RotateX", this, &AMousePlayerController::RotateX);
 	InputComponent->BindAxis("RotateY", this, &AMousePlayerController::RotateY);
+	
 }
 
 void AMousePlayerController::RotateStart()
 {
-	/*this->ArcBallController->Ball_BeginDrag();
-	GetMousePosition(CurrentMouseLocation.X, CurrentMouseLocation.Y);
+	this->ArcBallController->Ball_BeginDrag();
+	GetMousePosition(CurrentPostion.X, CurrentPostion.Y);
 	int32 x, y;
 	GetViewportSize(x, y);
 	int size = (x > y) ? y : x;
-	CurrentMouseLocation.X = (2.0 * CurrentMouseLocation.X - size) / size;
-	CurrentMouseLocation.Y = (size - 2.0 * CurrentMouseLocation.Y) / size;
-	UE_LOG(LogTemp, Warning, TEXT("Rotation started at %f %f"), CurrentMouseLocation.X, CurrentMouseLocation.Y);
-	ArcBallController->Ball_Mouse(CurrentMouseLocation);*/
-	Rotating = true;
-	float x, y;
+	CurrentPostion.X = (2.0 * CurrentPostion.X - size) / size;
+	CurrentPostion.Y = (size - 2.0 * CurrentPostion.Y) / size;
+	//UE_LOG(LogTemp, Warning, TEXT("Rotation started at %f %f"), PreviousPosition.X, PreviousPosition.Y);
+	ArcBallController->Ball_Mouse(CurrentPostion);
+	
+		
+	//Rotating = true;
+	/*float x, y;
 	GetMousePosition(x, y);
-	DeprojectScreenPositionToWorld(x, y, From, FromDirection);
+	PreviousPosition.X = x; PreviousPosition.Y = y;*/
+	//DeprojectScreenPositionToWorld(x, y, From, FromDirection);
 }
 
 void AMousePlayerController::RotateEnd()
 {
-	/*UE_LOG(LogTemp, Warning, TEXT("Rotation Ended"));
-	this->ArcBallController->Ball_EndDrag();*/
+	//UE_LOG(LogTemp, Warning, TEXT("Rotation Ended"));
+	this->ArcBallController->Ball_EndDrag();
 	Rotating = false;
 }
 
@@ -65,24 +72,40 @@ void AMousePlayerController::Zoom(float ScrollValue)
 	}
 }
 
-void AMousePlayerController::RotateX(float X)
+void AMousePlayerController::ModeScale()
 {
-	/*if(this->ArcBallController->Dragging)
+	TransformMode = ETransformMode::Scale;
+}
+
+void AMousePlayerController::ModeRotate()
+{
+	TransformMode = ETransformMode::Rotate;
+}
+
+void AMousePlayerController::ModeTranslate()
+{
+	TransformMode = ETransformMode::Translate;
+}
+
+void AMousePlayerController::RotateX(float XPosition)
+{
+	GetMousePosition(CurrentPostion.X, CurrentPostion.Y);
+	int32 x, y;
+	GetViewportSize(x, y);
+	int size = (x > y) ? y : x;
+	CurrentPostion.X = (2.0 * CurrentPostion.X - size) / size;
+	CurrentPostion.Y = (size - 2.0 * CurrentPostion.Y) / size;
+	if(this->ArcBallController->Dragging)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("rotate x started %f"), X);
-		CurrentMouseLocation.X = X;
-		int32 x, y;
-		GetViewportSize(x, y);
-		int size = (x > y) ? y : x;
-		CurrentMouseLocation.X = (2.0 * CurrentMouseLocation.X - size) / size;
-		ArcBallController->Ball_Mouse(CurrentMouseLocation);
+		ArcBallController->Ball_Mouse(CurrentPostion);
 		ArcBallController->Ball_Update();
+		
 		FRotator Rot = ArcBallController->Ball_Value();
 		ProteinRep->SetActorRotation(Rot);
-	}*/
-	if(Rotating && ProteinRep.IsValid())
-	{
-		float x, y;
+	}
+	//if(Rotating && ProteinRep.IsValid())
+	//{
+		/*float x, y;
 		GetMousePosition(x, y);
 		DeprojectScreenPositionToWorld(x, y, To, ToDirection);
 		To.Normalize();
@@ -96,43 +119,75 @@ void AMousePlayerController::RotateX(float X)
 		CurrenRotation.Normalize();
 		CurrenRotation *= 10.0;
 		To = From;
-		ProteinRep->SetActorRotation(CurrenRotation);
-	}
+		ProteinRep->SetActorRotation(CurrenRotation);*/
+		//float XPos, YPos;
+	//	GetMousePosition(XPos, YPos);
+	//	CurrentPostion.X = XPos;
+	//	CurrentPostion.Y = YPos;
+	//	float XDiff = -1.0 * (CurrentPostion.X - PreviousPosition.X);
+	//	float YDiff = 1.0 * (CurrentPostion.Y - PreviousPosition.Y);
+	//	if (XDiff == 0 && YDiff == 0)
+	//		return;
+	//	PreviousPosition.X = CurrentPostion.X;
+	//	PreviousPosition.Y = CurrentPostion.Y;
+	//	float XRot = 0.1 * YDiff;
+	//	float YRot = 0.1 * XDiff;
+	//	this->ProteinRep->SetActorRotation(this->ProteinRep->GetActorRotation().Add(XRot, YRot, 0));
+	//}
 	
 }
 
-void AMousePlayerController::RotateY(float Y)
+void AMousePlayerController::RotateY(float YPosition)
 {
-	/*if(this->ArcBallController->Dragging)
+	//UE_LOG(LogTemp, Warning, TEXT("rotate y started %f"), YPosition);
+	GetMousePosition(CurrentPostion.X, CurrentPostion.Y);
+	int32 x, y;
+	GetViewportSize(x, y);
+	int size = (x > y) ? y : x;
+	CurrentPostion.X = (2.0 * CurrentPostion.X - size) / size;
+	CurrentPostion.Y = (size - 2.0 * CurrentPostion.Y) / size;
+	if(this->ArcBallController->Dragging)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("rotate y started %f"), Y);
-		CurrentMouseLocation.Y = Y;
-		int32 x, y;
-		GetViewportSize(x, y);
-		int size = (x > y) ? y : x;
-		CurrentMouseLocation.Y = (size - 2.0 * CurrentMouseLocation.Y) / size;
-		ArcBallController->Ball_Mouse(CurrentMouseLocation);
+		ArcBallController->Ball_Mouse(CurrentPostion);
+		ArcBallController->Ball_Update();
+
 		FRotator Rot = ArcBallController->Ball_Value();
 		ProteinRep->SetActorRotation(Rot);
-	}*/
-	if (Rotating && ProteinRep.IsValid())
-	{
-		float x, y;
-		GetMousePosition(x, y);
-		DeprojectScreenPositionToWorld(x, y, To, ToDirection);
-		To.Normalize();
-		From.Normalize();
-		FVector cross = FVector::CrossProduct(From, To);
-		cross.Normalize();
-		float theta = acos(FVector::DotProduct(From, To));
-		FQuat Rotation(cross, theta);
-		Rotation.Normalize();
-		CurrenRotation *= Rotation;
-		CurrenRotation.Normalize();
-		CurrenRotation *= 10.0;
-		To = From;
-		ProteinRep->SetActorRotation(CurrenRotation);
-		//https://cgmath.blogspot.com/2009/03/arc-ball-rotation-using-quaternion.html
 	}
+	/*if (Rotating && ProteinRep.IsValid())
+	{*/
+		//float x, y;
+		//GetMousePosition(x, y);
+		//DeprojectScreenPositionToWorld(x, y, To, ToDirection);
+		//To.Normalize();
+		//From.Normalize();
+		//FVector cross = FVector::CrossProduct(From, To);
+		//cross.Normalize();
+		//float theta = acos(FVector::DotProduct(From, To));
+		//FQuat Rotation(cross, theta);
+		//Rotation.Normalize();
+		//CurrenRotation *= Rotation;
+		//CurrenRotation.Normalize();
+		//CurrenRotation *= 10.0;
+		//To = From;
+		//ProteinRep->SetActorRotation(CurrenRotation);
+		//https://cgmath.blogspot.com/2009/03/arc-ball-rotation-using-quaternion.html
+		//
+		//
+		//Attempt 2
+		/*float XPos, YPos;
+		GetMousePosition(XPos, YPos);
+		CurrentPostion.X = XPos;
+		CurrentPostion.Y = YPos;
+		float XDiff = -1.0 * (CurrentPostion.X - PreviousPosition.X);
+		float YDiff = 1.0 * (CurrentPostion.Y - PreviousPosition.Y);
+		if (XDiff == 0 && YDiff == 0)
+			return;
+		PreviousPosition.X = CurrentPostion.X;
+		PreviousPosition.Y = CurrentPostion.Y;
+		float XRot = 0.1 * YDiff;
+		float YRot = 0.1 * XDiff;
+		this->ProteinRep->SetActorRotation(this->ProteinRep->GetActorRotation().Add(XRot, YRot, 0));*/
+	/*}*/
 }
 

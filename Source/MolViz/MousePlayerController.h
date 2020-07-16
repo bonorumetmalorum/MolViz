@@ -8,6 +8,14 @@
 #include "GameFramework/PlayerController.h"
 #include "MousePlayerController.generated.h"
 
+UENUM()
+enum class ETransformMode
+{
+	Rotate,
+	Translate,
+	Scale
+};
+
 /**
  * 
  */
@@ -26,17 +34,21 @@ public:
 	void RotateX(float X);
 	void RotateY(float Y);
 	void Zoom(float ScrollValue);
+	void ModeScale();
+	void ModeRotate();
+	void ModeTranslate();
 	bool Rotating;
 
+	
 	UPROPERTY()
 	UArcBall * ArcBallController;
 
+	ETransformMode TransformMode;
+	
 	TWeakObjectPtr<AProteinRepresentation> ProteinRep;
 	UPROPERTY()
-	FVector From;
-	FVector FromDirection;
-	FVector To;
-	FVector ToDirection;
+	FVector CurrentPostion;
+	FVector PreviousPosition;
 	FVector4 CurrentTranslation;
 	FQuat CurrenRotation;
 };
