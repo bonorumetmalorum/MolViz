@@ -1,0 +1,106 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "SProteinRepConfigWindow.h"
+#include "Representation.h"
+#include "AProteinData.h"
+#include "SlateOptMacros.h"
+
+BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
+void SProteinRepConfigWindow::Construct(const FArguments& InArgs)
+{
+	this->ProteinData = InArgs._Protein;
+	this->RepFactory = InArgs._RepFactory;
+	ChildSlot
+	[
+		SNew(SOverlay)
+		+SOverlay::Slot()
+		[
+			SNew(SVerticalBox)
+			+SVerticalBox::Slot()
+			[
+				SNew(SBox)
+				.Content()
+				[
+					SAssignNew(RepresentationsView, SListView<TWeakObjectPtr<URepresentation>>)
+					.ListItemsSource(&this->ProteinData->Representation->Representations)
+					.OnGenerateRow(this, &SProteinRepConfigWindow::GenerateRepRow)
+				]
+			]
+			+SVerticalBox::Slot()
+			[
+				SNew(SHorizontalBox)
+				+SHorizontalBox::Slot()
+				[
+					SNew(SButton)
+					.Text(FText::FromString("Add New CPK"))
+					.OnClicked(this, &SProteinRepConfigWindow::AddNewCpk)
+				]
+				+ SHorizontalBox::Slot()
+				[
+					SNew(SButton)
+					.Text(FText::FromString("Add New VDW"))
+					.OnClicked(this, &SProteinRepConfigWindow::AddNewVdw)
+				]
+				+ SHorizontalBox::Slot()
+				[
+					SNew(SButton)
+					.Text(FText::FromString("Add New Tube"))
+					.OnClicked(this, &SProteinRepConfigWindow::AddNewTube)
+				]
+				+ SHorizontalBox::Slot()
+				[
+					SNew(SButton)
+					.Text(FText::FromString("Add New New Cartoon"))
+					.OnClicked(this, &SProteinRepConfigWindow::AddNewNCartoon)
+				]
+			]
+		]
+	];
+	
+}
+
+TSharedRef<ITableRow> SProteinRepConfigWindow::GenerateRepRow(TWeakObjectPtr<URepresentation> Rep,
+	const TSharedRef<STableViewBase>& OwnerTable)
+{
+	return SNew(STableRow<TWeakObjectPtr<AProteinData>>, OwnerTable)
+		.Content()
+		[
+			SNew(SHorizontalBox)
+			+ SHorizontalBox::Slot()
+			[
+				SNew(STextBlock)
+				.Text(FText::FromString(Rep->GetName()))
+			]
+		];
+}
+END_SLATE_FUNCTION_BUILD_OPTIMIZATION
+
+FReply SProteinRepConfigWindow::AddNewCpk()
+{
+	this->RepFactory->CreateNewCpkRep(this->ProteinData.Get()->Representation.Get(), this->ProteinData.Get(), FName("CPK"));
+	this->RepresentationsView->RequestListRefresh();
+	return FReply::Handled();
+}
+
+FReply SProteinRepConfigWindow::AddNewVdw()
+{
+	this->RepFactory->CreateNewVdwRep(this->ProteinData.Get(), FName("VDW"));
+	this->RepresentationsView->RequestListRefresh();
+	return FReply::Handled();
+}
+
+FReply SProteinRepConfigWindow::AddNewTube()
+{
+	this->RepFactory->CreateNewTubeRep(this->ProteinData.Get()->Representation.Get(), this->ProteinData.Get(), FName("TUBE"));
+	this->RepresentationsView->RequestListRefresh();
+	return FReply::Handled();
+}
+
+FReply SProteinRepConfigWindow::AddNewNCartoon()
+{
+	this->RepFactory->CreateNewTubeRep(this->ProteinData.Get()->Representation.Get(), this->ProteinData.Get(), FName("NCARTOON"));
+	this->RepresentationsView->RequestListRefresh();
+	return FReply::Handled();
+}
+

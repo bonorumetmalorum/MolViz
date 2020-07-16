@@ -7,7 +7,6 @@
 #include "SlateOptMacros.h"
 #include "DesktopPlatform/Public/DesktopPlatformModule.h"
 #include "DesktopPlatform/Public/IDesktopPlatform.h"
-#include "ProteinRepresentation.h"
 #include "Slate/Private/Framework/MultiBox/SClippingHorizontalBox.h"
 
 
@@ -36,7 +35,6 @@ void SMainWindow::Construct(const FArguments& InArgs)
 		.SizingRule(ESizingRule::UserSized)
 		.MinHeight(widgetWidth)
 		.MinWidth(widgetWidth)
-		.FocusWhenFirstShown(true)
 		.FocusWhenFirstShown(true)
 		.SupportsTransparency(FWindowTransparency(EWindowTransparency::PerWindow))
 		.RenderOpacity(0.5f)
@@ -88,6 +86,7 @@ void SMainWindow::Construct(const FArguments& InArgs)
 						.ListItemsSource(Proteins)
 						.OnGenerateRow(this, &SMainWindow::CreateListItem)
 						.SelectionMode(ESelectionMode::Single)
+						.OnSelectionChanged(this, &SMainWindow::SelectionChanged)
 					]	
 				+ SVerticalBox::Slot()
 					[
@@ -104,8 +103,6 @@ void SMainWindow::Construct(const FArguments& InArgs)
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
 //TODO I need to allow for file type recognition, and switching to parse DSSP / PDB info.
-//TODO I also need to create a list of protein datas rather than a single one and pass the list in here, adding a new one
-//TODO I also need to reconsider storing a reference to the AtomData instead of teh ProteinRep in the UI.
 FReply SMainWindow::OpenFileDialog()
 {
 	IDesktopPlatform * Platform = FDesktopPlatformModule::Get();
@@ -152,9 +149,30 @@ TSharedRef<ITableRow> SMainWindow::CreateListItem(TWeakObjectPtr<AProteinData> I
 		];
 }
 
-FReply SMainWindow::AddNewRepresentation() const
+FReply SMainWindow::AddNewRepresentation()
 {
 	//NewProteinRep.Broadcast(SelectedProtein.Get());
 	//add a new representation
+	if (SelectedProtein.IsValid())
+	{
+		//SAssignNew(ProteinRepWindow, SProteinRepConfigWindow).ProteinRep(this->SelectedProtein->Representation);
+		SAssignNew(ProteinRepWindow, SWindow)
+		.Title(FText::FromString("HELLO"))
+		.MinWidth(400)
+		.MinHeight(400)
+		[
+			SNew(SProteinRepConfigWindow)
+			.Protein(this->SelectedProtein)
+			.RepFactory(TWeakObjectPtr<URepresentationFactory>(this->AppManager->RepresentationFactory))
+		];
+		FSlateApplication::Get().AddWindowAsNativeChild(ProteinRepWindow.ToSharedRef(), MainWindow.ToSharedRef());
+	}		
+	else
+		UE_LOG(LogTemp, Warning, TEXT("Unable to open rep config window because no protein was selected"));
 	return FReply::Handled();
+}
+
+void SMainWindow::SelectionChanged(TWeakObjectPtr<AProteinData> ProteinData, ESelectInfo::Type SelectionInfo)
+{
+	this->SelectedProtein = ProteinData;
 }

@@ -24,6 +24,7 @@ protected:
 	static AtomType NameToType(FString name);
 
 	UDataTable* AtomColors;
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

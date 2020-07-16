@@ -18,6 +18,8 @@
  * update representation selection
  */
 
+class URepresentation;
+
 class AProteinData;
 USTRUCT()
 struct FRepOptions
@@ -35,6 +37,11 @@ public:
 	AProteinRepresentation();
 	FString FileName;
 	//make methods to activate / deactive a representation
+	void ActivateRepresentation(TWeakObjectPtr<URepresentation> Rep);
+	void DeactivateRepresentation(TWeakObjectPtr<URepresentation> Rep);
+	
+	TArray<TWeakObjectPtr<URepresentation>> Representations;
+
 	
 protected:
 	// Called when the game starts or when spawned

@@ -17,6 +17,16 @@ AProteinRepresentation::AProteinRepresentation() : AActor()
 	
 }
 
+void AProteinRepresentation::ActivateRepresentation(TWeakObjectPtr<URepresentation> Rep)
+{
+	Rep->SetActive(true);
+}
+
+void AProteinRepresentation::DeactivateRepresentation(TWeakObjectPtr<URepresentation> Rep)
+{
+	Rep->SetActive(false);
+}
+
 // Called when the game starts or when spawned
 void AProteinRepresentation::BeginPlay()
 {

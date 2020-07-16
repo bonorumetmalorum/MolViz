@@ -6,6 +6,7 @@
 #include "Slate.h"
 #include "FPdbReader.h"
 #include "MolVizGameModeBase.h"
+#include "SProteinRepConfigWindow.h"
 
 DECLARE_EVENT_OneParam(SMainWindow, FAddProteinRepEvent, AProteinData*)
 
@@ -33,8 +34,9 @@ public:
 
 	TSharedRef<ITableRow> CreateListItem(TWeakObjectPtr<AProteinData> Item, const TSharedRef<STableViewBase>& OwnerTable);
 
-	FReply AddNewRepresentation() const;
-	
+	FReply AddNewRepresentation();
+	void SelectionChanged(TWeakObjectPtr<AProteinData> ProteinData, ESelectInfo::Type SelectionInfo);
+
 private:
 	TArray <TWeakObjectPtr<AProteinData>> * Proteins;
 	TSharedPtr<SWindow> MainWindow;
@@ -43,6 +45,7 @@ private:
 	TWeakObjectPtr<class AMolVizGameModeBase> AppManager;
 	TWeakObjectPtr<AProteinData> SelectedProtein;
 	TSharedPtr<SListView<TWeakObjectPtr<AProteinData>>> ProteinListView;
+	TSharedPtr<SWindow> ProteinRepWindow;
 
 public:
 	//EVENTS

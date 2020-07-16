@@ -40,6 +40,7 @@ UObject* URepresentationFactory::FactoryCreateNew(UClass* InClass, UObject* InPa
 UVDW* URepresentationFactory::CreateNewVdwRep(AProteinData * InProteinData, FName InName) const
 {
 	UVDW* rep = NewObject<UVDW>(InProteinData->Representation.Get(), InName);
+	InProteinData->Representation->Representations.Add(TWeakObjectPtr<URepresentation>(rep));
 	rep->AttachToComponent(InProteinData->Representation.Get()->GetRootComponent(), FAttachmentTransformRules::KeepWorldTransform);
 	rep->SetSphereRes(10, 10, 10.f);
 	//TODO pass in selection data
@@ -50,6 +51,7 @@ UVDW* URepresentationFactory::CreateNewVdwRep(AProteinData * InProteinData, FNam
 UCPK* URepresentationFactory::CreateNewCpkRep(AProteinRepresentation* InParent, AProteinData* InProteinData, FName InName) const
 {
 	UCPK* rep = NewObject<UCPK>(InParent, InName);
+	InProteinData->Representation->Representations.Add(TWeakObjectPtr<URepresentation>(rep));
 	rep->AttachToComponent(InParent->GetRootComponent(),FAttachmentTransformRules::KeepWorldTransform);
 	
 	rep->Config(5, 5, 0.2f, 0.1f, 5, 5);
@@ -60,6 +62,7 @@ UCPK* URepresentationFactory::CreateNewCpkRep(AProteinRepresentation* InParent, 
 UTubeRepresentation* URepresentationFactory::CreateNewTubeRep(AProteinRepresentation* InParent, AProteinData* InProteinData, FName InName) const
 {
 	UTubeRepresentation* rep = NewObject<UTubeRepresentation>(InParent, InName);
+	InProteinData->Representation->Representations.Add(TWeakObjectPtr<URepresentation>(rep));
 	rep->ConstructRepresentation(InProteinData);
 	return rep;
 }
@@ -68,6 +71,7 @@ UNewCartoonRepresentation* URepresentationFactory::CreateNewNCartoonRep(AProtein
 	AProteinData* const InProteinData, const char* InName)
 {
 	UNewCartoonRepresentation* rep = NewObject<UNewCartoonRepresentation>(InParent, InName);
+	InProteinData->Representation->Representations.Add(TWeakObjectPtr<URepresentation>(rep));
 	rep->ConstructRepresentation(InProteinData);
 	return rep;
 }
