@@ -34,7 +34,7 @@ void UCPK::AddBond(const FVector& Position, const FVector& Direction)
 	Component->SetWorldRotation(Rotation.Rotator());
 	Component->RegisterComponent();
 	Component->SetWorldLocation(Position);
-	Component->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+	Component->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 	Component->GenerateCylinder(CylinderRadius, Direction.Size() , CylinderSlices, CylinderStacks);
 }
 
@@ -59,9 +59,9 @@ void UCPK::ConstructRepresentation(AProteinData* ProteinData)
 		else
 			AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], FLinearColor(102, 95, 37));
 	}
-	BondComponent->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+	BondComponent->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 	BondComponent->RegisterComponent();
-	AtomComponent->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+	AtomComponent->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 	AtomComponent->RegisterComponent();
 	BondComponent->SetMobility(EComponentMobility::Movable);
 	AtomComponent->SetMobility(EComponentMobility::Movable);
