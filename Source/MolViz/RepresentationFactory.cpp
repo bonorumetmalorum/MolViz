@@ -63,6 +63,7 @@ UTubeRepresentation* URepresentationFactory::CreateNewTubeRep(AProteinRepresenta
 {
 	UTubeRepresentation* rep = NewObject<UTubeRepresentation>(InParent, InName);
 	InProteinData->Representation->Representations.Add(TWeakObjectPtr<URepresentation>(rep));
+	rep->AttachToComponent(InParent->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 	rep->ConstructRepresentation(InProteinData);
 	return rep;
 }
@@ -72,6 +73,7 @@ UNewCartoonRepresentation* URepresentationFactory::CreateNewNCartoonRep(AProtein
 {
 	UNewCartoonRepresentation* rep = NewObject<UNewCartoonRepresentation>(InParent, InName);
 	InProteinData->Representation->Representations.Add(TWeakObjectPtr<URepresentation>(rep));
+	rep->AttachToComponent(InParent->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 	rep->ConstructRepresentation(InProteinData);
 	return rep;
 }
