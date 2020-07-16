@@ -78,7 +78,7 @@ TSharedRef<ITableRow> SProteinRepConfigWindow::GenerateRepRow(TWeakObjectPtr<URe
 
 void SProteinRepConfigWindow::HideRep(TWeakObjectPtr<URepresentation> Rep)
 {
-	Rep->SetVisibility(!Rep->IsVisible(), true);
+	Rep->SetActive(!Rep->IsActive());
 }
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION

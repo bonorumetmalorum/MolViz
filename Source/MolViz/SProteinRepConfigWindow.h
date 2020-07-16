@@ -24,6 +24,8 @@ public:
 	void Construct(const FArguments& InArgs);
 
 	TSharedRef<ITableRow> GenerateRepRow(TWeakObjectPtr<URepresentation> Rep, const TSharedRef<STableViewBase>& OwnerTable);
+
+	void HideRep(TWeakObjectPtr<URepresentation> Rep);
 	
 private:
 	TSharedPtr<SListView<TWeakObjectPtr<URepresentation>>> RepresentationsView;
