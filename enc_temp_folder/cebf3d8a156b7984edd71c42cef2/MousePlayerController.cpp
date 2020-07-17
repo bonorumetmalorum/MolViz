@@ -108,7 +108,7 @@ void AMousePlayerController::TranslateProtein()
 		y = ((y / vy) * 2) - 1;*/
 		float MoveAmount = 1;
 		CurrentTranslation += FVector(0, x * MoveAmount, y * MoveAmount);
-		ProteinRep->SetActorRelativeLocation(CurrentTranslation);
+		ProteinRep->SetActorTransform(FTransform(CurrentTranslation));
 	}
 }
 

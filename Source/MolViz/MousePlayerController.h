@@ -29,8 +29,8 @@ public:
 
 	void Tick(float DeltaSeconds) override;
 	void SetupInputComponent() override;
-	void RotateStart();
-	void RotateEnd();
+	void TransformStart();
+	void TransformEnd();
 	void ZoomOut();
 	void ZoomIn();
 	void RotateX(float X);
@@ -43,7 +43,7 @@ public:
 	void ModeScale();
 	void ModeRotate();
 	void ModeTranslate();
-	bool Rotating;
+	bool TransformEnabled;
 
 	
 	UPROPERTY()
