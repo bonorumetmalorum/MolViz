@@ -18,7 +18,7 @@ public:
     void Ball_Place(FVector center, double radius);
     void Ball_Mouse(FVector VNow);
     void Ball_Update();
-    FRotator Ball_Value();
+    FQuat Ball_Value();
     void Ball_BeginDrag();
     void Ball_EndDrag();
     FVector4 MouseConstrainToSphere(FVector Mouse, FVector BallCenter, double BallRadius);
@@ -26,7 +26,7 @@ public:
     bool Dragging;
 
 private:
-    FVector Center;
+    FVector4 Center;
     double Radius;
     FQuat QNow, QDown, QDrag;
     FVector4 VNow, VDown, VFrom, VTo, VrFrom, VrTo;

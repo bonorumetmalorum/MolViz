@@ -31,8 +31,14 @@ public:
 	void SetupInputComponent() override;
 	void RotateStart();
 	void RotateEnd();
+	void ZoomOut();
+	void ZoomIn();
 	void RotateX(float X);
 	void RotateY(float Y);
+	void ScaleProtein();
+	void TranslateProtein();
+	void HandleMouseMovement();
+	void RotateProtein();
 	void Zoom(float ScrollValue);
 	void ModeScale();
 	void ModeRotate();

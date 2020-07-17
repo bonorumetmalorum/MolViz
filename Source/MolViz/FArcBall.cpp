@@ -5,9 +5,9 @@
 
 UArcBall::UArcBall()
 {
-    Center = FVector4(1);
-    Radius = 1.0;
-    VDown = VNow = FVector4(1);
+    Center = FVector4(0,0,0,1);
+    Radius = 0.8;
+    VDown = VNow = FVector4(0,0,0,1);
     QDown = QNow = FQuat(0,0,0,1);
     MNow = MDown = FMatrix();
     Dragging = false;
@@ -39,20 +39,22 @@ void UArcBall::Ball_Update()
     MNow = FRotationMatrix(FRotator(QNow.Inverse()));
 }
 
-FRotator UArcBall::Ball_Value()
+FQuat UArcBall::Ball_Value()
 {
-    return MNow.Rotator();
+    return QNow.Inverse();
 }
 
 void UArcBall::Ball_BeginDrag()
 {
     this->Dragging = true;
+    VDown = VNow;
 }
 
 void UArcBall::Ball_EndDrag()
 {
     this->Dragging = false;
-    this->VDown = this->VNow;
+    this->QDown = this->QNow;
+    this->MDown = MNow;
 }
 
 
