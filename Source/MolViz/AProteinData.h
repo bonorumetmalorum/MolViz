@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "FAtom.h"
+#include "FChainData.h"
 #include "FBondData.h"
 #include "FResidue.h"
 #include "GameFramework/Info.h"
@@ -29,6 +30,7 @@ public:
 	TArray<FResidue> Residues;
 	TArray<FBondData> Bonds;
 	TArray<FAtomData *> BackBone;
+	TArray<FChainData> Chains;
 	TWeakObjectPtr<AProteinRepresentation> Representation;
 	FString FilePath;
 	void BeginPlay() override;

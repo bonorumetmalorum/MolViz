@@ -19,6 +19,7 @@ enum LineType
 	Hetatm,
 	Master,
 	End,
+	Ter,
 	Other
 };
 
@@ -34,5 +35,6 @@ public:
 
 private:
 	LineType getLineType(const uint8 * line);
+	void ParseTer(uint8* line, AProteinData* Cast);
 	void ParseAtom(uint8* line, AProteinData * Protein);
 };

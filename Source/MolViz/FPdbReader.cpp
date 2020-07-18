@@ -33,8 +33,12 @@ void FPdbReader::readStructure(FString filepath, AActor * Protein)
 				ParseAtom(buffer, Cast<AProteinData>(Protein));
 				break;
 			case Hetatm:
+				ParseAtom(buffer, Cast<AProteinData>(Protein));
 				break;
 			case Model:
+				break;
+			case Ter:
+				ParseTer(buffer, Cast<AProteinData>(Protein));
 				break;
 			case End:
 				break;
@@ -67,11 +71,47 @@ LineType FPdbReader::getLineType(const uint8 * line)
 	{
 		return Hetatm;
 	}
+	if(word.Contains("TER", ESearchCase::IgnoreCase))
+	{
+		return Ter;
+	}
 	if (word.Contains("END", ESearchCase::Type::IgnoreCase))
 	{
 		return End;
 	}
 	return Other;
+}
+
+void FPdbReader::ParseTer(uint8* line, AProteinData* Cast)
+{
+	int32 SerialNumber;
+	FString Resname;
+	uint8 ChainID;
+	int32 ResSeq;
+	uint8 CodeForInsertionsOfResidues;
+
+	FString type = BytesToString(line, 3); //0 - 2
+	line += 6;
+	FString SNum = BytesToString(line, 5); //6 - 10
+	line += 11;
+	Resname = BytesToString(line, 3); //17-19
+	line += 4;
+	FString Cid = BytesToString(line, 1); //21
+	line += 1;
+	FString RSNum = BytesToString(line, 4); //22 - 25
+	line += 4;
+	FString Cfir = BytesToString(line, 1); //26
+
+	LexFromString(SerialNumber, *SNum);
+	LexFromString(ChainID, *Cid);
+	LexFromString(ResSeq, *RSNum);
+	LexFromString(CodeForInsertionsOfResidues, *Cfir);
+
+	//now we need to store this information in the protein ds
+	//if this is the first chain, i.e. the list is previously empty, then it assumes 0 - current atom list length
+	//if this is the next chain, then we must start at the previous chain end and stop and current atom list length
+	
+	
 }
 
 void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
@@ -128,7 +168,6 @@ void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 	LexFromString(Occupancy, *occupancy);
 	LexFromString(TempFactor, *tempFactor);
 
-	//DrawDebugSphere(GEngine->GetWorldFromContextObject(GEngine->GameViewport, EGetWorldErrorMode::ReturnNull) , FVector(x*10, y*10, z*10), 10.0f, 10, FColor::Red, true, 100, 0, 2.f);
 	Protein->AddResidue(resName, Resnum);
 	Protein->AddAtom(Snum, Alt, name, Chain, Resnum, Insertion_residue_code, FVector(x, y, z), Occupancy, TempFactor, Element);
 }
