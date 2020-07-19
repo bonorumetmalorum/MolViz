@@ -110,7 +110,15 @@ void FPdbReader::ParseTer(uint8* line, AProteinData* Cast)
 	//now we need to store this information in the protein ds
 	//if this is the first chain, i.e. the list is previously empty, then it assumes 0 - current atom list length
 	//if this is the next chain, then we must start at the previous chain end and stop and current atom list length
-	
+	if(Cast->Chains.Num() == 0)
+	{
+		Cast->Chains.Add(FChainData(SerialNumber, Resname, ChainID, ResSeq, CodeForInsertionsOfResidues, 0, Cast->Atoms.Num()-1));
+	}
+	else
+	{
+		int StartIndex = Cast->Chains[Cast->Chains.Num() - 1].EndIndex;
+		Cast->Chains.Add(FChainData(SerialNumber, Resname, ChainID, ResSeq, CodeForInsertionsOfResidues, StartIndex, Cast->Atoms.Num() - 1));
+	}
 	
 }
 

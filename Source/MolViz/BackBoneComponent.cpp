@@ -28,7 +28,7 @@ void UBackBoneComponent::SetStartingBackbone(FAtomData* StartAtom, FAtomData* Co
 	#define TWOBYTHREE 0.6666666666666667
 	
 	this->IsStartingBackBone = true;
-	SetStartAndEnd(StartAtom->position, FVector(1), EndAtom->position, FVector(1));
+	SetStartAndEnd(StartAtom->position, StartAtom->position - ControlAtom->position, EndAtom->position, FVector(1));
 
 }
 

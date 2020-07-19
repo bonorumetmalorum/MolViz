@@ -18,50 +18,47 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 	//find out what kind of ss rep is used in this residue
 	ProteinData->FindBackBone();
 	ChainState CurrentChainState = Invalid;
-	for (int i = 0; i < ProteinData->Residues.Num(); i++)
+	for (int i = 0; i < ProteinData->Residues.Num() - 1; i++)
 	{
 		CurrentChainState = UpdateChainState(ProteinData, i);
 		switch(ProteinData->Residues[i].SSResType)
 		{
 		case SSType::AHelix:
 			if(i == 0)
-				AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 2]);
+				AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 2], ProteinData->BackBone[(i + 1) * 3], ProteinData->BackBone[(i + 1) * 3 + 2]);
 			else
-				AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBone[(i - 1) * 3 + 2], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 2]);
+				AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 2], ProteinData->BackBone[(i + 1) * 3], ProteinData->BackBone[(i + 1) * 3 + 2]);
 
 			break;
 		case SSType::BStrand:
 			if(i == 0)
-				AddBetaSheetComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 2]);
+				AddBetaSheetComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 2], ProteinData->BackBone[(i + 1) * 3], ProteinData->BackBone[(i + 1) * 3 + 2]);
 			else
-				AddBetaSheetComponent(CurrentChainState, ProteinData->BackBone[(i-1) * 3 + 2], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 2]);
+				AddBetaSheetComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 2], ProteinData->BackBone[(i + 1) * 3], ProteinData->BackBone[(i + 1) * 3 + 2]);
 
 			break;
 		case SSType::Coil:
 			if(i == 0)
-				AddCoilComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 2]);
+				AddCoilComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 2], ProteinData->BackBone[(i + 1) * 3], ProteinData->BackBone[(i + 1) * 3 + 2]);
 			else
-				AddCoilComponent(CurrentChainState, ProteinData->BackBone[(i-1) * 3 + 2], ProteinData->BackBone[i * 3 + 1], ProteinData->BackBone[i * 3 + 2]);
+				AddCoilComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 2], ProteinData->BackBone[(i + 1) * 3], ProteinData->BackBone[(i + 1) * 3 + 2]);
 			break;
 		}
 	}
 }
 
-void UNewCartoonRepresentation::AddAlphaHelixComponent(ChainState CurrentChainState, FAtomData* StartAtom,
-	FAtomData* ControlAtom, FAtomData* EndAtom)
+void UNewCartoonRepresentation::AddAlphaHelixComponent(ChainState CurrentChainState, FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC)
 {
 	switch(CurrentChainState)
 	{
 	case Start:
-		AddBackBoneComponent<UHelixStartComponent>(StartAtom, ControlAtom, EndAtom);
+		AddBackBoneComponent<UHelixStartComponent>(CurrentCA, CurrentC, NextCA, NextC);
 		break;
 	case Middle:
-		AddBackBoneComponent<UHelixMiddleComponent>(StartAtom, ControlAtom, EndAtom);
-
+		AddBackBoneComponent<UHelixMiddleComponent>(CurrentCA, CurrentC, NextCA, NextC);
 		break;
 	case End:
-		AddBackBoneComponent<UHelixEndComponent>(StartAtom, ControlAtom, EndAtom);
-
+		AddBackBoneComponent<UHelixEndComponent>(CurrentCA, CurrentC, NextCA, NextC);
 		break;
 	case Invalid:
 		UE_LOG(LogTemp, Warning, TEXT("invalid ss chain state"));
@@ -69,20 +66,19 @@ void UNewCartoonRepresentation::AddAlphaHelixComponent(ChainState CurrentChainSt
 	}
 }
 
-void UNewCartoonRepresentation::AddBetaSheetComponent(ChainState CurrentChainState, FAtomData* StartAtom,
-	FAtomData* ControlAtom, FAtomData* EndAtom)
+void UNewCartoonRepresentation::AddBetaSheetComponent(ChainState CurrentChainState, FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC)
 {
 	switch (CurrentChainState)
 	{
 	case Start:
-		AddBackBoneComponent<UBetaSheetStartComponent>(StartAtom, ControlAtom, EndAtom);
+		AddBackBoneComponent<UBetaSheetStartComponent>(CurrentCA, CurrentC, NextCA, NextC);
 		break;
 	case Middle:
-		AddBackBoneComponent<UBetaSheetMiddleComponent>(StartAtom, ControlAtom, EndAtom);
+		AddBackBoneComponent<UBetaSheetMiddleComponent>(CurrentCA, CurrentC, NextCA, NextC);
 
 		break;
 	case End:
-		AddBackBoneComponent<UBetaSheetEndComponent>(StartAtom, ControlAtom, EndAtom);
+		AddBackBoneComponent<UBetaSheetEndComponent>(CurrentCA, CurrentC, NextCA, NextC);
 
 		break;
 	case Invalid:
@@ -91,10 +87,9 @@ void UNewCartoonRepresentation::AddBetaSheetComponent(ChainState CurrentChainSta
 	}
 }
 
-void UNewCartoonRepresentation::AddCoilComponent(ChainState CurrentChainState, FAtomData* StartAtom,
-	FAtomData* ControlAtom, FAtomData* EndAtom)
+void UNewCartoonRepresentation::AddCoilComponent(ChainState CurrentChainState, FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC)
 {
-	AddBackBoneComponent<UTubeComponent>(StartAtom, ControlAtom, EndAtom);
+	AddBackBoneComponent<UTubeComponent>(CurrentCA, CurrentC, NextCA, NextC);
 }
 
 UNewCartoonRepresentation::ChainState UNewCartoonRepresentation::UpdateChainState(AProteinData* ProteindData, int CurrentResidue)

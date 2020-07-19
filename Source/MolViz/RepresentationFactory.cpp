@@ -69,7 +69,7 @@ UTubeRepresentation* URepresentationFactory::CreateNewTubeRep(AProteinRepresenta
 }
 
 UNewCartoonRepresentation* URepresentationFactory::CreateNewNCartoonRep(AProteinRepresentation* InParent,
-	AProteinData* const InProteinData, const char* InName)
+	AProteinData* const InProteinData, FName InName)
 {
 	UNewCartoonRepresentation* rep = NewObject<UNewCartoonRepresentation>(InParent, InName);
 	InProteinData->Representation->Representations.Add(TWeakObjectPtr<URepresentation>(rep));

@@ -106,7 +106,7 @@ FReply SProteinRepConfigWindow::AddNewTube()
 
 FReply SProteinRepConfigWindow::AddNewNCartoon()
 {
-	this->RepFactory->CreateNewTubeRep(this->ProteinData.Get()->Representation.Get(), this->ProteinData.Get(), FName("NCARTOON"));
+	this->RepFactory->CreateNewNCartoonRep(this->ProteinData.Get()->Representation.Get(), this->ProteinData.Get(), FName("NCARTOON"));
 	this->RepresentationsView->RequestListRefresh();
 	return FReply::Handled();
 }

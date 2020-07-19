@@ -31,7 +31,8 @@ void AMousePlayerController::SetupInputComponent()
 	InputComponent->BindAction("Scale", EInputEvent::IE_Released, this, &AMousePlayerController::ModeScale);
 	InputComponent->BindAction("Rotate", EInputEvent::IE_Released, this, &AMousePlayerController::ModeRotate);
 	InputComponent->BindAction("Translate", EInputEvent::IE_Released, this, &AMousePlayerController::ModeTranslate);
-	InputComponent->BindAxis("Zoom", this, &AMousePlayerController::Zoom);
+	InputComponent->BindAction("ZoomIn", EInputEvent::IE_Pressed, this, &AMousePlayerController::ZoomIn);
+	InputComponent->BindAction("ZoomOut", EInputEvent::IE_Pressed, this, &AMousePlayerController::ZoomOut);
 	InputComponent->BindAxis("RotateX", this, &AMousePlayerController::RotateX);
 	InputComponent->BindAxis("RotateY", this, &AMousePlayerController::RotateY);
 	
@@ -162,16 +163,6 @@ void AMousePlayerController::RotateProtein()
 		ProteinRep->SetActorRotation(ArcBallController->Ball_Value());
 	}
 	
-}
-
-void AMousePlayerController::Zoom(float ScrollValue)
-{
-	//UE_LOG(LogTemp, Warning, TEXT("scroll started %f"), ScrollValue);
-	if(ProteinRep.IsValid())
-	{
-		CurrentTranslation.X += ScrollValue;
-		ProteinRep->AddActorWorldTransform(FTransform(CurrentTranslation));
-	}
 }
 
 void AMousePlayerController::ModeScale()

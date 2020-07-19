@@ -31,7 +31,7 @@ public:
 	UVDW* CreateNewVdwRep(AProteinData * InProteinData, /*TODO pass in protein rep selections*/ FName InName) const;
 	UCPK* CreateNewCpkRep(AProteinRepresentation* InParent, AProteinData* InProteinData, FName InName) const;
 	UTubeRepresentation* CreateNewTubeRep(AProteinRepresentation* InParent, AProteinData* InProteinData, FName InName) const;
-	UNewCartoonRepresentation* CreateNewNCartoonRep(AProteinRepresentation* Cast, AProteinData* const ProteinData, const char* Str);
+	UNewCartoonRepresentation* CreateNewNCartoonRep(AProteinRepresentation* Cast, AProteinData* const ProteinData, FName InName);
 
 private:
 	
