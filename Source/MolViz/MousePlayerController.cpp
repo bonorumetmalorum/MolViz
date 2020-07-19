@@ -102,14 +102,10 @@ void AMousePlayerController::TranslateProtein()
 	if(TransformEnabled)
 	{
 		float x, y;
-		//int vx, vy;
 		GetInputMouseDelta(x, y);
-		//GetViewportSize(vx, vy);
-		/*x = ((x / vx) * 2) - 1;
-		y = ((y / vy) * 2) - 1;*/
 		float MoveAmount = 1;
 		CurrentTranslation += FVector(0, x * MoveAmount, y * MoveAmount);
-		ProteinRep->SetActorRelativeLocation(CurrentTranslation);
+		ProteinRep->SetActorTransform(FTransform(CurrentTranslation));
 	}
 }
 
@@ -202,7 +198,7 @@ void AMousePlayerController::ScaleProtein()
 		FVector CurrentScale = ProteinRep->GetActorScale();
 		float ScaleMax = 10.0;
 		CurrentScale += FVector(x*ScaleMax,x*ScaleMax,x*ScaleMax);
-		ProteinRep->SetActorRelativeScale3D(CurrentScale);
+		ProteinRep->SetActorTransform(FTransform(ProteinRep->GetActorRotation(), ProteinRep->GetActorLocation(), CurrentScale));
 	}
 }
 
