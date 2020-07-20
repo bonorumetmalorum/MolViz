@@ -44,7 +44,7 @@ void AMousePlayerController::TransformStart()
 	{
 	case ETransformMode::Scale:
 		TransformEnabled = true;
-
+		GetMousePosition(PreviousPosition.X, PreviousPosition.Y);
 		break;
 	case ETransformMode::Translate:
 		TransformEnabled = true;
@@ -190,14 +190,14 @@ void AMousePlayerController::ScaleProtein()
 {
 	if(TransformEnabled)
 	{
-		float x, y;
-		int vx, vy;
-		GetMousePosition(x, y);
-		GetViewportSize(vx, vy);
-		x = ((x/vx)*2)-1;
+		/*int vx, vy;*/
+		GetMousePosition(CurrentPostion.X, CurrentPostion.Y);
+		//GetViewportSize(vx, vy);
+		//x = ((x/vx)*2)-1;
 		FVector CurrentScale = ProteinRep->GetActorScale();
-		float ScaleMax = 10.0;
-		CurrentScale += FVector(x*ScaleMax,x*ScaleMax,x*ScaleMax);
+		float ScaleMax = 1.0;
+		CurrentScale += FVector((CurrentPostion.X - PreviousPosition.X) *ScaleMax, (CurrentPostion.X - PreviousPosition.X) *ScaleMax, (CurrentPostion.X - PreviousPosition.X)*ScaleMax);
+		PreviousPosition = CurrentPostion;
 		ProteinRep->SetActorTransform(FTransform(ProteinRep->GetActorRotation(), ProteinRep->GetActorLocation(), CurrentScale));
 	}
 }
