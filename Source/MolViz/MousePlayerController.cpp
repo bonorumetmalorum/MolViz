@@ -146,6 +146,7 @@ void AMousePlayerController::RotateProtein()
 	//	CurrenRotation *= Rotation;
 	//	ProteinRep->SetActorRotation(CurrenRotation);
 	//}
+	//arcball method starts here
 	GetMousePosition(CurrentPostion.X, CurrentPostion.Y);
 	int32 x, y;
 	GetViewportSize(x, y);
@@ -158,6 +159,12 @@ void AMousePlayerController::RotateProtein()
 		ArcBallController->Ball_Update();
 		ProteinRep->SetActorRotation(ArcBallController->Ball_Value());
 	}
+	//rudimentary method starts here
+	//float XChange, YChange;
+	//GetInputMouseDelta(XChange, YChange);
+	//FRotator rotation = F
+	
+	
 	
 }
 

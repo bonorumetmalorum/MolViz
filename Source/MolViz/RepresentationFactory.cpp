@@ -41,7 +41,7 @@ UVDW* URepresentationFactory::CreateNewVdwRep(AProteinData * InProteinData, FNam
 {
 	UVDW* rep = NewObject<UVDW>(InProteinData->Representation.Get(), InName);
 	InProteinData->Representation->Representations.Add(TWeakObjectPtr<URepresentation>(rep));
-	rep->AttachToComponent(InProteinData->Representation.Get()->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+	rep->AttachToComponent(InProteinData->Representation.Get()->GetRootComponent(), FAttachmentTransformRules::KeepWorldTransform);
 	rep->SetSphereRes(10, 10, 10.f);
 	//TODO pass in selection data
 	rep->ConstructRepresentation(InProteinData);
@@ -52,7 +52,7 @@ UCPK* URepresentationFactory::CreateNewCpkRep(AProteinRepresentation* InParent, 
 {
 	UCPK* rep = NewObject<UCPK>(InParent, InName);
 	InProteinData->Representation->Representations.Add(TWeakObjectPtr<URepresentation>(rep));
-	rep->AttachToComponent(InParent->GetRootComponent(),FAttachmentTransformRules::KeepRelativeTransform);
+	rep->AttachToComponent(InParent->GetRootComponent(),FAttachmentTransformRules::KeepWorldTransform);
 	
 	rep->Config(5, 5, 0.2f, 0.1f, 5, 5);
 	rep->ConstructRepresentation(InProteinData);
@@ -63,7 +63,7 @@ UTubeRepresentation* URepresentationFactory::CreateNewTubeRep(AProteinRepresenta
 {
 	UTubeRepresentation* rep = NewObject<UTubeRepresentation>(InParent, InName);
 	InProteinData->Representation->Representations.Add(TWeakObjectPtr<URepresentation>(rep));
-	rep->AttachToComponent(InParent->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+	rep->AttachToComponent(InParent->GetRootComponent(), FAttachmentTransformRules::KeepWorldTransform);
 	rep->ConstructRepresentation(InProteinData);
 	return rep;
 }
@@ -73,7 +73,7 @@ UNewCartoonRepresentation* URepresentationFactory::CreateNewNCartoonRep(AProtein
 {
 	UNewCartoonRepresentation* rep = NewObject<UNewCartoonRepresentation>(InParent, InName);
 	InProteinData->Representation->Representations.Add(TWeakObjectPtr<URepresentation>(rep));
-	rep->AttachToComponent(InParent->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+	rep->AttachToComponent(InParent->GetRootComponent(), FAttachmentTransformRules::KeepWorldTransform);
 	rep->ConstructRepresentation(InProteinData);
 	return rep;
 }

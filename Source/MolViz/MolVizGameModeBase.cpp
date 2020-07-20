@@ -57,6 +57,7 @@ void AMolVizGameModeBase::OnLoadComplete(AProteinData * ProteinData)
 				)
 			)
 	);
+	ProteinReps[Index]->SetActorLocation(ProteinData->FindCOM());
 	ProteinData->Representation = ProteinReps[Index];
 	RepresentationFactory->CreateNewVdwRep(ProteinData, "VDW");
 	Cast<AMousePlayerController>(UGameplayStatics::GetPlayerController(this, 0))->ProteinRep = ProteinReps[Index];

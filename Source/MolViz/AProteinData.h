@@ -33,6 +33,7 @@ public:
 	TArray<FChainData> Chains;
 	TWeakObjectPtr<AProteinRepresentation> Representation;
 	FString FilePath;
+	const FVector FindCOM();
 	void BeginPlay() override;
 private:
 	bool AtomHasInterResidueBond(FAtomData & Atom);

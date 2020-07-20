@@ -106,26 +106,8 @@ void AProteinData::FindBackBone()
 						NCount++;
 					}
 				}
-				
-				/*while(AtomNeighborIter.GetIndex() < (*AtomIter)->Neighbours.Num())
-				{
-					if(AtomHasInterResidueBond(Atoms[*AtomNeighborIter]))
-					{
-						Neighbors.Add(&Atoms[*AtomNeighborIter]);
-						NCount++;
-					}
-					++AtomNeighborIter;
-				}*/
 				if(NCount == 2)
 				{//this is part of the backbone
-					//AtomNeighborIter.Reset();
-					//for (; AtomNeighborIter; ++AtomNeighborIter)
-					//{
-					//	if(AtomHasInterResidueBond(*AtomNeighborIter))
-					//	{
-					//		BackBone.Add(*AtomNeighborIter);
-					//	}
-					//}
 					BackBone.Add(&Atoms[*AtomIter]);
 					BackBone.Add(Neighbors[0]);
 					BackBone.Add(Neighbors[1]);
@@ -187,4 +169,14 @@ bool AProteinData::AtomHasInterResidueBond(FAtomData& Atom, int & OutAtom){
 	}
 	OutAtom = -1;
 	return false;
+}
+
+const FVector AProteinData::FindCOM()
+{
+	FVector Sum(0);
+	for(auto AtomIter = Atoms.CreateConstIterator(); AtomIter; AtomIter++)
+	{
+		Sum += AtomIter->position;
+	}
+	return Sum / Atoms.Num();
 }
