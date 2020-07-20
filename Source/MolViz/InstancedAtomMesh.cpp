@@ -15,10 +15,9 @@ UInstancedAtomMesh::UInstancedAtomMesh()
 	NumCustomDataFloats = 4;
 }
 
-void UInstancedAtomMesh::AddAtom(FAtomData* Atom, FLinearColor Color)
+void UInstancedAtomMesh::AddAtom(FAtomData* Atom, FLinearColor Color, float Radius)
 {
-	int InstanceID = AddInstance(FTransform(Atom->position));
-	//SetCustomPrimitiveDataVector4(InstanceID, FVector4(Color));
+	int InstanceID = AddInstance(FTransform(FRotator::ZeroRotator, Atom->position, FVector(Radius)));
 	TArray<float> rgba = {Color.R, Color.G, Color.B, Color.A};
 	SetCustomData(InstanceID, rgba, true);
 }

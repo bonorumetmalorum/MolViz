@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Representation.h"
+#include "UObject/ConstructorHelpers.h"
+
 #include "VDW.generated.h"
 
 /**
@@ -22,4 +24,5 @@ public:
 	int Stacks = 5;
 	int Slices = 5;
 	float SphereRadius = 5.0f;
+	UDataTable* VDWRadiiData;
 };

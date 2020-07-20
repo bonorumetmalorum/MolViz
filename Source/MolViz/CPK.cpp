@@ -55,9 +55,9 @@ void UCPK::ConstructRepresentation(AProteinData* ProteinData)
 	{
 		FColorData * RowData = AtomColors->FindRow<FColorData>(FName(*(AtomIter->Name)), AtomIter->Name, true);
 		if (RowData)
-			AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], RowData->color);
+			AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], RowData->color, 1.0);
 		else
-			AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], FLinearColor(102, 95, 37));
+			AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], FLinearColor(102, 95, 37), 1.0);
 	}
 	BondComponent->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 	BondComponent->RegisterComponent();

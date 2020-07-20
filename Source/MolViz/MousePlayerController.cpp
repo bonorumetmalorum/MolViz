@@ -127,26 +127,6 @@ void AMousePlayerController::HandleMouseMovement()
 
 void AMousePlayerController::RotateProtein()
 {
-	//if(Rotating)
-	//{
-	//	GetMousePosition(CurrentPostion.X, CurrentPostion.Y);
-	//	FVector To, ToDirection, From, FromDirection;
-	//	DeprojectScreenPositionToWorld(CurrentPostion.X, CurrentPostion.Y, To, ToDirection);
-	//	DeprojectScreenPositionToWorld(PreviousPosition.X, PreviousPosition.Y, From, FromDirection);
-	//	To.Y = -To.Y;
-	//	From.Y = -From.Y;
-	//	From.Normalize();
-	//	To.Normalize();
-	//	FVector CrossAxis = FVector::CrossProduct(From, To);
-	//	CrossAxis.Normalize();
-	//	float Theta = acos(FVector::DotProduct(From, To));
-	//	FQuat Rotation(CrossAxis, Theta);
-	//	Rotation.Normalize();
-	//	PreviousPosition = CurrentPostion;
-	//	CurrenRotation *= Rotation;
-	//	ProteinRep->SetActorRotation(CurrenRotation);
-	//}
-	//arcball method starts here
 	GetMousePosition(CurrentPostion.X, CurrentPostion.Y);
 	int32 x, y;
 	GetViewportSize(x, y);
@@ -159,13 +139,6 @@ void AMousePlayerController::RotateProtein()
 		ArcBallController->Ball_Update();
 		ProteinRep->SetActorRotation(ArcBallController->Ball_Value());
 	}
-	//rudimentary method starts here
-	//float XChange, YChange;
-	//GetInputMouseDelta(XChange, YChange);
-	//FRotator rotation = F
-	
-	
-	
 }
 
 void AMousePlayerController::ModeScale()
@@ -197,10 +170,7 @@ void AMousePlayerController::ScaleProtein()
 {
 	if(TransformEnabled)
 	{
-		/*int vx, vy;*/
 		GetMousePosition(CurrentPostion.X, CurrentPostion.Y);
-		//GetViewportSize(vx, vy);
-		//x = ((x/vx)*2)-1;
 		FVector CurrentScale = ProteinRep->GetActorScale();
 		float ScaleMax = 1.0;
 		CurrentScale += FVector((CurrentPostion.X - PreviousPosition.X) *ScaleMax, (CurrentPostion.X - PreviousPosition.X) *ScaleMax, (CurrentPostion.X - PreviousPosition.X)*ScaleMax);
