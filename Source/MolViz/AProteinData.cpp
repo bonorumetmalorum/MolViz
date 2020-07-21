@@ -54,7 +54,7 @@ void AProteinData::FindBackBone()
 		{
 			//find backbone atoms
 			int N = -1, C = -1;
-			FAtomData * AtomCA = nullptr, * AtomN = nullptr, * AtomC = nullptr;
+			FAtomData * AtomCA = nullptr, * AtomN = nullptr, * AtomC = nullptr, *AtomO = nullptr;
 			for (auto AtomIter = ResIter->atoms.CreateIterator(); AtomIter.GetIndex() < ResIter->atoms.Num(); ++AtomIter)
 			{
 				int Data = *AtomIter;
@@ -70,11 +70,15 @@ void AProteinData::FindBackBone()
 				{
 					AtomN = &Atoms[Data];
 				}
+				if (Atoms[Data].Name.Equals("O"))
+				{
+					AtomO = &Atoms[Data];
+				}
 			}
 			if(AtomC && AtomHasInterResidueBond(*AtomC, N))
 			{ // N terminus
 				//BackBone.Add(AtomN); // because we have an n terminus, N is part of another residue which is bonded to the C in this residue, we need to add it otherwise N is null :(
-				BackBone.Add(AtomCA);
+				BackBoneSegments.Add(AtomCA);
 				BackBone.Add(&Atoms[N]);
 				BackBone.Add(AtomC);
 			}

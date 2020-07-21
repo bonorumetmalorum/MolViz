@@ -43,7 +43,6 @@ void UVDW::ConstructRepresentation(AProteinData * ProteinData)
 				Component->AddAtom(&ProteinData->Atoms[*atomiter], RowData->color, Radii->Radius);
 			else
 				Component->AddAtom(&ProteinData->Atoms[*atomiter], FLinearColor(102, 95, 37), 1.0);
-			//AddAtom(ProteinData->Atoms[*atomiter].position.X, ProteinData->Atoms[*atomiter].position.Y, ProteinData->Atoms[*atomiter].position.Z);
 		}
 	}
 	Component->RegisterComponent();
