@@ -50,76 +50,77 @@ void AProteinData::FindBackBone()
 {
 	for(auto ResIter = Residues.CreateIterator(); ResIter.GetIndex() < Residues.Num(); ResIter++)
 	{
-		if (ResIter.GetIndex() == 0 || ResIter.GetIndex() == Residues.Num() - 1) //first residue
-		{
+		//if (ResIter.GetIndex() == 0 || ResIter.GetIndex() == Residues.Num() - 1) //first residue
+		//{
 			//find backbone atoms
 			int N = -1, C = -1;
-			FAtomData * AtomCA = nullptr, * AtomN = nullptr, * AtomC = nullptr, *AtomO = nullptr;
+			FBackBoneSegmentData BackBoneSegment;
 			for (auto AtomIter = ResIter->atoms.CreateIterator(); AtomIter.GetIndex() < ResIter->atoms.Num(); ++AtomIter)
 			{
 				int Data = *AtomIter;
 				if(Atoms[Data].Name.Equals("CA"))
 				{
-					AtomCA = &Atoms[Data];
+					BackBoneSegment.CA = &Atoms[Data];
 				}
 				if (Atoms[Data].Name.Equals("C"))
 				{
-					AtomC = &Atoms[Data];
+					BackBoneSegment.C = &Atoms[Data];
 				}
 				if (Atoms[Data].Name.Equals("N"))
 				{
-					AtomN = &Atoms[Data];
+					BackBoneSegment.N = &Atoms[Data];
 				}
 				if (Atoms[Data].Name.Equals("O"))
 				{
-					AtomO = &Atoms[Data];
+					BackBoneSegment.O = &Atoms[Data];
 				}
 			}
-			if(AtomC && AtomHasInterResidueBond(*AtomC, N))
-			{ // N terminus
+			//if(BackBoneSegment.C && AtomHasInterResidueBond(*BackBoneSegment.C, N))
+			//{ // N terminus
 				//BackBone.Add(AtomN); // because we have an n terminus, N is part of another residue which is bonded to the C in this residue, we need to add it otherwise N is null :(
-				BackBoneSegments.Add(AtomCA);
+				/*BackBoneSegments.Add();
 				BackBone.Add(&Atoms[N]);
-				BackBone.Add(AtomC);
-			}
-			else if(AtomN && AtomHasInterResidueBond(*AtomN, C))
-			{// N Terminus
-				BackBone.Add(AtomN); 
-				BackBone.Add(&Atoms[C]); // like wise the C in this case is null because it is in another residue, we need to find it and add it 
-				BackBone.Add(AtomCA);
-			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("no carboxyl / amine group detected"));
-			}
-		}
-		else
-		{
-			//middle residues
-			int NCount = 0;
-			TArray<FAtomData*> Neighbors; //TODO find another way to do this maybe??
-			for(auto AtomIter = ResIter->atoms.CreateIterator(); AtomIter; ++AtomIter)
-			{
-				FAtomData & AtomData = Atoms[*AtomIter];
-				//auto AtomNeighborIter = AtomData->Neighbours.CreateIterator();
-				for (int j = 0; j < AtomData.Neighbours.Num(); j++)
-				{
-					if (AtomHasInterResidueBond(Atoms[AtomData.Neighbours[j]]))
-					{
-						Neighbors.Add(&(Atoms[AtomData.Neighbours[j]]));
-						NCount++;
-					}
-				}
-				if(NCount == 2)
-				{//this is part of the backbone
-					BackBone.Add(&Atoms[*AtomIter]);
-					BackBone.Add(Neighbors[0]);
-					BackBone.Add(Neighbors[1]);
-				}
-				NCount = 0;
-				Neighbors.Reset();
-			}
-		}
+				BackBone.Add(AtomC);*/
+				BackBoneSegments.Add(BackBoneSegment);
+			//}
+			//else if(AtomN && AtomHasInterResidueBond(*AtomN, C))
+			//{// N Terminus
+			//	BackBone.Add(AtomN); 
+			//	BackBone.Add(&Atoms[C]); // like wise the C in this case is null because it is in another residue, we need to find it and add it 
+			//	BackBone.Add(AtomCA);
+			//}
+			//else
+			//{
+			//	UE_LOG(LogTemp, Warning, TEXT("no carboxyl / amine group detected"));
+			//}
+		//}
+		//else
+		//{
+		//	//middle residues
+		//	int NCount = 0;
+		//	TArray<FAtomData*> Neighbors; //TODO find another way to do this maybe??
+		//	for(auto AtomIter = ResIter->atoms.CreateIterator(); AtomIter; ++AtomIter)
+		//	{
+		//		FAtomData & AtomData = Atoms[*AtomIter];
+		//		//auto AtomNeighborIter = AtomData->Neighbours.CreateIterator();
+		//		for (int j = 0; j < AtomData.Neighbours.Num(); j++)
+		//		{
+		//			if (AtomHasInterResidueBond(Atoms[AtomData.Neighbours[j]]))
+		//			{
+		//				Neighbors.Add(&(Atoms[AtomData.Neighbours[j]]));
+		//				NCount++;
+		//			}
+		//		}
+		//		if(NCount == 2)
+		//		{//this is part of the backbone
+		//			BackBone.Add(&Atoms[*AtomIter]);
+		//			BackBone.Add(Neighbors[0]);
+		//			BackBone.Add(Neighbors[1]);
+		//		}
+		//		NCount = 0;
+		//		Neighbors.Reset();
+		//	}
+		//}
 
 	}
 }

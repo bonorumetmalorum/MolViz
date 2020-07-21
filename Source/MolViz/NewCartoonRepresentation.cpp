@@ -25,24 +25,26 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 		{
 		case SSType::AHelix:
 			if(i == ProteinData->Residues.Num()-1)
-				AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBone[(i-1) * 3], ProteinData->BackBone[(i-1) * 3 + 2], ProteinData->BackBone[(i) * 3], ProteinData->BackBone[(i) * 3 + 2]);
+				AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBoneSegments[i-1].CA, ProteinData->BackBoneSegments[i-1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].CA);
 			else
-				AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 2], ProteinData->BackBone[(i + 1) * 3], ProteinData->BackBone[(i + 1) * 3 + 2]);
+				AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i+1].CA, ProteinData->BackBoneSegments[i + 1].C);
 
 			break;
 		case SSType::BStrand:
 			if(i == ProteinData->Residues.Num()-1)
-				AddBetaSheetComponent(CurrentChainState, ProteinData->BackBone[(i-1) * 3], ProteinData->BackBone[(i-1) * 3 + 2], ProteinData->BackBone[(i) * 3], ProteinData->BackBone[(i) * 3 + 2]);
+				AddBetaSheetComponent(CurrentChainState, ProteinData->BackBoneSegments[i-1].CA, ProteinData->BackBoneSegments[i-1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C);
 			else
-				AddBetaSheetComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 2], ProteinData->BackBone[(i + 1) * 3], ProteinData->BackBone[(i + 1) * 3 + 2]);
+				AddBetaSheetComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i + 1].C);
 
 			break;
 		case SSType::Coil:
 			if(i == ProteinData->Residues.Num()-1)
-				AddCoilComponent(CurrentChainState, ProteinData->BackBone[(i -1) * 3], ProteinData->BackBone[(i-1) * 3 + 2], ProteinData->BackBone[(i) * 3], ProteinData->BackBone[(i) * 3 + 2]);
+				AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i -1].CA, ProteinData->BackBoneSegments[i-1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C);
 			else
-				AddCoilComponent(CurrentChainState, ProteinData->BackBone[i * 3], ProteinData->BackBone[i * 3 + 2], ProteinData->BackBone[(i + 1) * 3], ProteinData->BackBone[(i + 1) * 3 + 2]);
+				AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i + 1].C);
 			break;
+		default:
+			UE_LOG(LogTemp, Warning, TEXT("unknown type"));
 		}
 	}
 }

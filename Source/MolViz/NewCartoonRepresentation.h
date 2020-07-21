@@ -46,4 +46,6 @@ void UNewCartoonRepresentation::AddBackBoneComponent(FAtomData* CurrentCA, FAtom
 	}
 	Component->SetBackbone(CurrentCA, CurrentC, NextCA, NextC);
 	Component->RegisterComponent();
+	Component->SetMobility(EComponentMobility::Movable);
+	Component->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 }

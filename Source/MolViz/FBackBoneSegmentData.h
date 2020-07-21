@@ -15,7 +15,7 @@ struct FBackBoneSegmentData
 	GENERATED_BODY()
 	
 	FBackBoneSegmentData();
-	FBackBoneSegmentData(FAtomData* InN, FAtomData* InC, FAtomData* InO);
+	FBackBoneSegmentData(FAtomData* InN, FAtomData* InC, FAtomData *InCA, FAtomData* InO);
 	~FBackBoneSegmentData();
 
 	FAtomData *N, *C, *CA, *O;

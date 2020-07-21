@@ -20,6 +20,12 @@ FStrideInterface::~FStrideInterface()
 
 FString FStrideInterface::RunStrideCommand(FString & PdbFile)
 {
-	Handle = FWindowsPlatformProcess::CreateProc(Command,  *PdbFile, false, true, true, &ProcID, 2, 0, WPipe, RPipe);
-	return FWindowsPlatformProcess::ReadPipe(RPipe);
+	FString StdOut, StdErr;
+	int32 ReturnCode;
+	bool Succ = FWindowsPlatformProcess::ExecProcess(Command,  *PdbFile, &ReturnCode, &StdOut, &StdErr);
+	//while(PipeOut.IsEmpty())
+	//{
+	//	PipeOut = FWindowsPlatformProcess::ReadPipe(RPipe);
+	//}
+	return StdOut;
 }

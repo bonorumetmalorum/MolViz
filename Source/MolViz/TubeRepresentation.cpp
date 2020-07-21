@@ -8,15 +8,15 @@
 
 void UTubeRepresentation::ConstructRepresentation(AProteinData* ProteinData)
 {
-	if(ProteinData->BackBone.Num() == 0)
+	if(ProteinData->BackBoneSegments.Num() == 0)
 	{
 		ProteinData->FindBackBone();
 	}
 	
-	const int NumResidues = ProteinData->BackBone.Num() / 3;
+	const int NumResidues = ProteinData->BackBoneSegments.Num();
 	for(int Res = 0; Res < NumResidues - 1; Res++)
 	{ 
-		AddTubeSection(ProteinData->BackBone[Res * 3], ProteinData->BackBone[Res * 3 + 2], ProteinData->BackBone[(Res + 1) * 3], ProteinData->BackBone[(Res + 1) * 3 + 2]);
+		AddTubeSection(ProteinData->BackBoneSegments[Res].CA, ProteinData->BackBoneSegments[Res].C, ProteinData->BackBoneSegments[Res + 1].CA, ProteinData->BackBoneSegments[Res + 1].C);
 	}
 }
 //we are passing in CA, N, C where actually for tube we need CA, C, CA, C where the first CA, C pair are from the same amino acid / residue, the same for the second.
