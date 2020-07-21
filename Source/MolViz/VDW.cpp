@@ -17,10 +17,6 @@ UVDW::UVDW()
 //TODO change to using FAtomData rather than X y z
 void UVDW::AddAtom(float x, float y, float z)
 {
-	//const int NumComponents = GetComponents().Num();
-	//UE_LOG(LogTemp, Warning, TEXT("Number of components on protein: %d"), NumComponents);
-	//UProcSphere * Component = Cast<UProcSphere>(AddComponent(FName("ATOM"), false, FTransform(FVector(x, y, z)), UProcSphere::StaticClass()));
-
 	UProcSphere* Component = NewObject<UProcSphere>(this, UProcSphere::StaticClass());
 	if (!Component)
 	{
