@@ -15,8 +15,9 @@ void UTubeRepresentation::ConstructRepresentation(AProteinData* ProteinData)
 	
 	const int NumResidues = ProteinData->BackBoneSegments.Num();
 	for(int Res = 0; Res < NumResidues - 1; Res++)
-	{ 
-		AddTubeSection(ProteinData->BackBoneSegments[Res].CA, ProteinData->BackBoneSegments[Res].C, ProteinData->BackBoneSegments[Res + 1].CA, ProteinData->BackBoneSegments[Res + 1].C);
+	{
+		if(ProteinData->BackBoneSegments[Res].IsValid() && ProteinData->BackBoneSegments[Res+1].IsValid())
+			AddTubeSection(ProteinData->BackBoneSegments[Res].CA, ProteinData->BackBoneSegments[Res].C, ProteinData->BackBoneSegments[Res + 1].CA, ProteinData->BackBoneSegments[Res + 1].C);
 	}
 }
 //we are passing in CA, N, C where actually for tube we need CA, C, CA, C where the first CA, C pair are from the same amino acid / residue, the same for the second.

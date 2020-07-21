@@ -20,6 +20,9 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 	ChainState CurrentChainState = Invalid;
 	for (int i = 0; i < ProteinData->Residues.Num(); i++)
 	{
+		if (!ProteinData->BackBoneSegments[i].IsValid() && !ProteinData->BackBoneSegments[i + 1].IsValid())
+			continue;
+		
 		CurrentChainState = UpdateChainState(ProteinData, i);
 		switch(ProteinData->Residues[i].SSResType)
 		{
@@ -39,7 +42,7 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 			break;
 		case SSType::Coil:
 			if(i == ProteinData->Residues.Num()-1)
-				AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i -1].CA, ProteinData->BackBoneSegments[i-1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C);
+				AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i-1].CA, ProteinData->BackBoneSegments[i-1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C);
 			else
 				AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i + 1].C);
 			break;

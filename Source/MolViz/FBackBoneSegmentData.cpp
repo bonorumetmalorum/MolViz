@@ -24,3 +24,8 @@ FBackBoneSegmentData::FBackBoneSegmentData(FAtomData* InN, FAtomData* InC, FAtom
 FBackBoneSegmentData::~FBackBoneSegmentData()
 {
 }
+
+bool FBackBoneSegmentData::IsValid()
+{
+	return N && C && CA && O;
+}

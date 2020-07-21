@@ -19,4 +19,6 @@ struct FBackBoneSegmentData
 	~FBackBoneSegmentData();
 
 	FAtomData *N, *C, *CA, *O;
+
+	bool IsValid();
 };
