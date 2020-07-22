@@ -31,7 +31,7 @@ private:
 	void AddAlphaHelixComponent(ChainState CurrentChainState, FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC);
 	void AddBetaSheetComponent(ChainState CurrentChainState, FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC);
 	void AddCoilComponent(ChainState CurrentChainState, FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC);
-
+	FRotator ComputeBackBoneSegementRotation(FAtomData* CarbonA, FAtomData * CarbonB, FAtomData * Oxygen);
 	ChainState UpdateChainState(AProteinData* ProteindData, int CurrentResidue);
 };
 

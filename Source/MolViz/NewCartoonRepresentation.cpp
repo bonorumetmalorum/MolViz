@@ -20,7 +20,7 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 	ChainState CurrentChainState = Invalid;
 	for (int i = 0; i < ProteinData->Residues.Num(); i++)
 	{
-		if (!ProteinData->BackBoneSegments[i].IsValid() && !ProteinData->BackBoneSegments[i + 1].IsValid())
+		if (!ProteinData->BackBoneSegments[i].IsValid() || !ProteinData->BackBoneSegments[i + 1].IsValid())
 			continue;
 		
 		CurrentChainState = UpdateChainState(ProteinData, i);

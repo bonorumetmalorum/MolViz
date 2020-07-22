@@ -40,7 +40,14 @@ void UBackBoneComponent::SetBackbone(FAtomData* CurrentCA, FAtomData* CurrentC, 
 	this->Backbone[3] = NextC;
 	
 	//TODO compute the correct control points
-#define SPLINE_FACTOR 5.0
+#define SPLINE_FACTOR 2.0
+	FVector StartTangentVec = CurrentC->position - CurrentCA->position;
+	FVector EndTangentVec = NextC->position - NextCA->position;
+	StartTangentVec.Normalize();
+	EndTangentVec.Normalize();
+	FVector Up = FVector::CrossProduct(StartTangentVec, EndTangentVec);
+	Up.Normalize();
+	this->SetSplineUpDir(Up);
 	SetStartAndEnd(CurrentCA->position, (CurrentC->position - CurrentCA->position) * SPLINE_FACTOR /*C - CA*/, NextCA->position, (NextC->position - NextCA->position) * SPLINE_FACTOR /*C - CA*/);
 }
 
