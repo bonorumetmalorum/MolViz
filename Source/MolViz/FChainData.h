@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FResidue.h"
+
 #include "FChainData.generated.h"
 
 /**
@@ -25,4 +27,10 @@ struct FChainData
 	uint8 ChainID;
 	int32 ResSeq;
 	uint8 CodeForInsertionsOfResidues;
+
+	TArray<FResidue> Residues;
 };
+
+//TODO maybe add an array of residues here, move it from the protein data class.
+//we need to do this because residue numbers are repeated for each chain.
+//also residue numbers dont necessarily start from 1... what a pain. 

@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SSReader.h"
+
 #include "FBackBoneSegmentData.generated.h"
 
 struct FAtomData;
@@ -15,10 +17,11 @@ struct FBackBoneSegmentData
 	GENERATED_BODY()
 	
 	FBackBoneSegmentData();
-	FBackBoneSegmentData(FAtomData* InN, FAtomData* InC, FAtomData *InCA, FAtomData* InO);
+	FBackBoneSegmentData(FAtomData* InN, FAtomData* InC, FAtomData *InCA, FAtomData* InO, SSType InResType);
 	~FBackBoneSegmentData();
 
 	FAtomData *N, *C, *CA, *O;
+	SSType ResType;
 
 	bool IsValid();
 };

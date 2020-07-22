@@ -30,9 +30,9 @@ public:
 	TArray<FAtomData> Atoms;
 	TArray<FResidue> Residues;
 	TArray<FBondData> Bonds;
+	TArray<FChainData> Chains;
 	//TArray<FAtomData *> BackBone;
 	TArray<FBackBoneSegmentData> BackBoneSegments; //make a list of back bone segments that contain, Current C, Current O, and Current N
-	TArray<FChainData> Chains;
 	TWeakObjectPtr<AProteinRepresentation> Representation;
 	FString FilePath;
 	const FVector FindCOM();

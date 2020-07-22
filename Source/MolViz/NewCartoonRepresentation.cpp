@@ -18,83 +18,99 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 	//find out what kind of ss rep is used in this residue
 	ProteinData->FindBackBone();
 	ChainState CurrentChainState = Invalid;
-	for (int i = 0; i < ProteinData->Residues.Num(); i++)
+	for (int i = 0; i < ProteinData->BackBoneSegments.Num()-1; i++)
 	{
 		if (!ProteinData->BackBoneSegments[i].IsValid() || !ProteinData->BackBoneSegments[i + 1].IsValid())
 			continue;
 		
 		CurrentChainState = UpdateChainState(ProteinData, i);
-		switch(ProteinData->Residues[i].SSResType)
+		UBackBoneComponent * SegmentComponent = nullptr;
+		switch(ProteinData->BackBoneSegments[i].ResType)
 		{
 		case SSType::AHelix:
 			if(i == ProteinData->Residues.Num()-1)
-				AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBoneSegments[i-1].CA, ProteinData->BackBoneSegments[i-1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].CA);
+				SegmentComponent = AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBoneSegments[i-1].CA, ProteinData->BackBoneSegments[i-1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].CA);
 			else
-				AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i+1].CA, ProteinData->BackBoneSegments[i + 1].C);
+				SegmentComponent = AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i+1].CA, ProteinData->BackBoneSegments[i + 1].C);
 
 			break;
 		case SSType::BStrand:
 			if(i == ProteinData->Residues.Num()-1)
-				AddBetaSheetComponent(CurrentChainState, ProteinData->BackBoneSegments[i-1].CA, ProteinData->BackBoneSegments[i-1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C);
+				SegmentComponent = AddBetaSheetComponent(CurrentChainState, ProteinData->BackBoneSegments[i-1].CA, ProteinData->BackBoneSegments[i-1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C);
 			else
-				AddBetaSheetComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i + 1].C);
+				SegmentComponent = AddBetaSheetComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i + 1].C);
 
 			break;
 		case SSType::Coil:
 			if(i == ProteinData->Residues.Num()-1)
-				AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i-1].CA, ProteinData->BackBoneSegments[i-1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C);
+				SegmentComponent = AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i-1].CA, ProteinData->BackBoneSegments[i-1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C);
 			else
-				AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i + 1].C);
+				SegmentComponent = AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i + 1].C);
 			break;
 		default:
 			UE_LOG(LogTemp, Warning, TEXT("unknown type"));
 		}
+		if (!SegmentComponent || (ProteinData->BackBoneSegments[i].ResType == Coil)) continue;
+		//routine to create the start and end rotation of the component
+		//if it is the begining, we dont have a previous segment to do
+		//if it is at the end we dont have a next segment to do
+		//if(i == 0)
+		//{
+		//	FRotator EndRotation = SegmentComponent->MakeRotation(ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i+1].CA, ProteinData->BackBoneSegments[i].O); //current carbon, next carbon and current oxygen
+		//	SegmentComponent->SetEndRoll(EndRotation.Roll);
+		//}
+		//else if(i == ProteinData->BackBoneSegments.Num()-1)
+		//{
+		//	FRotator StartRotation = SegmentComponent->MakeRotation(ProteinData->BackBoneSegments[i-1].CA, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i-1].O); //current carbon, next carbon and current oxygen
+		//	SegmentComponent->SetStartRoll(StartRotation.Roll);
+		//}
+		//else
+		//{
+		//	FRotator StartRotation = SegmentComponent->MakeRotation(ProteinData->BackBoneSegments[i - 1].CA, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i - 1].O); //current carbon, next carbon and current oxygen
+		//	FRotator EndRotation = SegmentComponent->MakeRotation(ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i].O); //current carbon, next carbon and current oxygen
+		//	SegmentComponent->SetStartRoll(-EndRotation.Roll);
+		//	SegmentComponent->SetEndRoll(StartRotation.Roll);
+		//}
 	}
 }
 
-void UNewCartoonRepresentation::AddAlphaHelixComponent(ChainState CurrentChainState, FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC)
+UBackBoneComponent* UNewCartoonRepresentation::AddAlphaHelixComponent(ChainState CurrentChainState, FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC)
 {
 	switch(CurrentChainState)
 	{
 	case Start:
-		AddBackBoneComponent<UHelixStartComponent>(NextCA, NextC, CurrentCA, CurrentC);
-		break;
+		return AddBackBoneComponent<UHelixStartComponent>(NextCA, NextC, CurrentCA, CurrentC);
 	case Middle:
-		AddBackBoneComponent<UHelixMiddleComponent>(CurrentCA, CurrentC, NextCA, NextC);
-		break;
+		return AddBackBoneComponent<UHelixMiddleComponent>(CurrentCA, CurrentC, NextCA, NextC);
 	case End:
-		AddBackBoneComponent<UHelixEndComponent>(CurrentCA, CurrentC, NextCA, NextC);
-		break;
+		return AddBackBoneComponent<UHelixEndComponent>(CurrentCA, CurrentC, NextCA, NextC);
 	case Invalid:
 		UE_LOG(LogTemp, Warning, TEXT("invalid ss chain state"));
-		break;
+		return nullptr;
 	}
+	return nullptr;
 }
 
-void UNewCartoonRepresentation::AddBetaSheetComponent(ChainState CurrentChainState, FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC)
+UBackBoneComponent* UNewCartoonRepresentation::AddBetaSheetComponent(ChainState CurrentChainState, FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC)
 {
 	switch (CurrentChainState)
 	{
 	case Start:
-		AddBackBoneComponent<UBetaSheetStartComponent>(CurrentCA, CurrentC, NextCA, NextC);
-		break;
+		return AddBackBoneComponent<UBetaSheetStartComponent>(CurrentCA, CurrentC, NextCA, NextC);
 	case Middle:
-		AddBackBoneComponent<UBetaSheetMiddleComponent>(CurrentCA, CurrentC, NextCA, NextC);
-
-		break;
+		return AddBackBoneComponent<UBetaSheetMiddleComponent>(CurrentCA, CurrentC, NextCA, NextC);
 	case End:
-		AddBackBoneComponent<UBetaSheetEndComponent>(CurrentCA, CurrentC, NextCA, NextC);
-
-		break;
+		return AddBackBoneComponent<UBetaSheetEndComponent>(CurrentCA, CurrentC, NextCA, NextC);	
 	case Invalid:
 		UE_LOG(LogTemp, Warning, TEXT("invalid ss chain state"));
-		break;
+		return nullptr;
 	}
+	return nullptr;
 }
 
-void UNewCartoonRepresentation::AddCoilComponent(ChainState CurrentChainState, FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC)
+UBackBoneComponent* UNewCartoonRepresentation::AddCoilComponent(ChainState CurrentChainState, FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC)
 {
-	AddBackBoneComponent<UTubeComponent>(CurrentCA, CurrentC, NextCA, NextC);
+	return AddBackBoneComponent<UTubeComponent>(CurrentCA, CurrentC, NextCA, NextC);
 }
 
 UNewCartoonRepresentation::ChainState UNewCartoonRepresentation::UpdateChainState(AProteinData* ProteindData, int CurrentResidue)

@@ -75,53 +75,11 @@ void AProteinData::FindBackBone()
 					BackBoneSegment.O = &Atoms[Data];
 				}
 			}
-			//if(BackBoneSegment.C && AtomHasInterResidueBond(*BackBoneSegment.C, N))
-			//{ // N terminus
-				//BackBone.Add(AtomN); // because we have an n terminus, N is part of another residue which is bonded to the C in this residue, we need to add it otherwise N is null :(
-				/*BackBoneSegments.Add();
-				BackBone.Add(&Atoms[N]);
-				BackBone.Add(AtomC);*/
+			if(BackBoneSegment.IsValid())
+			{
+				BackBoneSegment.ResType = ResIter->SSResType;
 				BackBoneSegments.Add(BackBoneSegment);
-			//}
-			//else if(AtomN && AtomHasInterResidueBond(*AtomN, C))
-			//{// N Terminus
-			//	BackBone.Add(AtomN); 
-			//	BackBone.Add(&Atoms[C]); // like wise the C in this case is null because it is in another residue, we need to find it and add it 
-			//	BackBone.Add(AtomCA);
-			//}
-			//else
-			//{
-			//	UE_LOG(LogTemp, Warning, TEXT("no carboxyl / amine group detected"));
-			//}
-		//}
-		//else
-		//{
-		//	//middle residues
-		//	int NCount = 0;
-		//	TArray<FAtomData*> Neighbors; //TODO find another way to do this maybe??
-		//	for(auto AtomIter = ResIter->atoms.CreateIterator(); AtomIter; ++AtomIter)
-		//	{
-		//		FAtomData & AtomData = Atoms[*AtomIter];
-		//		//auto AtomNeighborIter = AtomData->Neighbours.CreateIterator();
-		//		for (int j = 0; j < AtomData.Neighbours.Num(); j++)
-		//		{
-		//			if (AtomHasInterResidueBond(Atoms[AtomData.Neighbours[j]]))
-		//			{
-		//				Neighbors.Add(&(Atoms[AtomData.Neighbours[j]]));
-		//				NCount++;
-		//			}
-		//		}
-		//		if(NCount == 2)
-		//		{//this is part of the backbone
-		//			BackBone.Add(&Atoms[*AtomIter]);
-		//			BackBone.Add(Neighbors[0]);
-		//			BackBone.Add(Neighbors[1]);
-		//		}
-		//		NCount = 0;
-		//		Neighbors.Reset();
-		//	}
-		//}
-
+			}
 	}
 }
 

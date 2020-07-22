@@ -20,8 +20,8 @@ public:
 	UBackBoneComponent();
 	
 	void SetStartingBackbone(FAtomData* StartAtom, FAtomData* ControlAtom, FAtomData* EndAtom);
-
 	void SetBackbone(FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC);
+	FRotator MakeRotation(FAtomData* C1, FAtomData* C2, FAtomData* O);
 	void UpdateBackBone();
 
 private:

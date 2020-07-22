@@ -13,4 +13,5 @@ UHelixEndComponent::UHelixEndComponent() : UBackBoneComponent()
 	SetForwardAxis(ESplineMeshAxis::Y);
 	//SetSplineUpDir(FVector(0,0,1));
 	USplineMeshComponent::SetStaticMesh(Asset);
+	
 }

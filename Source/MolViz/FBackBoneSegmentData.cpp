@@ -13,12 +13,13 @@ FBackBoneSegmentData::FBackBoneSegmentData()
 	this->CA = nullptr;
 }
 
-FBackBoneSegmentData::FBackBoneSegmentData(FAtomData* InN, FAtomData* InC, FAtomData *InCA, FAtomData* InO)
+FBackBoneSegmentData::FBackBoneSegmentData(FAtomData* InN, FAtomData* InC, FAtomData *InCA, FAtomData* InO, SSType InResType)
 {
 	this->N = InN;
 	this->C = InC;
 	this->O = InO;
 	this->CA = InCA;
+	this->ResType = InResType;
 }
 
 FBackBoneSegmentData::~FBackBoneSegmentData()
