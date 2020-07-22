@@ -15,7 +15,7 @@ struct FAtomData
 	GENERATED_BODY()
 
 	FAtomData();
-	FAtomData(int32 Snum, uint8 Alt, FString Name, uint8 Chain, int32 Resnum,	uint8 Insertion_residue_code, FVector position, float Occupancy, float TempFactor, FString Element);
+	FAtomData(int32 Snum, uint8 Alt, FString Name, uint8 Chain, int32 Resnum, uint8 Insertion_residue_code, FVector position, float Occupancy, float TempFactor, FString Element);
 	~FAtomData();
 	bool IsHydrogen() const;
 	//uint8_t nameindex;              ///< atom name string index
@@ -50,6 +50,7 @@ struct FAtomData
 	FString Name;
 	uint8 Chain;
 	int32 Resnum;
+	int32 ResIndex;
 	uint8 Insertion_residue_code;
 	FVector position;
 	float Occupancy;

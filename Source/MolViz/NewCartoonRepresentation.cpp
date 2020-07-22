@@ -51,7 +51,7 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 			UE_LOG(LogTemp, Warning, TEXT("unknown type"));
 		}
 		if (!SegmentComponent || (ProteinData->BackBoneSegments[i].ResType == Coil)) continue;
-		//routine to create the start and end rotation of the component
+		//TODO bug with this rotation, flipping to 180, need to average consecutive CAs
 		//if it is the begining, we dont have a previous segment to do
 		//if it is at the end we dont have a next segment to do
 		//if(i == 0)
@@ -116,7 +116,7 @@ UBackBoneComponent* UNewCartoonRepresentation::AddCoilComponent(ChainState Curre
 UNewCartoonRepresentation::ChainState UNewCartoonRepresentation::UpdateChainState(AProteinData* ProteindData, int CurrentResidue)
 {
 	if (CurrentResidue == 0) return Start;
-	if (CurrentResidue == ProteindData->Residues.Num() - 1) return End;
+	if (CurrentResidue >= ProteindData->Residues.Num() - 1) return End; //TODO bug with this index, residues not matching backbone segments???
 	if (ProteindData->Residues[CurrentResidue - 1].SSResType != ProteindData->Residues[CurrentResidue].SSResType) return Start;
 	if (ProteindData->Residues[CurrentResidue + 1].SSResType != ProteindData->Residues[CurrentResidue].SSResType) return End;
 	return Middle;

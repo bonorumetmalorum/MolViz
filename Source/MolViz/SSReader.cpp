@@ -34,15 +34,18 @@ void FSSReader::ParseStructureType(unsigned char Buffer[100], AProteinData* Prot
 	switch(SStype)
 	{
 		case 'E':
-			ProteinData->Residues[ResidueNumber-1].SSResType = SSType::BStrand;
+			ProteinData->Residues.FindByKey(ResidueNumber)->SSResType = SSType::BStrand;
+			//ProteinData->Residues[ResidueNumber-1].SSResType = SSType::BStrand;
 			break;
 
 		case 'H':
-			ProteinData->Residues[ResidueNumber-1].SSResType = SSType::AHelix;
+			ProteinData->Residues.FindByKey(ResidueNumber)->SSResType = SSType::AHelix;
+			//ProteinData->Residues[ResidueNumber-1].SSResType = SSType::AHelix;
 			break;
 		
 		default:
-			ProteinData->Residues[ResidueNumber-1].SSResType = SSType::Coil;
+			ProteinData->Residues.FindByKey(ResidueNumber)->SSResType = SSType::Coil;
+			//ProteinData->Residues[ResidueNumber-1].SSResType = SSType::Coil;
 			break;
 	}
 }

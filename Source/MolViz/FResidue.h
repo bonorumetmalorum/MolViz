@@ -27,4 +27,6 @@ struct FResidue
 	FString Resname;
 	int32 Resseq;
 	SSType SSResType;
+
+	bool operator==(int32 key);
 };

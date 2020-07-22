@@ -27,7 +27,7 @@ void AProteinData::CreateBonds()
 				if((0.16 <= SquaredLength) && (SquaredLength <= 1.44))
 				{ //if they are within this squared distance, add a bond
 					auto index = Bonds.Add(FBondData(AtomA.GetIndex(), AtomB.GetIndex(), InterAtomVec));
-					Residues[AtomA->Resnum-1].bonds.Add(index);
+					Residues[AtomA->ResIndex].bonds.Add(index);
 					AtomA->Neighbours.Add(AtomB.GetIndex());
 				}
 			}
@@ -38,7 +38,7 @@ void AProteinData::CreateBonds()
 				if ((0.16 <= SquaredLength) && (SquaredLength <= 3.61))
 				{ //add a bond if the squared distance is in this range
 					auto index = Bonds.Add(FBondData(AtomA.GetIndex(), AtomB.GetIndex(), InterAtomVec));
-					Residues[AtomA->Resnum-1].bonds.Add(index);
+					Residues[AtomA->ResIndex].bonds.Add(index);
 					AtomA->Neighbours.Add(AtomB.GetIndex());
 				}
 			}
@@ -85,11 +85,14 @@ void AProteinData::FindBackBone()
 
 void AProteinData::AddResidue(FString Resname, int32 Resnum)
 {
-	if(Resnum <= Residues.Num())
+	if(Residues.Num() == 0)
 	{
-		return;
+		Residues.Add(FResidue(Resname, Resnum));
 	}
-	Residues.Add(FResidue(Resname, Resnum));
+	else if(Residues[Residues.Num() - 1].Resseq < Resnum)
+	{
+		Residues.Add(FResidue(Resname, Resnum));
+	}
 }
 
 void AProteinData::AddAtom(int32 Snum, uint8 Alt, FString Name, uint8 Chain, int32 Resnum, uint8 Insertion_residue_code, FVector position, float Occupancy, float TempFactor, FString Element)
@@ -103,7 +106,13 @@ void AProteinData::AddAtom(int32 Snum, uint8 Alt, FString Name, uint8 Chain, int
 	//if the residue does not exist yet then create a new residue to add it to.
 	Name.RemoveSpacesInline();
 	int index = Atoms.Add(FAtomData(Snum, Alt, Name, Chain, Resnum, Insertion_residue_code, position, Occupancy, TempFactor, Element));
-	Residues[Resnum-1].atoms.Add(index);
+	if (Residues[Residues.Num() - 1].Resseq == Resnum)
+	{
+		Residues[Residues.Num() - 1].atoms.Add(index);
+		Atoms[index].ResIndex = Residues.Num()-1;
+	}
+	else
+		UE_LOG(LogTemp, Warning, TEXT("Floating Atom, no residue found for sequence number %f"), Resnum);
 }
 
 void AProteinData::BeginPlay()

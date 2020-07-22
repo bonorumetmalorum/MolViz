@@ -14,3 +14,8 @@ FResidue::FResidue(const FString& Resname, int32 Resseq): Resseq(Resseq), Resnam
 FResidue::~FResidue()
 {
 }
+
+bool FResidue::operator==(int32 key)
+{
+	return this->Resseq == key;
+}
