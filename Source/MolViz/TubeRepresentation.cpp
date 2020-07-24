@@ -14,11 +14,19 @@ void UTubeRepresentation::ConstructRepresentation(AProteinData* ProteinData)
 	}
 	
 	const int NumResidues = ProteinData->BackBoneSegments.Num();
-	for(int Res = 0; Res < NumResidues - 1; Res++)
+	for(auto ChainIter = ProteinData->Chains.CreateConstIterator(); ChainIter; ChainIter++)
 	{
-		if(ProteinData->BackBoneSegments[Res].IsValid() && ProteinData->BackBoneSegments[Res+1].IsValid())
-			AddTubeSection(ProteinData->BackBoneSegments[Res].CA, ProteinData->BackBoneSegments[Res].C, ProteinData->BackBoneSegments[Res + 1].CA, ProteinData->BackBoneSegments[Res + 1].C);
+		for(uint32 BackBoneSeg = ChainIter->StartBackBoneIndex; BackBoneSeg <= ChainIter->EndBackBoneIndex-2; BackBoneSeg++)
+		{
+			if (ProteinData->BackBoneSegments[BackBoneSeg].IsValid() && ProteinData->BackBoneSegments[BackBoneSeg + 1].IsValid())
+				AddTubeSection(ProteinData->BackBoneSegments[BackBoneSeg].CA, ProteinData->BackBoneSegments[BackBoneSeg].C, ProteinData->BackBoneSegments[BackBoneSeg + 1].CA, ProteinData->BackBoneSegments[BackBoneSeg + 1].C);
+		}
 	}
+	//for(int Res = 0; Res < NumResidues - 1; Res++)
+	//{
+	//	if(ProteinData->BackBoneSegments[Res].IsValid() && ProteinData->BackBoneSegments[Res+1].IsValid())
+	//		AddTubeSection(ProteinData->BackBoneSegments[Res].CA, ProteinData->BackBoneSegments[Res].C, ProteinData->BackBoneSegments[Res + 1].CA, ProteinData->BackBoneSegments[Res + 1].C);
+	//}
 }
 //we are passing in CA, N, C where actually for tube we need CA, C, CA, C where the first CA, C pair are from the same amino acid / residue, the same for the second.
 void UTubeRepresentation::AddTubeSection(FAtomData* StartAtom, FAtomData* ControlAtom, FAtomData* EndAtom)

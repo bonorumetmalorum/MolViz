@@ -48,39 +48,80 @@ void AProteinData::CreateBonds()
 
 void AProteinData::FindBackBone()
 {
-	for(auto ResIter = Residues.CreateIterator(); ResIter.GetIndex() < Residues.Num(); ResIter++)
+	uint32 StartIndex = 0, EndIndex = 0;
+	for(auto ChainIter = Chains.CreateIterator(); ChainIter; ChainIter++) //for each chain
 	{
-		//if (ResIter.GetIndex() == 0 || ResIter.GetIndex() == Residues.Num() - 1) //first residue
-		//{
-			//find backbone atoms
-			int N = -1, C = -1;
-			FBackBoneSegmentData BackBoneSegment;
-			for (auto AtomIter = ResIter->atoms.CreateIterator(); AtomIter.GetIndex() < ResIter->atoms.Num(); ++AtomIter)
+		for(auto OffsetIter = ChainIter->ResidueOffsets.CreateConstIterator(); OffsetIter; OffsetIter++) //for each set of offsets
+		{
+			for(uint32 Residue = OffsetIter->Key; Residue <= OffsetIter->Value; Residue++) //for each residue between start and end offsets
 			{
-				int Data = *AtomIter;
-				if(Atoms[Data].Name.Equals("CA"))
+				int N = -1, C = -1;
+				FBackBoneSegmentData BackBoneSegment;
+				for (auto AtomIter = Residues[Residue].atoms.CreateIterator(); AtomIter; ++AtomIter)
 				{
-					BackBoneSegment.CA = &Atoms[Data];
+					int Data = *AtomIter;
+					if (Atoms[Data].Name.Equals("CA"))
+					{
+						BackBoneSegment.CA = &Atoms[Data];
+					}
+					if (Atoms[Data].Name.Equals("C"))
+					{
+						BackBoneSegment.C = &Atoms[Data];
+					}
+					if (Atoms[Data].Name.Equals("N"))
+					{
+						BackBoneSegment.N = &Atoms[Data];
+					}
+					if (Atoms[Data].Name.Equals("O"))
+					{
+						BackBoneSegment.O = &Atoms[Data];
+					}
 				}
-				if (Atoms[Data].Name.Equals("C"))
+				if (BackBoneSegment.IsValid())
 				{
-					BackBoneSegment.C = &Atoms[Data];
-				}
-				if (Atoms[Data].Name.Equals("N"))
-				{
-					BackBoneSegment.N = &Atoms[Data];
-				}
-				if (Atoms[Data].Name.Equals("O"))
-				{
-					BackBoneSegment.O = &Atoms[Data];
+					BackBoneSegment.ResType = Residues[Residue].SSResType;
+					BackBoneSegments.Add(BackBoneSegment);
+					EndIndex++;
 				}
 			}
-			if(BackBoneSegment.IsValid())
-			{
-				BackBoneSegment.ResType = ResIter->SSResType;
-				BackBoneSegments.Add(BackBoneSegment);
-			}
+		}
+		ChainIter->StartBackBoneIndex = StartIndex;
+		ChainIter->EndBackBoneIndex = EndIndex;
+		StartIndex = EndIndex + 1;
 	}
+	//for(auto ResIter = Residues.CreateIterator(); ResIter.GetIndex() < Residues.Num(); ResIter++)
+	//{
+	//	//if (ResIter.GetIndex() == 0 || ResIter.GetIndex() == Residues.Num() - 1) //first residue
+	//	//{
+	//		//find backbone atoms
+	//		int N = -1, C = -1;
+	//		FBackBoneSegmentData BackBoneSegment;
+	//		for (auto AtomIter = ResIter->atoms.CreateIterator(); AtomIter.GetIndex() < ResIter->atoms.Num(); ++AtomIter)
+	//		{
+	//			int Data = *AtomIter;
+	//			if(Atoms[Data].Name.Equals("CA"))
+	//			{
+	//				BackBoneSegment.CA = &Atoms[Data];
+	//			}
+	//			if (Atoms[Data].Name.Equals("C"))
+	//			{
+	//				BackBoneSegment.C = &Atoms[Data];
+	//			}
+	//			if (Atoms[Data].Name.Equals("N"))
+	//			{
+	//				BackBoneSegment.N = &Atoms[Data];
+	//			}
+	//			if (Atoms[Data].Name.Equals("O"))
+	//			{
+	//				BackBoneSegment.O = &Atoms[Data];
+	//			}
+	//		}
+	//		if(BackBoneSegment.IsValid())
+	//		{
+	//			BackBoneSegment.ResType = ResIter->SSResType;
+	//			BackBoneSegments.Add(BackBoneSegment);
+	//		}
+	//}
 }
 
 FResidue* AProteinData::FindResidueInChain(uint8 ChainIdentifier, int32 Resnum, uint32 OrdinalResNum)
@@ -129,22 +170,40 @@ uint32 AProteinData::AddResidue(FString Resname, int32 Resnum)
 	return Residues.Num()-1;
 }
 
+uint32 AProteinData::AddHetResidue(FString Resname, int32 Resnum)
+{
+	if (HetResidues.Num() == 0)
+	{
+		return HetResidues.Add(FResidue(Resname, Resnum));
+	}
+	if (HetResidues[HetResidues.Num() - 1].Resseq != Resnum)
+	{
+		return HetResidues.Add(FResidue(Resname, Resnum));
+	}
+	return HetResidues.Num() - 1;
+}
+
 void AProteinData::AddAtom(int32 Snum, uint8 Alt, FString Name, uint8 Chain, int32 Resnum, uint8 Insertion_residue_code, FVector position, float Occupancy, float TempFactor, FString Element)
 {
-	//check if the residue of this atom exists, if so add the atom to the atom array and get its index added to the residue
-	
-	//if(Residues[Residues.Num()-1].Resseq < Resnum) //we have not added this residue yet
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("Unable to add atom %d, non-existant residue: %d"), Snum, Resnum);
-	//	return;
-	//}
-	//if the residue does not exist yet then create a new residue to add it to.
 	Name.RemoveSpacesInline();
 	int index = Atoms.Add(FAtomData(Snum, Alt, Name, Chain, Resnum, Insertion_residue_code, position, Occupancy, TempFactor, Element));
 	if (Residues[Residues.Num() - 1].Resseq == Resnum)
 	{
 		Residues[Residues.Num() - 1].atoms.Add(index);
 		Atoms[index].ResIndex = Residues.Num()-1;
+	}
+	else
+		UE_LOG(LogTemp, Warning, TEXT("Floating Atom, no residue found for sequence number %f"), Resnum);
+}
+
+void AProteinData::AddHetAtom(int32 Snum, uint8 Alt, FString Name, uint8 Chain, int32 Resnum, uint8 Insertion_residue_code, FVector position, float Occupancy, float TempFactor, FString Element)
+{
+	Name.RemoveSpacesInline();
+	int index = Atoms.Add(FAtomData(Snum, Alt, Name, Chain, Resnum, Insertion_residue_code, position, Occupancy, TempFactor, Element));
+	if (HetResidues[HetResidues.Num() - 1].Resseq == Resnum)
+	{
+		HetResidues[HetResidues.Num() - 1].atoms.Add(index);
+		Atoms[index].ResIndex = HetResidues.Num() - 1;
 	}
 	else
 		UE_LOG(LogTemp, Warning, TEXT("Floating Atom, no residue found for sequence number %f"), Resnum);

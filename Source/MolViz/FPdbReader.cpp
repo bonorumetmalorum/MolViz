@@ -42,7 +42,7 @@ void FPdbReader::readStructure(FString filepath, AActor * Protein)
 				ParseAtom(buffer, Cast<AProteinData>(Protein));
 				break;
 			case Hetatm:
-				ParseAtom(buffer, Cast<AProteinData>(Protein));
+				ParseHetAtom(buffer, Cast<AProteinData>(Protein));
 				break;
 			case Model:
 				break;
@@ -197,4 +197,61 @@ void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 
 	NewChainEndOffset = Protein->AddResidue(resName, Resnum);
 	Protein->AddAtom(Snum, Alt, name, Chain, Resnum, Insertion_residue_code, FVector(x, y, z), Occupancy, TempFactor, Element);
+}
+
+void FPdbReader::ParseHetAtom(uint8* line, AProteinData* Protein)
+{
+	int32 Snum = -1;
+	uint8 Alt = '\0';
+	FString Resname = "";
+	uint8 Chain;
+	int32 Resnum = -1;
+	uint8 Insertion_residue_code;
+	float x, y, z;
+	float Occupancy, TempFactor;
+	//uint8 Charge[3] = { '\0' };
+
+	FString type = BytesToString(line, 6); //0-5
+	line += 6; //6
+	FString serial = BytesToString(line, 5); //6 - 10
+	line += 6; //12
+	FString name = BytesToString(line, 5); //12-15
+	line += 4; //16
+	FString altLoc = BytesToString(line, 1); //16
+	line += 1; //17
+	FString resName = BytesToString(line, 3); //17-19
+	line += 4; //21
+	Chain = *line;
+	line += 1; //22
+	FString resSeq = BytesToString(line, 4); //22-25 - issue with this one
+	line += 4; //26
+	FString iCode = BytesToString(line, 1); //26
+	line += 4; //30
+	FString X = BytesToString(line, 8); //30-37
+	line += 8; //38
+	FString Y = BytesToString(line, 8); //38-45
+	line += 8; //46
+	FString Z = BytesToString(line, 8); //46-53
+	line += 8; //54
+	FString occupancy = BytesToString(line, 6); //54-59
+	line += 6; //60
+	FString tempFactor = BytesToString(line, 5); //60-65
+	line += 16; //76
+	FString Element = BytesToString(line, 2); //76-77
+	line += 2; //78
+	//FString charge = BytesToString(line, 2); //78-79
+	//line += 2;
+
+	LexFromString(Snum, *serial);
+	LexFromString(Alt, *altLoc);
+	LexFromString(Resnum, *resSeq);
+	LexFromString(Insertion_residue_code, *iCode);
+	LexFromString(x, *X);
+	LexFromString(y, *Y);
+	LexFromString(z, *Z);
+	LexFromString(Occupancy, *occupancy);
+	LexFromString(TempFactor, *tempFactor);
+
+	int ResNumber = Protein->AddHetResidue(resName, Resnum);
+	Protein->AddHetAtom(Snum, Alt, name, Chain, Resnum, Insertion_residue_code, FVector(x, y, z), Occupancy, TempFactor, Element);
 }

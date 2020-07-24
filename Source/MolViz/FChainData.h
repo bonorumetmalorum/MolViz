@@ -28,6 +28,9 @@ struct FChainData
 	int32 ResSeq;
 	uint8 CodeForInsertionsOfResidues;
 	TArray<TPair<uint32, uint32>> ResidueOffsets;
+	TArray<uint32> HetAtomIndices;
+	uint32 StartBackBoneIndex;
+	uint32 EndBackBoneIndex;
 	bool operator==(uint8 Index);
 };
 

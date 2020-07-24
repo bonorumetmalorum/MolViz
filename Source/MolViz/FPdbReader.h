@@ -37,6 +37,7 @@ private:
 	LineType getLineType(const uint8 * line);
 	void ParseTer(uint8* line, AProteinData* Cast);
 	void ParseAtom(uint8* line, AProteinData * Protein);
+	void ParseHetAtom(uint8* line, AProteinData* Protein);
 	void ParseEnd(AProteinData * Protein);
 	uint32 NewChainStartOffset = 0;
 	uint32 NewChainEndOffset = 0;
