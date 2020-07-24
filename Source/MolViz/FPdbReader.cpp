@@ -15,6 +15,15 @@ FPdbReader::~FPdbReader()
 {
 }
 
+void FPdbReader::ParseEnd(AProteinData * Protein)
+{
+	//if for some reason we have no chains, we must create one.
+	if(Protein->Chains.Num() == 0)
+	{
+		Protein->Chains.Add(FChainData(Protein->Atoms.Last().Snum + 1, Protein->Residues.Last().Resname, Protein->Atoms.Last().Chain, Protein->Residues.Last().Resseq, -1, 0, Protein->Residues.Num() - 1));
+	}
+}
+
 void FPdbReader::readStructure(FString filepath, AActor * Protein)
 {
 	IPlatformFile & file = FPlatformFileManager::Get().GetPlatformFile();
@@ -41,11 +50,13 @@ void FPdbReader::readStructure(FString filepath, AActor * Protein)
 				ParseTer(buffer, Cast<AProteinData>(Protein));
 				break;
 			case End:
+				ParseEnd(Cast<AProteinData>(Protein));
 				break;
 			case Other:
 				UE_LOG(LogTemp, Warning, TEXT("No support for: %s"),  *(BytesToString(buffer, 6)));
 		}
 	}
+	ParseEnd(Cast<AProteinData>(Protein));
 	Cast<AProteinData>(Protein)->FilePath = filepath;
 	Cast<AProteinData>(Protein)->CreateBonds();
 	//broadcast "load succeeded"
@@ -55,27 +66,28 @@ void FPdbReader::readStructure(FString filepath, AActor * Protein)
 LineType FPdbReader::getLineType(const uint8 * line)
 {
 	FString word = BytesToString(line, 6);
-	if(word.Contains("HEADER", ESearchCase::Type::IgnoreCase))
+	word.RemoveSpacesInline();
+	if(word.Equals("HEADER", ESearchCase::Type::IgnoreCase))
 	{
 		return Header;
 	}
-	if (word.Contains("SEQRES", ESearchCase::Type::IgnoreCase))
+	if (word.Equals("SEQRES", ESearchCase::Type::IgnoreCase))
 	{
 		return Seqres;
 	}
-	if (word.Contains("ATOM", ESearchCase::Type::IgnoreCase))
+	if (word.Equals("ATOM", ESearchCase::Type::IgnoreCase))
 	{
 		return Atom;
 	}
-	if (word.Contains("HETATM", ESearchCase::Type::IgnoreCase))
+	if (word.Equals("HETATM", ESearchCase::Type::IgnoreCase))
 	{
 		return Hetatm;
 	}
-	if(word.Contains("TER", ESearchCase::IgnoreCase))
+	if(word.Equals("TER", ESearchCase::IgnoreCase))
 	{
 		return Ter;
 	}
-	if (word.Contains("END", ESearchCase::Type::IgnoreCase))
+	if (word.Equals("END", ESearchCase::Type::IgnoreCase))
 	{
 		return End;
 	}
@@ -96,14 +108,13 @@ void FPdbReader::ParseTer(uint8* line, AProteinData* Cast)
 	line += 11;
 	Resname = BytesToString(line, 3); //17-19
 	line += 4;
-	FString Cid = BytesToString(line, 1); //21
+	ChainID = *line; //21
 	line += 1;
 	FString RSNum = BytesToString(line, 4); //22 - 25
 	line += 4;
 	FString Cfir = BytesToString(line, 1); //26
 
 	LexFromString(SerialNumber, *SNum);
-	LexFromString(ChainID, *Cid);
 	LexFromString(ResSeq, *RSNum);
 	LexFromString(CodeForInsertionsOfResidues, *Cfir);
 
@@ -112,13 +123,22 @@ void FPdbReader::ParseTer(uint8* line, AProteinData* Cast)
 	//if this is the next chain, then we must start at the previous chain end and stop and current atom list length
 	if(Cast->Chains.Num() == 0)
 	{
-		Cast->Chains.Add(FChainData(SerialNumber, Resname, ChainID, ResSeq, CodeForInsertionsOfResidues, 0, Cast->Atoms.Num()-1));
+		Cast->Chains.Add(FChainData(SerialNumber, Resname, ChainID, ResSeq, CodeForInsertionsOfResidues, 0, NewChainEndOffset));
 	}
 	else
 	{
-		int StartIndex = Cast->Chains[Cast->Chains.Num() - 1].EndIndex;
-		Cast->Chains.Add(FChainData(SerialNumber, Resname, ChainID, ResSeq, CodeForInsertionsOfResidues, StartIndex, Cast->Atoms.Num() - 1));
+		FChainData* Chain = Cast->Chains.FindByKey(ChainID);
+		if (Chain)
+		{
+			Chain->ResidueOffsets.Add(TPair<uint32, uint32>(NewChainStartOffset, NewChainEndOffset));
+		}
+		else
+		{
+			Cast->Chains.Add(FChainData(SerialNumber, Resname, ChainID, ResSeq, CodeForInsertionsOfResidues, NewChainStartOffset, NewChainEndOffset));
+		}
+		
 	}
+	NewChainStartOffset = NewChainEndOffset+1;
 	
 }
 
@@ -144,7 +164,7 @@ void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 	line += 1; //17
 	FString resName = BytesToString(line, 3); //17-19
 	line += 4; //21
-	FString chainID = BytesToString(line, 1); //21
+	Chain = *line;
 	line += 1; //22
 	FString resSeq = BytesToString(line, 4); //22-25 - issue with this one
 	line += 4; //26
@@ -167,7 +187,6 @@ void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 
 	LexFromString(Snum, *serial);
 	LexFromString(Alt, *altLoc);
-	LexFromString(Chain, *chainID);
 	LexFromString(Resnum, *resSeq);
 	LexFromString(Insertion_residue_code, *iCode);
 	LexFromString(x, *X);
@@ -176,6 +195,6 @@ void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 	LexFromString(Occupancy, *occupancy);
 	LexFromString(TempFactor, *tempFactor);
 
-	Protein->AddResidue(resName, Resnum);
+	NewChainEndOffset = Protein->AddResidue(resName, Resnum);
 	Protein->AddAtom(Snum, Alt, name, Chain, Resnum, Insertion_residue_code, FVector(x, y, z), Occupancy, TempFactor, Element);
 }

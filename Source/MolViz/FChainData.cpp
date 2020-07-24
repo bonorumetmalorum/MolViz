@@ -7,18 +7,24 @@ FChainData::FChainData()
 {
 }
 
-FChainData::FChainData(int32 InSerialNumber, FString InResname, uint8 InChainID, int32 InResSeq, uint8 InCodeForInsertionsOfResidues, int StartAtomIndex, int EndAtomIndex)
+FChainData::FChainData(int32 InSerialNumber, FString InResname, uint8 InChainID, int32 InResSeq, uint8 InCodeForInsertionsOfResidues, int StartResIndex, int EndResIndex)
 {
 	SerialNumber = InSerialNumber;
 	Resname = InResname;
 	ChainID = InChainID;
 	ResSeq = InResSeq;
 	CodeForInsertionsOfResidues = InCodeForInsertionsOfResidues;
-	StartIndex = StartAtomIndex;
-	EndIndex = EndAtomIndex;
+	StartIndex = StartResIndex;
+	EndIndex = EndResIndex;
+	ResidueOffsets.Add(TPair<uint32, uint32>(StartIndex, EndIndex));
 }
 
 
 FChainData::~FChainData()
 {
+}
+
+bool FChainData::operator==(uint8 Index)
+{
+	return this->ChainID == Index;
 }

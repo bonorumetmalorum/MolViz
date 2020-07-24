@@ -83,26 +83,61 @@ void AProteinData::FindBackBone()
 	}
 }
 
-void AProteinData::AddResidue(FString Resname, int32 Resnum)
+FResidue* AProteinData::FindResidueInChain(uint8 ChainIdentifier, int32 Resnum, uint32 OrdinalResNum)
+{
+	FChainData* Chain = nullptr;
+	if(ChainIdentifier == '-')
+	{
+		Chain = &Chains[0];
+	}
+	else
+	{
+		Chain = Chains.FindByKey(ChainIdentifier);
+	}
+
+	if(!Chain)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("unkown chain %c"), ChainIdentifier);
+		return nullptr;
+	}
+	
+	for(auto OffsetsIter = Chain->ResidueOffsets.CreateConstIterator(); OffsetsIter; OffsetsIter++)
+	{
+		if((OrdinalResNum-1) <= (OffsetsIter->Value - OffsetsIter->Key))
+		{
+			FResidue* Residue = &Residues[OffsetsIter->Key + (OrdinalResNum-1)];
+			if(Residue->Resseq == Resnum)
+			{
+				return Residue;
+			}
+		}
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Reached end of chain and residue finding"));
+	return nullptr;
+}
+
+uint32 AProteinData::AddResidue(FString Resname, int32 Resnum)
 {
 	if(Residues.Num() == 0)
 	{
-		Residues.Add(FResidue(Resname, Resnum));
+		return Residues.Add(FResidue(Resname, Resnum));
 	}
-	else if(Residues[Residues.Num() - 1].Resseq < Resnum)
+	if(Residues[Residues.Num() - 1].Resseq != Resnum)
 	{
-		Residues.Add(FResidue(Resname, Resnum));
+		return Residues.Add(FResidue(Resname, Resnum));
 	}
+	return Residues.Num()-1;
 }
 
 void AProteinData::AddAtom(int32 Snum, uint8 Alt, FString Name, uint8 Chain, int32 Resnum, uint8 Insertion_residue_code, FVector position, float Occupancy, float TempFactor, FString Element)
 {
 	//check if the residue of this atom exists, if so add the atom to the atom array and get its index added to the residue
-	if(Residues.Num() < Resnum) //we have not added this residue yet
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Unable to add atom %d, non-existant residue: %d"), Snum, Resnum);
-		return;
-	}
+	
+	//if(Residues[Residues.Num()-1].Resseq < Resnum) //we have not added this residue yet
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("Unable to add atom %d, non-existant residue: %d"), Snum, Resnum);
+	//	return;
+	//}
 	//if the residue does not exist yet then create a new residue to add it to.
 	Name.RemoveSpacesInline();
 	int index = Atoms.Add(FAtomData(Snum, Alt, Name, Chain, Resnum, Insertion_residue_code, position, Occupancy, TempFactor, Element));

@@ -24,30 +24,34 @@ void FSSReader::ParseStructureType(unsigned char Buffer[100], AProteinData* Prot
 
 	int32 ResidueNumber = -1;
 	int32 ChainNumber = -1;
+	uint8 ChainIdentifier = Buffer[9];
 
 	Resnum = BytesToString(Buffer + 11, 4);
 	LexFromString(ResidueNumber, *Resnum);
 	Chainnum = BytesToString(Buffer + 16, 4);
+	
 	LexFromString(ChainNumber, *Chainnum);
 	uint8 SStype = Buffer[24];
-
+	
+	FResidue* Res = ProteinData->FindResidueInChain(ChainIdentifier, ResidueNumber, ChainNumber);
 	switch(SStype)
 	{
 		case 'E':
-			ProteinData->Residues.FindByKey(ResidueNumber)->SSResType = SSType::BStrand;
+			Res->SSResType = SSType::BStrand;
 			//ProteinData->Residues[ResidueNumber-1].SSResType = SSType::BStrand;
 			break;
 
 		case 'H':
-			ProteinData->Residues.FindByKey(ResidueNumber)->SSResType = SSType::AHelix;
+			Res->SSResType = SSType::AHelix;
 			//ProteinData->Residues[ResidueNumber-1].SSResType = SSType::AHelix;
 			break;
 		
 		default:
-			ProteinData->Residues.FindByKey(ResidueNumber)->SSResType = SSType::Coil;
+			Res->SSResType = SSType::Coil;
 			//ProteinData->Residues[ResidueNumber-1].SSResType = SSType::Coil;
 			break;
 	}
+	UE_LOG(LogTemp, Warning, TEXT("Reached end of SS parsing structure type"));
 }
 
 /*
@@ -80,7 +84,9 @@ void FSSReader::readStructure(FString filepath, AActor* Structure)
 		case NotSupported:
 			UE_LOG(LogTemp, Warning, TEXT("No support for: %s"), *(BytesToString(buffer, 3)));
 		}
+		UE_LOG(LogTemp, Warning, TEXT("Parsing SS file"));
 	}
+	UE_LOG(LogTemp, Warning, TEXT("Reached end of SS parsing"));
 }
 
 SSLineType FSSReader::GetLineType(const uint8* line)

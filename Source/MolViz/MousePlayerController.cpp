@@ -133,7 +133,7 @@ void AMousePlayerController::RotateProtein()
 	int size = (x > y) ? y : x;
 	CurrentPostion.X = (2.0 * CurrentPostion.X - size) / size;
 	CurrentPostion.Y = (size - (2.0 * CurrentPostion.Y)) / size;
-	if (this->ArcBallController->Dragging)
+	if (this->ArcBallController->Dragging && ProteinRep.IsValid())
 	{
 		ArcBallController->Ball_Mouse(CurrentPostion);
 		ArcBallController->Ball_Update();
