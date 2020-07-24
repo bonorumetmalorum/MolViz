@@ -16,7 +16,8 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 {
 	//iterate through the residues
 	//find out what kind of ss rep is used in this residue
-	ProteinData->FindBackBone();
+	if(ProteinData->BackBoneSegments.Num() == 0)
+		ProteinData->FindBackBone();
 	ChainState CurrentChainState = Invalid;
 	for (int i = 0; i < ProteinData->BackBoneSegments.Num()-1; i++)
 	{
