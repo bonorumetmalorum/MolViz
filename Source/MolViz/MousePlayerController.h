@@ -36,6 +36,7 @@ public:
 	void RotateX(float X);
 	void RotateY(float Y);
 	void ScaleProtein();
+	void SetProteinRep(AProteinRepresentation* InProteinRep);
 	void TranslateProtein();
 	void HandleMouseMovement();
 	void RotateProtein();

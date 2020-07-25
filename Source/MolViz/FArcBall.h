@@ -23,7 +23,8 @@ public:
     void Ball_EndDrag();
     FVector4 MouseConstrainToSphere(FVector Mouse, FVector BallCenter, double BallRadius);
     FQuat ArcBallPointToPoint(FVector4 A, FVector4 B);
-    bool Dragging;
+	void SetRotation(const FQuat& Quat);
+	bool Dragging;
 
 private:
     FVector4 Center;

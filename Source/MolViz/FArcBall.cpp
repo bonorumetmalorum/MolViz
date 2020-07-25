@@ -85,3 +85,8 @@ FQuat UArcBall::ArcBallPointToPoint(FVector4 A, FVector4 B)
     Quat.W = A.X * B.X + A.Y * B.Y + A.Z * B.Z;
     return Quat;
 }
+
+void UArcBall::SetRotation(const FQuat& Quat)
+{
+    QNow = Quat;
+}

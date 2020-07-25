@@ -84,7 +84,9 @@ void AMousePlayerController::ZoomOut()
 	if (ProteinRep.IsValid())
 	{
 		CurrentTranslation.X += 1.0;
-		ProteinRep->SetActorTransform(FTransform(CurrentTranslation));
+		FTransform CurrentTransform = ProteinRep->GetActorTransform();
+		CurrentTransform.SetLocation(CurrentTranslation);
+		ProteinRep->SetActorTransform(CurrentTransform);
 	}
 }
 
@@ -93,7 +95,9 @@ void AMousePlayerController::ZoomIn()
 	if (ProteinRep.IsValid())
 	{
 		CurrentTranslation.X -= 1.0;
-		ProteinRep->SetActorTransform(FTransform(CurrentTranslation));
+		FTransform CurrentTransform = ProteinRep->GetActorTransform();
+		CurrentTransform.SetLocation(CurrentTranslation);
+		ProteinRep->SetActorTransform(CurrentTransform);
 	}
 }
 
@@ -105,7 +109,7 @@ void AMousePlayerController::TranslateProtein()
 		GetInputMouseDelta(x, y);
 		float MoveAmount = 1;
 		CurrentTranslation += FVector(0, x * MoveAmount, y * MoveAmount);
-		ProteinRep->SetActorTransform(FTransform(CurrentTranslation));
+		ProteinRep->SetActorTransform(FTransform(ProteinRep->GetActorRotation(), CurrentTranslation, ProteinRep->GetActorScale3D()));
 	}
 }
 
@@ -137,6 +141,7 @@ void AMousePlayerController::RotateProtein()
 	{
 		ArcBallController->Ball_Mouse(CurrentPostion);
 		ArcBallController->Ball_Update();
+		CurrenRotation = ArcBallController->Ball_Value();
 		ProteinRep->SetActorRotation(ArcBallController->Ball_Value());
 	}
 }
@@ -177,5 +182,12 @@ void AMousePlayerController::ScaleProtein()
 		PreviousPosition = CurrentPostion;
 		ProteinRep->SetActorTransform(FTransform(ProteinRep->GetActorRotation(), ProteinRep->GetActorLocation(), CurrentScale));
 	}
+}
+
+void AMousePlayerController::SetProteinRep(AProteinRepresentation * InProteinRep)
+{
+	this->ProteinRep = InProteinRep;
+	CurrentTranslation = this->ProteinRep->GetTransform().GetTranslation();
+	ArcBallController->SetRotation(ProteinRep->GetTransform().GetRotation());
 }
 
