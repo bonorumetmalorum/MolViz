@@ -14,8 +14,11 @@
 
 void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinData)
 {
+	FMatrix PreviousRot;
 	//iterate through the residues
 	//find out what kind of ss rep is used in this residue
+	//
+	//
 	if(ProteinData->BackBoneSegments.Num() == 0)
 		ProteinData->FindBackBone();
 	ChainState CurrentChainState = Invalid;
@@ -57,20 +60,35 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 		//if it is at the end we dont have a next segment to do
 		//if(i == 0)
 		//{
-		//	FRotator EndRotation = SegmentComponent->MakeRotation(ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i+1].CA, ProteinData->BackBoneSegments[i].O); //current carbon, next carbon and current oxygen
-		//	SegmentComponent->SetEndRoll(EndRotation.Roll);
+		//	FMatrix EndRotation = SegmentComponent->MakeRotation(ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i+1].CA, ProteinData->BackBoneSegments[i].O); //current carbon, next carbon and current oxygen
+		//	SegmentComponent->SetStartRoll(EndRotation.Rotator().Roll);
+		//	SegmentComponent->SetEndRoll(EndRotation.Rotator().Roll);
+		//	PreviousRot = EndRotation;
 		//}
 		//else if(i == ProteinData->BackBoneSegments.Num()-1)
 		//{
-		//	FRotator StartRotation = SegmentComponent->MakeRotation(ProteinData->BackBoneSegments[i-1].CA, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i-1].O); //current carbon, next carbon and current oxygen
-		//	SegmentComponent->SetStartRoll(StartRotation.Roll);
+		//	FMatrix StartRotation = SegmentComponent->MakeRotation(ProteinData->BackBoneSegments[i-1].CA, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i-1].O); //current carbon, next carbon and current oxygen
+		//	SegmentComponent->SetStartRoll(PreviousRot.Rotator().Roll);
+		//	SegmentComponent->SetEndRoll(PreviousRot.Rotator().Roll);
 		//}
 		//else
 		//{
-		//	FRotator StartRotation = SegmentComponent->MakeRotation(ProteinData->BackBoneSegments[i - 1].CA, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i - 1].O); //current carbon, next carbon and current oxygen
-		//	FRotator EndRotation = SegmentComponent->MakeRotation(ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i].O); //current carbon, next carbon and current oxygen
-		//	SegmentComponent->SetStartRoll(-EndRotation.Roll);
-		//	SegmentComponent->SetEndRoll(StartRotation.Roll);
+		//	//FMatrix StartRotation = SegmentComponent->MakeRotation(ProteinData->BackBoneSegments[i - 1].CA, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i - 1].O); //current carbon, next carbon and current oxygen
+		//	FMatrix EndRotation = SegmentComponent->MakeRotation(ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i].O); //current carbon, next carbon and current oxygen
+		//	if(FVector::DotProduct(PreviousRot.GetUnitAxis(EAxis::Y), EndRotation.GetUnitAxis(EAxis::Y)) <= 0.0f)
+		//	{//the rotation is greater than 90 degrees
+		//		FRotator NewEnd = EndRotation.Rotator();
+		//		NewEnd.Add(0,0,180);
+		//		SegmentComponent->SetStartRoll(PreviousRot.Rotator().Roll);
+		//		SegmentComponent->SetEndRoll(EndRotation.Rotator().Roll);
+		//		PreviousRot = FRotationMatrix(NewEnd);
+		//	}
+		//	else
+		//	{
+		//		SegmentComponent->SetStartRoll(PreviousRot.Rotator().Roll);
+		//		SegmentComponent->SetEndRoll(EndRotation.Rotator().Roll);
+		//		PreviousRot = EndRotation;
+		//	}			
 		//}
 	}
 }

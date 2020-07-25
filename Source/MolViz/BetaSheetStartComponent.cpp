@@ -8,7 +8,7 @@
 UBetaSheetStartComponent::UBetaSheetStartComponent() : UBackBoneComponent()
 {
 	//set the static mesh of this part of the tube
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>Mesh(TEXT("StaticMesh'/Game/SheetBegin.SheetBegin'"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>Mesh(TEXT("StaticMesh'/Game/Sheet.Sheet'"));
 	UStaticMesh* Asset = Mesh.Object;
 	SetForwardAxis(ESplineMeshAxis::Y);
 	//SetSplineUpDir(FVector(0,0,1));

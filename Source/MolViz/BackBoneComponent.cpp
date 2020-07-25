@@ -48,14 +48,14 @@ void UBackBoneComponent::SetBackbone(FAtomData* CurrentCA, FAtomData* CurrentC, 
 	SetStartAndEnd(CurrentCA->position, (CurrentC->position - CurrentCA->position) * SPLINE_FACTOR /*C - CA*/, NextCA->position, (NextC->position - NextCA->position) * SPLINE_FACTOR /*C - CA*/);
 }
 
-FRotator UBackBoneComponent::MakeRotation(FAtomData* C1, FAtomData* C2, FAtomData* O)
+FMatrix UBackBoneComponent::MakeRotation(FAtomData* C1, FAtomData* C2, FAtomData* O)
 {
 	FVector Dir = C2->position - C1->position;
 	Dir.Normalize();
 	FVector OxDir = O->position - C1->position;
 	OxDir.Normalize();
 	SetSplineUpDir(FVector::CrossProduct(Dir, OxDir));
-	return FRotationMatrix::MakeFromXY(Dir,OxDir).Rotator();
+	return FRotationMatrix::MakeFromXY(Dir,OxDir);
 }
 
 void UBackBoneComponent::UpdateBackBone()
