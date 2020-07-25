@@ -10,7 +10,7 @@ AMousePlayerController::AMousePlayerController()
 	this->bShowMouseCursor = true;
 	this->ArcBallController = NewObject<UArcBall>();
 	
-	ArcBallController->Ball_Place(FVector4(0, 0, 0, 1), 1.0);
+	ArcBallController->Ball_Place(FVector4(0.5, 0.5, 0, 1), 0.8);
 	this->CurrentPostion = FVector4(0,0,0,1);
 	this->PreviousPosition = FVector4(0, 0, 0, 1);
 	this->CurrenRotation = FQuat::Identity;

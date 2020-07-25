@@ -2,7 +2,7 @@
 
 
 #include "BackBoneComponent.h"
-
+#include "DrawDebugHelpers.h"
 #include "UObject/ConstructorHelpers.h"
 
 UBackBoneComponent::UBackBoneComponent()
@@ -54,6 +54,9 @@ FMatrix UBackBoneComponent::MakeRotation(FAtomData* C1, FAtomData* C2, FAtomData
 	Dir.Normalize();
 	FVector OxDir = O->position - C1->position;
 	OxDir.Normalize();
+	DrawDebugLine(this->GetWorld(), C1->position, C2->position, FColor::Emerald, true);
+	DrawDebugLine(this->GetWorld(), C1->position, O->position, FColor::Red, true);
+	DrawDebugLine(this->GetWorld(), C1->position, FVector::CrossProduct(C1->position, O->position), FColor::Blue, true);
 	SetSplineUpDir(FVector::CrossProduct(Dir, OxDir));
 	return FRotationMatrix::MakeFromXY(Dir,OxDir);
 }
