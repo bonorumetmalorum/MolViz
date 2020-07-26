@@ -2,12 +2,7 @@
 
 
 #include "ProteinRepresentation.h"
-
-
-#include "AppManager.h"
 #include "MolVizGameModeBase.h"
-#include "UProcSphere.h"
-#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AProteinRepresentation::AProteinRepresentation() : AActor()

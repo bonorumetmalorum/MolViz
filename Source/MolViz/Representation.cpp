@@ -27,46 +27,46 @@ void URepresentation::BeginPlay()
 
 AtomType URepresentation::NameToType(FString name)
 {
-	if (name.Equals("H", ESearchCase::IgnoreCase))
+	if (name.Contains("H", ESearchCase::IgnoreCase))
 	{
 		return AtomType::H;
 	}
-	if (name.Equals("O", ESearchCase::IgnoreCase))
+	if (name.Contains("O", ESearchCase::IgnoreCase))
 	{
 		return AtomType::O;
 
 	}
-	if (name.Equals("N", ESearchCase::IgnoreCase))
+	if (name.Contains("N", ESearchCase::IgnoreCase))
 	{
 		return AtomType::N;
 
 	}
-	if (name.Equals("C", ESearchCase::IgnoreCase))
+	if (name.Contains("C", ESearchCase::IgnoreCase))
 	{
 		return AtomType::C;
 
 	}
-	if (name.Equals("S", ESearchCase::IgnoreCase))
+	if (name.Contains("S", ESearchCase::IgnoreCase))
 	{
 		return AtomType::S;
 
 	}
-	if (name.Equals("P", ESearchCase::IgnoreCase))
+	if (name.Contains("P", ESearchCase::IgnoreCase))
 	{
 		return AtomType::P;
 
 	}
-	if (name.Equals("Z", ESearchCase::IgnoreCase))
+	if (name.Contains("Z", ESearchCase::IgnoreCase))
 	{
 		return AtomType::Z;
 
 	}
-	if (name.Equals("LPA", ESearchCase::IgnoreCase))
+	if (name.Contains("LPA", ESearchCase::IgnoreCase))
 	{
 		return AtomType::LPA;
 
 	}
-	if (name.Equals("LPB", ESearchCase::IgnoreCase))
+	if (name.Contains("LPB", ESearchCase::IgnoreCase))
 	{
 		return AtomType::LPB;
 

@@ -17,6 +17,7 @@ void AMolVizGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	RepresentationFactory = NewObject<URepresentationFactory>(this);
+	UGameUserSettings::GetGameUserSettings()->SetFullscreenMode(EWindowMode::Windowed);
 	/*ProteinReps.Add(
 		TWeakObjectPtr<AProteinRepresentation>(
 				

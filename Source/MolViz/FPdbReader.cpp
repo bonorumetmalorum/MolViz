@@ -63,6 +63,55 @@ void FPdbReader::readStructure(FString filepath, AActor * Protein)
 	UE_LOG(LogTemp, Warning, TEXT("finished parsing file"));
 }
 
+FString FPdbReader::NameToType(FString name)
+{
+	if (name.Contains("H", ESearchCase::IgnoreCase))
+	{
+		return "H";
+	}
+	if (name.Contains("O", ESearchCase::IgnoreCase))
+	{
+		return "O";
+
+	}
+	if (name.Contains("N", ESearchCase::IgnoreCase))
+	{
+		return "N";
+
+	}
+	if (name.Contains("C", ESearchCase::IgnoreCase))
+	{
+		return "C";
+
+	}
+	if (name.Contains("S", ESearchCase::IgnoreCase))
+	{
+		return "S";
+
+	}
+	if (name.Contains("P", ESearchCase::IgnoreCase))
+	{
+		return "P";
+
+	}
+	if (name.Contains("Z", ESearchCase::IgnoreCase))
+	{
+		return "Z";
+
+	}
+	if (name.Contains("LPA", ESearchCase::IgnoreCase))
+	{
+		return "LPA";
+
+	}
+	if (name.Contains("LPB", ESearchCase::IgnoreCase))
+	{
+		return "LPB";
+
+	}
+	return "O";
+}
+
 LineType FPdbReader::getLineType(const uint8 * line)
 {
 	FString word = BytesToString(line, 6);
@@ -194,6 +243,8 @@ void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 	LexFromString(z, *Z);
 	LexFromString(Occupancy, *occupancy);
 	LexFromString(TempFactor, *tempFactor);
+
+	Element = NameToType(name);
 
 	NewChainEndOffset = Protein->AddResidue(resName, Resnum);
 	Protein->AddAtom(Snum, Alt, name, Chain, Resnum, Insertion_residue_code, FVector(x, y, z), Occupancy, TempFactor, Element);

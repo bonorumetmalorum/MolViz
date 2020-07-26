@@ -3,10 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/DataTable.h"
 #include "FColorData.generated.h"
 
 UENUM()
-enum class AtomType : uint8
+enum class  AtomType : uint8
 {
 	H,
 	O,

@@ -12,6 +12,17 @@
 				"CoreUObject",
 				"Slate",
 				"SlateCore",
+				"Engine"
+			]
+		},
+		{
+			"Name": "MolVizEditor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit",
+			"AdditionalDependencies": [
+				"CoreUObject",
+				"Slate",
+				"SlateCore",
 				"Engine",
 				"UnrealEd"
 			]

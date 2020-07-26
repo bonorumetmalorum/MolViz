@@ -24,7 +24,6 @@ void SMainWindow::Construct(const FArguments& InArgs)
 	FString button = FString("select a file");
 	AppManager = InArgs._AppManager;
 	Proteins = InArgs._Proteins;
-	bCanTick = true;
 	ChildSlot
 	[
 
@@ -186,7 +185,10 @@ void SMainWindow::SelectionChanged(TWeakObjectPtr<AProteinData> ProteinData, ESe
 
 FReply SMainWindow::RemoveMolecule() const
 {
-	AppManager->DestroyMolecule(SelectedProtein);
-	ProteinListView->RequestListRefresh();
+	if(SelectedProtein.IsValid())
+	{
+		AppManager->DestroyMolecule(SelectedProtein);
+		ProteinListView->RequestListRefresh();
+	}
 	return FReply::Handled();
 }

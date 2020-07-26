@@ -53,7 +53,7 @@ void UCPK::ConstructRepresentation(AProteinData* ProteinData)
 	}
 	for (auto AtomIter = ProteinData->Atoms.CreateConstIterator(); AtomIter.GetIndex() < ProteinData->Atoms.Num(); AtomIter++)
 	{
-		FColorData * RowData = AtomColors->FindRow<FColorData>(FName(*(AtomIter->Name)), AtomIter->Name, true);
+		FColorData * RowData = AtomColors->FindRow<FColorData>(FName(*(AtomIter->Element)), AtomIter->Name, true);
 		if (RowData)
 			AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], RowData->color, 1.0);
 		else

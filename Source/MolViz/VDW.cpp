@@ -36,8 +36,8 @@ void UVDW::ConstructRepresentation(AProteinData * ProteinData)
 	{
 		for (auto atomiter = iter->atoms.CreateConstIterator(); atomiter.GetIndex() < iter->atoms.Num(); ++atomiter)
 		{
-			FColorData* RowData = AtomColors->FindRow<FColorData>(FName(*(ProteinData->Atoms[*atomiter].Name)), ProteinData->Atoms[*atomiter].Name, true);
-			FVanDerWaalRadiiRowBase* Radii = VDWRadiiData->FindRow<FVanDerWaalRadiiRowBase>(FName(*(ProteinData->Atoms[*atomiter].Name)), ProteinData->Atoms[*atomiter].Name, true);
+			FColorData* RowData = AtomColors->FindRow<FColorData>(FName(*(ProteinData->Atoms[*atomiter].Element)), ProteinData->Atoms[*atomiter].Name, true);
+			FVanDerWaalRadiiRowBase* Radii = VDWRadiiData->FindRow<FVanDerWaalRadiiRowBase>(FName(*(ProteinData->Atoms[*atomiter].Element)), ProteinData->Atoms[*atomiter].Name, true);
 
 			if (RowData && Radii)
 				Component->AddAtom(&ProteinData->Atoms[*atomiter], RowData->color, Radii->Radius);

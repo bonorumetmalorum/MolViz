@@ -11,30 +11,6 @@
 
 URepresentationFactory::URepresentationFactory()
 {
-	bCreateNew = true;
-	bEditorImport = true;
-	bEditAfterNew = false;
-	SupportedClass = TSubclassOf<URepresentation>();
-}
-
-bool URepresentationFactory::DoesSupportClass(UClass* Class)
-{
-	return Class->IsChildOf(SupportedClass);
-}
-
-/*
- * Builds a default representation which is VDW
- */
-UObject* URepresentationFactory::FactoryCreateNew(UClass* InClass, UObject* InParent, FName InName, EObjectFlags Flags,
-	UObject* Context, FFeedbackContext* Warn, FName CallingContext)
-{
-	if(!InClass->IsChildOf(SupportedClass))
-	{
-		return nullptr;
-	}
-	UVDW * vdw = NewObject<UVDW>(InParent, InClass, InName, Flags);
-	vdw->SetSphereRes(10, 10, 10.0f);
-	return vdw;
 }
 
 UVDW* URepresentationFactory::CreateNewVdwRep(AProteinData * InProteinData, FName InName) const

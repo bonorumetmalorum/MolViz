@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "FColorData.h"
 #include "FResidue.h"
+#include "Engine/DataTable.h" 
 #include "Representation.generated.h"
 
 

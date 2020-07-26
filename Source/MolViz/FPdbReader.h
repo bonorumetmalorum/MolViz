@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FColorData.h"
 #include "Reader.h"
 #include "Runtime/Core/Public/GenericPlatform/GenericPlatformFile.h"
 #include "HAL/PlatformFilemanager.h"
@@ -32,6 +33,7 @@ public:
 	FPdbReader();
 	~FPdbReader();
 	void readStructure(FString filepath, AActor * protein) override;
+	static FString NameToType(FString name);
 
 private:
 	LineType getLineType(const uint8 * line);
