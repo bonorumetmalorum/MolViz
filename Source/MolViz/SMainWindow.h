@@ -46,6 +46,7 @@ private:
 	TWeakObjectPtr<AProteinData> SelectedProtein;
 	TSharedPtr<SListView<TWeakObjectPtr<AProteinData>>> ProteinListView;
 	TSharedPtr<SWindow> ProteinRepWindow;
+	FReply RemoveMolecule() const;
 
 public:
 	//EVENTS

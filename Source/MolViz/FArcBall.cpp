@@ -36,7 +36,8 @@ void UArcBall::Ball_Update()
         QDrag = ArcBallPointToPoint(VFrom, VTo);
         QNow = QDrag * QDown;
     }
-    MNow = FRotationMatrix(FRotator(QNow.Inverse()));
+    Qt_ToBallPoints(QDown, &VFrom, &VTo);
+    MNow = FRotationMatrix(FRotator(QNow));
 }
 
 FQuat UArcBall::Ball_Value()
@@ -84,6 +85,21 @@ FQuat UArcBall::ArcBallPointToPoint(FVector4 A, FVector4 B)
     Quat.Z = A.X * B.Y - A.Y * B.X;
     Quat.W = A.X * B.X + A.Y * B.Y + A.Z * B.Z;
     return Quat;
+}
+
+void UArcBall::Qt_ToBallPoints(FQuat q, FVector *arcFrom, FVector *arcTo)
+{
+    double s;
+    s = sqrt(q.X*q.X + q.Y*q.Y);
+    if (s == 0.0) {
+	*arcFrom = FVector(0.0, 1.0, 0.0);
+    } else {
+	*arcFrom = FVector(-q.Y/s, q.X/s, 0.0);
+    }
+    arcTo->X = q.W*arcFrom->X - q.Z*arcFrom->Y;
+    arcTo->Y = q.W*arcFrom->Y + q.Z*arcFrom->X;
+    arcTo->Z = q.X*arcFrom->Y - q.Y*arcFrom->X;
+    if (q.W < 0.0) *arcFrom = FVector(-arcFrom->X, -arcFrom->Y, 0.0);
 }
 
 void UArcBall::SetRotation(const FQuat& Quat)

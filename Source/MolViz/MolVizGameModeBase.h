@@ -24,6 +24,7 @@ public:
 	virtual void BeginPlay() override;
 	TWeakObjectPtr<AProteinData> CreateNewProteinData();
 	void SelectionChanged(const TWeakObjectPtr<AProteinData>& ProteinRep);
+	void DestroyMolecule(TWeakObjectPtr<AProteinData> WeakObject);
 
 
 	TArray<TWeakObjectPtr<AProteinRepresentation>> ProteinReps;

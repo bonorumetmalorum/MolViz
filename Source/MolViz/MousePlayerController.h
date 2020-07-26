@@ -37,6 +37,7 @@ public:
 	void RotateY(float Y);
 	void ScaleProtein();
 	void SetProteinRep(AProteinRepresentation* InProteinRep);
+	FVector ComputeArcballVector(int x, int y);
 	void TranslateProtein();
 	void HandleMouseMovement();
 	void RotateProtein();

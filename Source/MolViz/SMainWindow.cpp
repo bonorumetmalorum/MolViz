@@ -94,6 +94,12 @@ void SMainWindow::Construct(const FArguments& InArgs)
 						.Text(FText::FromString("Add Representation"))
 						.OnClicked(this, &SMainWindow::AddNewRepresentation)
 					]
+				+ SVerticalBox::Slot()
+					[
+						SNew(SButton)
+						.Text(FText::FromString("Remove Molecule"))
+						.OnClicked(this, &SMainWindow::RemoveMolecule)
+					]
 				]
 			]
 	];
@@ -176,4 +182,11 @@ void SMainWindow::SelectionChanged(TWeakObjectPtr<AProteinData> ProteinData, ESe
 {
 	this->SelectedProtein = ProteinData;
 	AppManager->SelectionChanged(SelectedProtein);
+}
+
+FReply SMainWindow::RemoveMolecule() const
+{
+	AppManager->DestroyMolecule(SelectedProtein);
+	ProteinListView->RequestListRefresh();
+	return FReply::Handled();
 }
