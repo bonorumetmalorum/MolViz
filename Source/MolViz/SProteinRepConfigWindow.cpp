@@ -26,6 +26,7 @@ void SProteinRepConfigWindow::Construct(const FArguments& InArgs)
 					.ListItemsSource(&this->ProteinData->Representation->Representations)
 					.OnGenerateRow(this, &SProteinRepConfigWindow::GenerateRepRow)
 					.OnMouseButtonDoubleClick(this, &SProteinRepConfigWindow::HideRep)
+					.OnSelectionChanged(this, &SProteinRepConfigWindow::SelectionChanged)
 				]
 			]
 			+SVerticalBox::Slot()
@@ -56,6 +57,12 @@ void SProteinRepConfigWindow::Construct(const FArguments& InArgs)
 					.OnClicked(this, &SProteinRepConfigWindow::AddNewNCartoon)
 				]
 			]
+			+SVerticalBox::Slot()
+			[
+				SNew(SButton)
+				.Text(FText::FromString("Remove Representation"))
+				.OnClicked(this, &SProteinRepConfigWindow::RemoveRepresentation)
+			]
 		]
 	];
 	
@@ -82,6 +89,13 @@ void SProteinRepConfigWindow::HideRep(TWeakObjectPtr<URepresentation> Rep)
 }
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
+
+FReply SProteinRepConfigWindow::RemoveRepresentation()
+{
+	ProteinData->Representation->RemoveRep(SelectedRep);
+	this->RepresentationsView->RequestListRefresh();
+	return FReply::Handled();
+}
 
 FReply SProteinRepConfigWindow::AddNewCpk()
 {
@@ -111,3 +125,7 @@ FReply SProteinRepConfigWindow::AddNewNCartoon()
 	return FReply::Handled();
 }
 
+void SProteinRepConfigWindow::SelectionChanged(TWeakObjectPtr<URepresentation> ProteinRep, ESelectInfo::Type SelectionInfo)
+{
+	this->SelectedRep = ProteinRep;
+}

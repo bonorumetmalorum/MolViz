@@ -27,6 +27,15 @@ void AProteinRepresentation::DeactivateRepresentation(TWeakObjectPtr<URepresenta
 	Rep->SetActive(false);
 }
 
+void AProteinRepresentation::RemoveRep(const TWeakObjectPtr<URepresentation> Representation)
+{
+	auto Index = this->Representations.Find(Representation);
+	Representation->SetVisibility(false, true);
+	Representations[Index]->DestroyComponent();
+	Representations.Remove(Representation);
+	
+}
+
 // Called when the game starts or when spawned
 void AProteinRepresentation::BeginPlay()
 {
@@ -40,6 +49,5 @@ void AProteinRepresentation::BeginPlay()
 void AProteinRepresentation::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 

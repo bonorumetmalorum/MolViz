@@ -31,9 +31,12 @@ private:
 	TSharedPtr<SListView<TWeakObjectPtr<URepresentation>>> RepresentationsView;
 	TWeakObjectPtr<URepresentationFactory> RepFactory;
 	TWeakObjectPtr<AProteinData> ProteinData;
+	TWeakObjectPtr<URepresentation> SelectedRep;
+	FReply RemoveRepresentation();
 
 	FReply AddNewCpk();
 	FReply AddNewVdw();
 	FReply AddNewTube();
 	FReply AddNewNCartoon();
+	void SelectionChanged(TWeakObjectPtr<URepresentation> ProteinRep, ESelectInfo::Type SelectionInfo);
 };

@@ -39,7 +39,8 @@ public:
 	//make methods to activate / deactive a representation
 	void ActivateRepresentation(TWeakObjectPtr<URepresentation> Rep);
 	void DeactivateRepresentation(TWeakObjectPtr<URepresentation> Rep);
-	
+	void RemoveRep(const TWeakObjectPtr<URepresentation> Representation);
+
 	TArray<TWeakObjectPtr<URepresentation>> Representations;
 
 	
