@@ -162,7 +162,7 @@ FReply SMainWindow::AddNewRepresentation()
 	{
 		//SAssignNew(ProteinRepWindow, SProteinRepConfigWindow).ProteinRep(this->SelectedProtein->Representation);
 		SAssignNew(ProteinRepWindow, SWindow)
-		.Title(FText::FromString("HELLO"))
+		.Title(FText::FromString("Configure Representation"))
 		.MinWidth(400)
 		.MinHeight(400)
 		[
