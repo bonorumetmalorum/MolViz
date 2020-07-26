@@ -12,7 +12,7 @@ void UTubeRepresentation::ConstructRepresentation(AProteinData* ProteinData)
 	{
 		ProteinData->FindBackBone();
 	}
-	
+	this->SetWorldLocation(ProteinData->FindCOM());
 	const int NumResidues = ProteinData->BackBoneSegments.Num();
 	for(auto ChainIter = ProteinData->Chains.CreateConstIterator(); ChainIter; ChainIter++)
 	{
@@ -54,6 +54,6 @@ void UTubeRepresentation::AddTubeSection(FAtomData* CurrentCA, FAtomData* Curren
 	}
 	Component->SetBackbone(CurrentCA, CurrentC, NextCA, NextC); //refactor this into one method, which takes a boolean for start tube or not.
 	Component->SetMobility(EComponentMobility::Movable);
-	Component->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
+	Component->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
 	Component->RegisterComponent();
 }

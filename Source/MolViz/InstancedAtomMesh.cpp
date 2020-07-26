@@ -17,7 +17,7 @@ UInstancedAtomMesh::UInstancedAtomMesh()
 
 void UInstancedAtomMesh::AddAtom(FAtomData* Atom, FLinearColor Color, float Radius)
 {
-	int InstanceID = AddInstance(FTransform(FRotator::ZeroRotator, Atom->position, FVector(Radius)));
+	int InstanceID = AddInstanceWorldSpace(FTransform(FRotator::ZeroRotator, Atom->position, FVector(Radius)));
 	TArray<float> rgba = {Color.R, Color.G, Color.B, Color.A};
 	SetCustomData(InstanceID, rgba, true);
 }
