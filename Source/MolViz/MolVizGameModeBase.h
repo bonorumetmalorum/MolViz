@@ -23,6 +23,7 @@ public:
 	AMolVizGameModeBase();
 	virtual void BeginPlay() override;
 	TWeakObjectPtr<AProteinData> CreateNewProteinData();
+	void SelectionChanged(const TWeakObjectPtr<AProteinData>& ProteinRep);
 
 
 	TArray<TWeakObjectPtr<AProteinRepresentation>> ProteinReps;

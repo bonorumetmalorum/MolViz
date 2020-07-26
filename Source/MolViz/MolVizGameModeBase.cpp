@@ -47,6 +47,11 @@ TWeakObjectPtr<AProteinData> AMolVizGameModeBase::CreateNewProteinData()
 	];
 }
 
+void AMolVizGameModeBase::SelectionChanged(const TWeakObjectPtr<AProteinData>& ProteinRep)
+{
+	Cast<AMousePlayerController>(UGameplayStatics::GetPlayerController(this, 0))->SetProteinRep(ProteinRep.Get()->Representation.Get());
+}
+
 void AMolVizGameModeBase::OnLoadComplete(AProteinData * ProteinData)
 {
 	int Index = ProteinReps.Add(

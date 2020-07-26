@@ -175,4 +175,5 @@ FReply SMainWindow::AddNewRepresentation()
 void SMainWindow::SelectionChanged(TWeakObjectPtr<AProteinData> ProteinData, ESelectInfo::Type SelectionInfo)
 {
 	this->SelectedProtein = ProteinData;
+	AppManager->SelectionChanged(SelectedProtein);
 }
