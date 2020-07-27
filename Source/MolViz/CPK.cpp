@@ -5,39 +5,6 @@
 #include "InstancedAtomMesh.h"
 #include "InstancedBondMesh.h"
 
-#include "UProcCylinder.h"
-#include "UProcSphere.h"
-
-void UCPK::AddAtom(const FAtomData& Atom, FLinearColor Color)
-{
-	UProcSphere* Component = NewObject<UProcSphere>(this, UProcSphere::StaticClass());
-	if (!Component)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Unable to add component"));
-		return;
-	}
-	Component->RegisterComponent();
-	Component->SetWorldLocation(Atom.position);
-	Component->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
-	Component->GenerateSphere(SphereStacks, SphereSlices, SphereRadius);
-}
-
-void UCPK::AddBond(const FVector& Position, const FVector& Direction)
-{
-	UProcCylinder* Component = NewObject<UProcCylinder>(this, UProcCylinder::StaticClass());
-	if (!Component)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Unable to add component"));
-		return;
-	}
-	FMatrix Rotation = ComputeRotation(Direction);
-	Component->SetWorldRotation(Rotation.Rotator());
-	Component->RegisterComponent();
-	Component->SetWorldLocation(Position);
-	Component->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
-	Component->GenerateCylinder(CylinderRadius, Direction.Size() , CylinderSlices, CylinderStacks);
-}
-
 void UCPK::ConstructRepresentation(AProteinData* ProteinData)
 {
 	UInstancedBondMesh* BondComponent = NewObject<UInstancedBondMesh>(this, UInstancedBondMesh::StaticClass());
@@ -53,7 +20,7 @@ void UCPK::ConstructRepresentation(AProteinData* ProteinData)
 	}
 	for (auto AtomIter = ProteinData->Atoms.CreateConstIterator(); AtomIter.GetIndex() < ProteinData->Atoms.Num(); AtomIter++)
 	{
-		FColorData * RowData = AtomColors->FindRow<FColorData>(FName(*(AtomIter->Element)), AtomIter->Name, true);
+		FColorData * RowData = AtomColors->FindRow<FColorData>(FName(*(AtomIter->Element)), AtomIter->Element, true);
 		if (RowData)
 			AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], RowData->color, 1.0);
 		else

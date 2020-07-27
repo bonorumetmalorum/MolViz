@@ -5,28 +5,12 @@
 #include "AProteinData.h"
 #include "FVanDerWaalRadiiRowBase.h"
 #include "InstancedAtomMesh.h"
-#include "UProcSphere.h"
 #include "UObject/ConstructorHelpers.h"
 
 UVDW::UVDW()
 {
 	static ConstructorHelpers::FObjectFinder<UDataTable>RadiiData(TEXT("DataTable'/Game/VDWRadii.VDWRadii'"));
 	VDWRadiiData = RadiiData.Object;
-}
-
-//TODO change to using FAtomData rather than X y z
-void UVDW::AddAtom(float x, float y, float z)
-{
-	UProcSphere* Component = NewObject<UProcSphere>(this, UProcSphere::StaticClass());
-	if (!Component)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Unable to add component"));
-		return;
-	}
-	Component->RegisterComponent();
-	Component->SetWorldLocation(FVector(x, y, z));
-	Component->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
-	Component->GenerateSphere(Stacks, Slices, SphereRadius);
 }
 
 void UVDW::ConstructRepresentation(AProteinData * ProteinData)

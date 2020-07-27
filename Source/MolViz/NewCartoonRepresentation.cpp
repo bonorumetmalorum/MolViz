@@ -21,40 +21,44 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 	//
 	if(ProteinData->BackBoneSegments.Num() == 0)
 		ProteinData->FindBackBone();
-	ChainState CurrentChainState = Invalid;
-	for (int i = 0; i < ProteinData->BackBoneSegments.Num()-1; i++)
+	ChainState CurrentChainState = ChainInvalid;
+	for(auto ChainIter = ProteinData->Chains.CreateConstIterator(); ChainIter; ChainIter++)
 	{
-		if (!ProteinData->BackBoneSegments[i].IsValid() || !ProteinData->BackBoneSegments[i + 1].IsValid())
-			continue;
-		
-		CurrentChainState = UpdateChainState(ProteinData, i);
-		UBackBoneComponent * SegmentComponent = nullptr;
-		switch(ProteinData->BackBoneSegments[i].ResType)
+		for (uint32 i = ChainIter->StartBackBoneIndex; i < ChainIter->EndBackBoneIndex - 1; i++)
 		{
-		case SSType::AHelix:
-			if(i == ProteinData->Residues.Num()-1)
-				SegmentComponent = AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBoneSegments[i-1].CA, ProteinData->BackBoneSegments[i-1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].CA);
-			else
-				SegmentComponent = AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i+1].CA, ProteinData->BackBoneSegments[i + 1].C);
+			if (!ProteinData->BackBoneSegments[i].IsValid() || !ProteinData->BackBoneSegments[i + 1].IsValid())
+				continue;
 
-			break;
-		case SSType::BStrand:
-			if(i == ProteinData->Residues.Num()-1)
-				SegmentComponent = AddBetaSheetComponent(CurrentChainState, ProteinData->BackBoneSegments[i-1].CA, ProteinData->BackBoneSegments[i-1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C);
-			else
-				SegmentComponent = AddBetaSheetComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i + 1].C);
+			CurrentChainState = UpdateChainState(ProteinData, i);
+			UBackBoneComponent* SegmentComponent = nullptr;
+			switch (ProteinData->BackBoneSegments[i].ResType)
+			{
+			case SSType::AHelix:
+				if (i == ProteinData->Residues.Num() - 1)
+					SegmentComponent = AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBoneSegments[i - 1].CA, ProteinData->BackBoneSegments[i - 1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].CA);
+				else
+					SegmentComponent = AddAlphaHelixComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i + 1].C);
 
-			break;
-		case SSType::Coil:
-			if(i == ProteinData->Residues.Num()-1)
-				SegmentComponent = AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i-1].CA, ProteinData->BackBoneSegments[i-1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C);
-			else
-				SegmentComponent = AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i + 1].C);
-			break;
-		default:
-			UE_LOG(LogTemp, Warning, TEXT("unknown type"));
-		}
-		if (!SegmentComponent || (ProteinData->BackBoneSegments[i].ResType == Coil)) continue;
+				break;
+			case SSType::BStrand:
+				if (i == ProteinData->Residues.Num() - 1)
+					SegmentComponent = AddBetaSheetComponent(CurrentChainState, ProteinData->BackBoneSegments[i - 1].CA, ProteinData->BackBoneSegments[i - 1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C);
+				else
+					SegmentComponent = AddBetaSheetComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i + 1].C);
+
+				break;
+			case SSType::Coil:
+				if (i == ProteinData->Residues.Num() - 1)
+					SegmentComponent = AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i - 1].CA, ProteinData->BackBoneSegments[i - 1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C);
+				else
+					SegmentComponent = AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i + 1].C);
+				break;
+			default:
+				UE_LOG(LogTemp, Warning, TEXT("unknown type"));
+			}
+			if (!SegmentComponent || (ProteinData->BackBoneSegments[i].ResType == Coil)) continue;
+	}
+	
 		//TODO bug with this rotation, flipping to 180, need to average consecutive CAs
 		//if it is the begining, we dont have a previous segment to do
 		//if it is at the end we dont have a next segment to do
@@ -97,13 +101,13 @@ UBackBoneComponent* UNewCartoonRepresentation::AddAlphaHelixComponent(ChainState
 {
 	switch(CurrentChainState)
 	{
-	case Start:
+	case ChainStart:
 		return AddBackBoneComponent<UHelixStartComponent>(NextCA, NextC, CurrentCA, CurrentC);
-	case Middle:
+	case ChainMiddle:
 		return AddBackBoneComponent<UHelixMiddleComponent>(CurrentCA, CurrentC, NextCA, NextC);
-	case End:
+	case ChainEnd:
 		return AddBackBoneComponent<UHelixEndComponent>(CurrentCA, CurrentC, NextCA, NextC);
-	case Invalid:
+	case ChainInvalid:
 		UE_LOG(LogTemp, Warning, TEXT("invalid ss chain state"));
 		return nullptr;
 	}
@@ -114,13 +118,13 @@ UBackBoneComponent* UNewCartoonRepresentation::AddBetaSheetComponent(ChainState 
 {
 	switch (CurrentChainState)
 	{
-	case Start:
+	case ChainStart:
 		return AddBackBoneComponent<UBetaSheetStartComponent>(CurrentCA, CurrentC, NextCA, NextC);
-	case Middle:
+	case ChainMiddle:
 		return AddBackBoneComponent<UBetaSheetMiddleComponent>(CurrentCA, CurrentC, NextCA, NextC);
-	case End:
+	case ChainEnd:
 		return AddBackBoneComponent<UBetaSheetEndComponent>(CurrentCA, CurrentC, NextCA, NextC);	
-	case Invalid:
+	case ChainInvalid:
 		UE_LOG(LogTemp, Warning, TEXT("invalid ss chain state"));
 		return nullptr;
 	}
@@ -134,11 +138,11 @@ UBackBoneComponent* UNewCartoonRepresentation::AddCoilComponent(ChainState Curre
 
 UNewCartoonRepresentation::ChainState UNewCartoonRepresentation::UpdateChainState(AProteinData* ProteindData, int CurrentResidue)
 {
-	if (CurrentResidue == 0) return Start;
-	if (CurrentResidue >= ProteindData->Residues.Num() - 1) return End; //TODO bug with this index, residues not matching backbone segments???
-	if (ProteindData->Residues[CurrentResidue - 1].SSResType != ProteindData->Residues[CurrentResidue].SSResType) return Start;
-	if (ProteindData->Residues[CurrentResidue + 1].SSResType != ProteindData->Residues[CurrentResidue].SSResType) return End;
-	return Middle;
+	if (CurrentResidue == 0) return ChainStart;
+	if (CurrentResidue >= ProteindData->Residues.Num() - 1) return ChainEnd; //TODO bug with this index, residues not matching backbone segments???
+	if (ProteindData->Residues[CurrentResidue - 1].SSResType != ProteindData->Residues[CurrentResidue].SSResType) return ChainStart;
+	if (ProteindData->Residues[CurrentResidue + 1].SSResType != ProteindData->Residues[CurrentResidue].SSResType) return ChainEnd;
+	return ChainMiddle;
 }
 
 

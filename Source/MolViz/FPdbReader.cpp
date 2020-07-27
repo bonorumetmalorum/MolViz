@@ -65,36 +65,36 @@ void FPdbReader::readStructure(FString filepath, AActor * Protein)
 
 FString FPdbReader::NameToType(FString name)
 {
-	if (name.Contains("H", ESearchCase::IgnoreCase))
+	if (name[0] == 'H')
 	{
 		return "H";
 	}
-	if (name.Contains("O", ESearchCase::IgnoreCase))
+	if (name[0] == 'O')
 	{
 		return "O";
 
 	}
-	if (name.Contains("N", ESearchCase::IgnoreCase))
+	if (name[0] ==  'N')
 	{
 		return "N";
 
 	}
-	if (name.Contains("C", ESearchCase::IgnoreCase))
+	if (name[0] == 'C')
 	{
 		return "C";
 
 	}
-	if (name.Contains("S", ESearchCase::IgnoreCase))
+	if (name[0] == 'S')
 	{
 		return "S";
 
 	}
-	if (name.Contains("P", ESearchCase::IgnoreCase))
+	if (name[0] == 'P')
 	{
 		return "P";
 
 	}
-	if (name.Contains("Z", ESearchCase::IgnoreCase))
+	if (name[0] == 'Z')
 	{
 		return "Z";
 
@@ -243,7 +243,7 @@ void FPdbReader::ParseAtom(uint8* line, AProteinData * Protein)
 	LexFromString(z, *Z);
 	LexFromString(Occupancy, *occupancy);
 	LexFromString(TempFactor, *tempFactor);
-
+	name.RemoveSpacesInline();
 	Element = NameToType(name);
 
 	NewChainEndOffset = Protein->AddResidue(resName, Resnum);

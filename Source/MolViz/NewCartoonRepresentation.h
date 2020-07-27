@@ -19,10 +19,10 @@ class MOLVIZ_API UNewCartoonRepresentation : public URepresentation
 
 	enum ChainState
 	{
-		Start,
-		Middle,
-		End,
-		Invalid
+		ChainStart,
+		ChainMiddle,
+		ChainEnd,
+		ChainInvalid
 	};
 public:
 	void ConstructRepresentation(AProteinData* ProteinData) override;
