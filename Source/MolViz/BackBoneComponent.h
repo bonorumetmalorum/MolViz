@@ -23,7 +23,6 @@ public:
 	void SetBackbone(FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC);
 	FMatrix MakeRotation(FAtomData* C1, FAtomData* C2, FAtomData* O);
 	void UpdateBackBone();
-
 private:
 	TArray<FAtomData*> Backbone;
 	bool IsStartingBackBone = false;

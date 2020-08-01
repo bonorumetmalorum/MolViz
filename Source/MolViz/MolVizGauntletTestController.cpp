@@ -3,3 +3,7 @@
 
 #include "MolVizGauntletTestController.h"
 
+void UMolVizGauntletTestController::OnInit()
+{
+	
+}

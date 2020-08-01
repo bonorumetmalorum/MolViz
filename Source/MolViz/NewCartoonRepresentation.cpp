@@ -97,6 +97,11 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 	}
 }
 
+FBoxSphereBounds UNewCartoonRepresentation::CalcBounds(const FTransform& LocalToWorld) const
+{
+	
+}
+
 UBackBoneComponent* UNewCartoonRepresentation::AddAlphaHelixComponent(ChainState CurrentChainState, FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC)
 {
 	switch(CurrentChainState)

@@ -17,4 +17,5 @@ class MOLVIZ_API UInstancedAtomMesh : public UInstancedStaticMeshComponent
 public:
 	UInstancedAtomMesh();
 	void AddAtom(FAtomData* Atom, FLinearColor Color, float Radius);
+	FBoxSphereBounds GetBoxSphereBounds();
 };

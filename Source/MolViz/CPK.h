@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InstancedAtomMesh.h"
+#include "InstancedBondMesh.h"
 #include "Representation.h"
 #include "CPK.generated.h"
 
@@ -19,6 +21,8 @@ public:
 	void ConstructRepresentation(AProteinData * ProteinData/*, FColourScheme ColourScheme*/) override;
 	void SetBondData(TArray<FBondData> * InBondData);
 	void Config(int InSphereStacks, int InSphereSlices, float InSphereRadius, float InCylinderRadius, int InCylinderSlices, int InCylinderStacks);
+
+	FBoxSphereBounds CalcBounds(const FTransform& LocalToWorld) const override;
 	
 private:
 	static FMatrix ComputeRotation(FVector A);
@@ -29,4 +33,6 @@ private:
 	float CylinderRadius;
 	int CylinderSlices;
 	int CylinderStacks;
+	UInstancedAtomMesh* AtomMeshComponent;
+	UInstancedBondMesh* BondMeshComponent;
 };

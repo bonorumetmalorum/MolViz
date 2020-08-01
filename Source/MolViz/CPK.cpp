@@ -7,31 +7,31 @@
 
 void UCPK::ConstructRepresentation(AProteinData* ProteinData)
 {
-	UInstancedBondMesh* BondComponent = NewObject<UInstancedBondMesh>(this, UInstancedBondMesh::StaticClass());
-	BondComponent->SetWorldLocation(ProteinData->FindCOM());
-	UInstancedAtomMesh* AtomComponent = NewObject<UInstancedAtomMesh>(this, UInstancedAtomMesh::StaticClass());
-	AtomComponent->SetWorldLocation(ProteinData->FindCOM());
+	BondMeshComponent = NewObject<UInstancedBondMesh>(this, UInstancedBondMesh::StaticClass());
+	BondMeshComponent->SetWorldLocation(ProteinData->FindCOM());
+	AtomMeshComponent = NewObject<UInstancedAtomMesh>(this, UInstancedAtomMesh::StaticClass());
+	AtomMeshComponent->SetWorldLocation(ProteinData->FindCOM());
 
 	for (auto BondIter = ProteinData->Bonds.CreateConstIterator(); BondIter.GetIndex() < ProteinData->Bonds.Num(); ++BondIter)
 	{
 		FAtomData AtomA = ProteinData->Atoms[BondIter->AtomA];
 		FAtomData AtomB = ProteinData->Atoms[BondIter->AtomB];
-		BondComponent->AddBond((AtomA.position + AtomB.position) / 2, *BondIter);
+		BondMeshComponent->AddBond((AtomA.position + AtomB.position) / 2, *BondIter);
 	}
 	for (auto AtomIter = ProteinData->Atoms.CreateConstIterator(); AtomIter.GetIndex() < ProteinData->Atoms.Num(); AtomIter++)
 	{
 		FColorData * RowData = AtomColors->FindRow<FColorData>(FName(*(AtomIter->Element)), AtomIter->Name, true);
 		if (RowData)
-			AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], RowData->color, 1.0);
+			AtomMeshComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], RowData->color, 1.0);
 		else
-			AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], FLinearColor(102, 95, 37), 50.0);
+			AtomMeshComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], FLinearColor(102, 95, 37), 50.0);
 	}
-	BondComponent->RegisterComponent();
-	BondComponent->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
-	AtomComponent->RegisterComponent();
-	AtomComponent->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
-	BondComponent->SetMobility(EComponentMobility::Movable);
-	AtomComponent->SetMobility(EComponentMobility::Movable);
+	BondMeshComponent->RegisterComponent();
+	BondMeshComponent->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	AtomMeshComponent->RegisterComponent();
+	AtomMeshComponent->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	BondMeshComponent->SetMobility(EComponentMobility::Movable);
+	AtomMeshComponent->SetMobility(EComponentMobility::Movable);
 }
 
 void UCPK::SetBondData(TArray<FBondData> *  InBondData)
@@ -48,6 +48,11 @@ void UCPK::Config(const int InSphereStacks, const int InSphereSlices, const floa
 	this->CylinderRadius = InCylinderRadius;
 	this->CylinderSlices = InCylinderSlices;
 	this->CylinderStacks = InCylinderStacks;
+}
+
+FBoxSphereBounds UCPK::CalcBounds(const FTransform& LocalToWorld) const
+{
+	return AtomMeshComponent->CalcBounds(LocalToWorld);
 }
 
 

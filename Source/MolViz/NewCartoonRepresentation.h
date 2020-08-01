@@ -26,6 +26,7 @@ class MOLVIZ_API UNewCartoonRepresentation : public URepresentation
 	};
 public:
 	void ConstructRepresentation(AProteinData* ProteinData) override;
+	FBoxSphereBounds CalcBounds(const FTransform& LocalToWorld) const override;
 private:
 	template<class T>
 	T* AddBackBoneComponent(FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC);

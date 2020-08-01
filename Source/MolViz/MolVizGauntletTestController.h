@@ -14,6 +14,7 @@ class MOLVIZ_API UMolVizGauntletTestController : public UGauntletTestController
 {
 	GENERATED_BODY()
 
+	void OnInit() override;
 	//create functions to start profiling
 	//create functions to stop profiling
 	//create enum to represent state
