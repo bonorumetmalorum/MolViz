@@ -112,6 +112,7 @@ FReply SMainWindow::OpenFileDialog()
 {
 	IDesktopPlatform * Platform = FDesktopPlatformModule::Get();
 	TArray<FString> Filenames;
+	if (!Platform) { UE_LOG(LogTemp, Warning, TEXT("No IDesktopPlatform found"));  return FReply::Handled(); }
 	const bool bResult = Platform->OpenFileDialog(
 		MainWindow.Get()->GetNativeWindow()->GetOSWindowHandle(),
 		FString("Select a file"),

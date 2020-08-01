@@ -14,6 +14,7 @@ UInstancedBondMesh::UInstancedBondMesh()
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>Mesh(TEXT("StaticMesh'/Game/Cylinder.Cylinder'"));
 	UStaticMesh* Asset = Mesh.Object;
 	UInstancedStaticMeshComponent::SetStaticMesh(Asset);
+	SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void UInstancedBondMesh::AddBond(FVector Position, FBondData BondData)

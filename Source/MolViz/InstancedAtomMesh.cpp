@@ -12,6 +12,7 @@ UInstancedAtomMesh::UInstancedAtomMesh()
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>Mesh(TEXT("StaticMesh'/Game/Sphere.Sphere'"));
 	UStaticMesh* Asset = Mesh.Object;
 	UInstancedStaticMeshComponent::SetStaticMesh(Asset);
+	SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	NumCustomDataFloats = 4;
 }
 

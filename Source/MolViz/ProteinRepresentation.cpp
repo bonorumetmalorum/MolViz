@@ -35,9 +35,9 @@ void AProteinRepresentation::RemoveRep(const TWeakObjectPtr<URepresentation> Rep
 void AProteinRepresentation::BeginPlay()
 {
 	Super::BeginPlay();
-	auto Root = NewObject<USceneComponent>();
+	auto Root = NewObject<USceneComponent>(this);
 	Root->RegisterComponent();
-	this->RootComponent = Root;
+	this->SetRootComponent(Root);
 }
 
 // Called every frame

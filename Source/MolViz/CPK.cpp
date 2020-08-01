@@ -20,11 +20,11 @@ void UCPK::ConstructRepresentation(AProteinData* ProteinData)
 	}
 	for (auto AtomIter = ProteinData->Atoms.CreateConstIterator(); AtomIter.GetIndex() < ProteinData->Atoms.Num(); AtomIter++)
 	{
-		FColorData * RowData = AtomColors->FindRow<FColorData>(FName(*(AtomIter->Element)), AtomIter->Element, true);
+		FColorData * RowData = AtomColors->FindRow<FColorData>(FName(*(AtomIter->Element)), AtomIter->Name, true);
 		if (RowData)
 			AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], RowData->color, 1.0);
 		else
-			AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], FLinearColor(102, 95, 37), 1.0);
+			AtomComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], FLinearColor(102, 95, 37), 50.0);
 	}
 	BondComponent->RegisterComponent();
 	BondComponent->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetIncludingScale);

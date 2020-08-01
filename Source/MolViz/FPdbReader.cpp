@@ -302,6 +302,8 @@ void FPdbReader::ParseHetAtom(uint8* line, AProteinData* Protein)
 	LexFromString(z, *Z);
 	LexFromString(Occupancy, *occupancy);
 	LexFromString(TempFactor, *tempFactor);
+	name.RemoveSpacesInline();
+	Element = NameToType(name);
 
 	int ResNumber = Protein->AddHetResidue(resName, Resnum);
 	Protein->AddHetAtom(Snum, Alt, name, Chain, Resnum, Insertion_residue_code, FVector(x, y, z), Occupancy, TempFactor, Element);
