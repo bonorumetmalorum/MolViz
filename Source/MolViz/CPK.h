@@ -21,8 +21,6 @@ public:
 	void ConstructRepresentation(AProteinData * ProteinData/*, FColourScheme ColourScheme*/) override;
 	void SetBondData(TArray<FBondData> * InBondData);
 	void Config(int InSphereStacks, int InSphereSlices, float InSphereRadius, float InCylinderRadius, int InCylinderSlices, int InCylinderStacks);
-
-	FBoxSphereBounds CalcBounds(const FTransform& LocalToWorld) const override;
 	
 private:
 	static FMatrix ComputeRotation(FVector A);

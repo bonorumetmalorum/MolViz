@@ -29,6 +29,10 @@ void FPdbReader::readStructure(FString filepath, AActor * Protein)
 	IPlatformFile & file = FPlatformFileManager::Get().GetPlatformFile();
 	IFileHandle * fhandle = file.OpenRead(*filepath, false);
 	uint8 buffer[600];
+	if(!fhandle)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Unable to open file"));
+	}
 	while(ReadLine(fhandle,buffer,600))
 	{
 		LineType linetype = getLineType(buffer);

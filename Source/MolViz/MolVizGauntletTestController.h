@@ -14,7 +14,26 @@ class MOLVIZ_API UMolVizGauntletTestController : public UGauntletTestController
 {
 	GENERATED_BODY()
 
-	void OnInit() override;
+private:
+	// Time to wait after game start before doing anything.
+	const float SpinUpTime = 3.f;
+
+	// Time to run the profiler for.
+	const float ProfilingTime = 7.f;
+
+	UFUNCTION()
+	void StartTesting();
+
+	void StartProfiling();
+
+	UFUNCTION()
+	void StopProfiling();
+
+	void StopTesting();
+
+protected:
+	virtual void OnInit() override;
+	virtual void OnTick(float DeltaTime) override;
 	//create functions to start profiling
 	//create functions to stop profiling
 	//create enum to represent state

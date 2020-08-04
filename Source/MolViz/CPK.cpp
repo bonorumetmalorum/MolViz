@@ -50,12 +50,6 @@ void UCPK::Config(const int InSphereStacks, const int InSphereSlices, const floa
 	this->CylinderStacks = InCylinderStacks;
 }
 
-FBoxSphereBounds UCPK::CalcBounds(const FTransform& LocalToWorld) const
-{
-	return AtomMeshComponent->CalcBounds(LocalToWorld);
-}
-
-
 FMatrix UCPK::ComputeRotation(FVector A)
 {
 	return FRotationMatrix::MakeFromZ(A);

@@ -54,7 +54,12 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 					SegmentComponent = AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i + 1].C);
 				break;
 			default:
+				if (i == ProteinData->Residues.Num() - 1)
+					SegmentComponent = AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i - 1].CA, ProteinData->BackBoneSegments[i - 1].C, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C);
+				else
+					SegmentComponent = AddCoilComponent(CurrentChainState, ProteinData->BackBoneSegments[i].CA, ProteinData->BackBoneSegments[i].C, ProteinData->BackBoneSegments[i + 1].CA, ProteinData->BackBoneSegments[i + 1].C);
 				UE_LOG(LogTemp, Warning, TEXT("unknown type"));
+				break;
 			}
 			if (!SegmentComponent || (ProteinData->BackBoneSegments[i].ResType == Coil)) continue;
 	}
@@ -99,7 +104,7 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 
 FBoxSphereBounds UNewCartoonRepresentation::CalcBounds(const FTransform& LocalToWorld) const
 {
-	
+	return FBoxSphereBounds();
 }
 
 UBackBoneComponent* UNewCartoonRepresentation::AddAlphaHelixComponent(ChainState CurrentChainState, FAtomData* CurrentCA, FAtomData* CurrentC, FAtomData* NextCA, FAtomData* NextC)

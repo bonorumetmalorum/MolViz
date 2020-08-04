@@ -15,6 +15,7 @@ class MOLVIZ_API UHelixEndComponent : public UBackBoneComponent
 	GENERATED_BODY()
 
 public:
+	
 	UHelixEndComponent();
 	
 };
