@@ -8,7 +8,7 @@
 #include "FChainData.generated.h"
 
 /**
- * 
+ * represents a chain
  */
 USTRUCT(BlueprintType)
 struct FChainData 
@@ -16,6 +16,16 @@ struct FChainData
 	GENERATED_BODY()
 	
 	FChainData();
+	/*
+	 * Constructor
+	 * @param SerialNumber serial number of the chain
+	 * @param Resname the residue name
+	 * @param ChainID the chain id
+	 * @param ResSeq residue sequence of this chain
+	 * @param CodeForInsertionsOfResidues code for insertions of residues
+	 * @param StartResIndex start index of residue in chain
+	 * @param EndResIndex end index of residue in chain
+	 */
 	FChainData(int32 SerialNumber, FString Resname,	uint8 ChainID,int32 ResSeq,	uint8 CodeForInsertionsOfResidues, int StartResInex, int EndResIndex);
 	~FChainData();
 

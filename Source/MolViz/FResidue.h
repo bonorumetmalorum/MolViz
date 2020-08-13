@@ -19,6 +19,11 @@ struct FResidue
 	GENERATED_BODY()
 
 	FResidue();
+	/*
+	 * constructor
+	 * @param Resname residue name
+	 * @param Resseq residue sequence number
+	 */
 	FResidue(const FString& Resname, int32 Resseq);
 	~FResidue();
 

@@ -22,8 +22,3 @@ void UInstancedAtomMesh::AddAtom(FAtomData* Atom, FLinearColor Color, float Radi
 	TArray<float> rgba = {Color.R, Color.G, Color.B, Color.A};
 	SetCustomData(InstanceID, rgba, true);
 }
-
-FBoxSphereBounds UInstancedAtomMesh::GetBoxSphereBounds()
-{
-	return CalcBounds(this->GetAttachParent()->GetComponentTransform());
-}

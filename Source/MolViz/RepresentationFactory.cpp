@@ -28,7 +28,7 @@ UCPK* URepresentationFactory::CreateNewCpkRep(AProteinRepresentation* InParent, 
 {
 	UCPK* rep = NewObject<UCPK>(InParent, InName);
 	InProteinData->Representation->Representations.Add(TWeakObjectPtr<URepresentation>(rep));
-	rep->Config(5, 5, 0.2f, 0.1f, 5, 5);
+	//rep->Config(5, 5, 0.2f, 0.1f, 5, 5);
 	rep->AttachToComponent(InParent->GetRootComponent(),FAttachmentTransformRules::SnapToTargetIncludingScale);
 	//rep->SetWorldTransform(InParent->GetActorTransform());
 	rep->ConstructRepresentation(InProteinData);

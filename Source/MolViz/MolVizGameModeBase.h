@@ -12,7 +12,6 @@
 
 /**
  * Bootstrapping class. Used to setup the main context and UI
- * we need to add a protein actor to the scene so we can add atom and bond components to it
  */
 UCLASS()
 class MOLVIZ_API AMolVizGameModeBase : public AGameModeBase
@@ -21,19 +20,35 @@ class MOLVIZ_API AMolVizGameModeBase : public AGameModeBase
 
 public:
 	AMolVizGameModeBase();
+	/*
+	 * called at the start of the level
+	 */
 	virtual void BeginPlay() override;
+	/*
+	 * creates a new protein data instance
+	 * @return ptr to a newly created protein data
+	 */
 	TWeakObjectPtr<AProteinData> CreateNewProteinData();
+	/*
+	 * method to handle UI event selection change on protein
+	 * @param ProteinRep the protein representation selected
+	 */
 	void SelectionChanged(const TWeakObjectPtr<AProteinData>& ProteinRep);
-	void DestroyMolecule(TWeakObjectPtr<AProteinData> WeakObject);
+	/*
+	 * destroys a molecule
+	 * @param Molecule molecule that will be destroyed
+	 */
+	void DestroyMolecule(TWeakObjectPtr<AProteinData> Molecule);
 
 
 	TArray<TWeakObjectPtr<AProteinRepresentation>> ProteinReps;
 	TArray<TWeakObjectPtr<AProteinData>> Proteins;
 	UPROPERTY()
 	URepresentationFactory * RepresentationFactory = nullptr;
+	/*
+	 * handle load complete, setup protein data
+	 * @param ProteinData the protein data that was just read in
+	 */
 	UFUNCTION()
 	void OnLoadComplete(AProteinData * ProteinData);
-	/*
-	 * TODO create methods to add protein data and protein reps
-	 */
 };

@@ -7,7 +7,7 @@
 #include "HelixEndComponent.generated.h"
 
 /**
- * 
+ * class that represents the helix end mesh
  */
 UCLASS()
 class MOLVIZ_API UHelixEndComponent : public UBackBoneComponent

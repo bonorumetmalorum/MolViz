@@ -13,7 +13,7 @@
 
 /**
  * this game mode acts as a benchmark
- * it should load a pdb
+ * it will load a pdb
  * make copies of the pdb until we reach the upper limit of 99,999 atoms (which is the upper limit of atoms available in one PDB file)
  */
 UCLASS()
@@ -22,18 +22,37 @@ class MOLVIZ_API ABenchmarkGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 public:
 	ABenchmarkGameModeBase();
+	/*
+	 * create a new protein and add it to the world
+	 */
 	TWeakObjectPtr<AProteinData> AddProtein();
+	/*
+	 * create a new protein representation and add it to the world
+	 */
 	TWeakObjectPtr<AProteinRepresentation> AddProteinRep();
+	/*
+	 * add a new molecule, sets up a protein data class and its representation in one go
+	 */
 	TWeakObjectPtr<AProteinData> AddNewMolecule();
+	/*
+	 * creates a new molecule and sets it up with the loaded content of the test pdb
+	 * only adds up to a threshold of 10,000 atoms
+	 */
 	void SetupNewMolecule();
+	/*
+	 * Resets the level
+	 */
 	void ResetProteins();
 	//method to create protein rep
 	void BeginPlay() override;
-	
+
+	/*
+	 * simple function to rotate the first protein added to the scene
+	 */
 	UFUNCTION(BlueprintCallable)
 	void RotateMolecule(float DeltaSeconds);
 
-
+	//to keep track if the test has completed or not
 	bool IsFinished;
 private:
 	FPdbReader Reader;

@@ -32,7 +32,17 @@ class MOLVIZ_API FPdbReader : public IReader
 public:
 	FPdbReader();
 	~FPdbReader();
+	/*
+	 * main routine to read the structure of a PDB into a protein
+	 * @param filepath the file path to the pdb
+	 * @param protein the protein to populate with the data read in from the pdb
+	 */
 	void readStructure(FString filepath, AActor * protein) override;
+	/*
+	 * convert an atom name to a atom element
+	 * @param name atom name
+	 * @return atom element type
+	 */
 	static FString NameToType(FString name);
 
 private:

@@ -7,7 +7,7 @@
 #include "BetaSheetStartComponent.generated.h"
 
 /**
- * 
+ * A class to represent the Beta Sheet start mesh
  */
 UCLASS()
 class MOLVIZ_API UBetaSheetStartComponent : public UBackBoneComponent

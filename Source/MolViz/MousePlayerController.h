@@ -17,7 +17,8 @@ enum class ETransformMode
 };
 
 /**
- * 
+ * mouse controller
+ * links action events to mouse movements
  */
 UCLASS()
 class MOLVIZ_API AMousePlayerController : public APlayerController
@@ -26,22 +27,65 @@ class MOLVIZ_API AMousePlayerController : public APlayerController
 public:
 	
 	AMousePlayerController();
-
-	void Tick(float DeltaSeconds) override;
+	/*
+	 * setup the input component, initialize any variables and state
+	 */
 	void SetupInputComponent() override;
+	/*
+	 * method start a transformation
+	 */
 	void TransformStart();
+	/*
+	 * method end a transformation
+	 */
 	void TransformEnd();
+	/*
+	 * method to handle zoom out
+	 */
 	void ZoomOut();
+	/*
+	 * method to handle zoom in
+	 */
 	void ZoomIn();
+	/*
+	 * rotate the model around X
+	 */
 	void RotateX(float X);
+	/*
+	 * rotate the model around y
+	 */
 	void RotateY(float Y);
+	/*
+	 * scale the protein
+	 */
 	void ScaleProtein();
+	/*
+	 * set the currently toggled protein rep
+	 */
 	void SetProteinRep(AProteinRepresentation* InProteinRep);
+	/*
+	 * compute the arcball vector
+	 */
 	FVector ComputeArcballVector(int x, int y);
+	/*
+	 * translate the protein
+	 */
 	void TranslateProtein();
+	/*
+	 * handle mouse movements, keeping track of previous and next positions
+	 */
 	void HandleMouseMovement();
+	/*
+	 * apply the arcball rotaation to the protein
+	 */
 	void RotateProtein();
+	/*
+	 * zoom the protein
+	 */
 	void Zoom(float ScrollValue);
+	/*
+	 * switch modes of transformation
+	 */
 	void ModeScale();
 	void ModeRotate();
 	void ModeTranslate();

@@ -9,7 +9,7 @@
 #include "VDW.generated.h"
 
 /**
- * 
+ * a class for the VDW representation
  */
 UCLASS()
 class MOLVIZ_API UVDW : public URepresentation
@@ -18,6 +18,10 @@ class MOLVIZ_API UVDW : public URepresentation
 
 public:
 	UVDW();
+	/**
+	 * create a VDW representation of the protein data
+	 * @param ProteinData the protein data to represent in VDW
+	 */
 	void ConstructRepresentation(AProteinData * ProteinData) override;
 	void SetSphereRes(int Stacks, int Slices, float Radius);
 	int Stacks = 5;

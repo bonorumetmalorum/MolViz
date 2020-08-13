@@ -12,7 +12,7 @@ class AProteinRepresentation;
 class UVDW;
 class UCPK;
 /**
- * 
+ * Helper class used to create various representations
  */
 UCLASS()
 class MOLVIZ_API URepresentationFactory : public UObject
@@ -22,11 +22,37 @@ class MOLVIZ_API URepresentationFactory : public UObject
 public:
 
 	URepresentationFactory();
-	
+	/*
+	 * create a new VDW representation
+	 * @param InProteinData the protein data to represent
+	 * @param InName the name to give to this new representation
+	 * @return the newly created representation
+	 */
 	UVDW* CreateNewVdwRep(AProteinData * InProteinData, /*TODO pass in protein rep selections*/ FName InName) const;
+	/*
+	 * create a new CPK representation
+	 * @param InParent the parent component
+	 * @param InProteinData the protein data to represent
+	 * @param InName the name to give to this new representation
+	 * @return the newly created representation
+	 */
 	UCPK* CreateNewCpkRep(AProteinRepresentation* InParent, AProteinData* InProteinData, FName InName) const;
+	/*
+	 * create a new Tube representation
+	 * @param InParent the parent component
+	 * @param InProteinData the protein data to represent
+	 * @param InName the name to give to this new representation
+	 * @return the newly created representation
+	 */
 	UTubeRepresentation* CreateNewTubeRep(AProteinRepresentation* InParent, AProteinData* InProteinData, FName InName) const;
-	UNewCartoonRepresentation* CreateNewNCartoonRep(AProteinRepresentation* Cast, AProteinData* const ProteinData, FName InName);
+	/*
+	 * create a new NCartoonRep representation
+	 * @param InParent the parent component
+	 * @param InProteinData the protein data to represent
+	 * @param InName the name to give to this new representation
+	 * @return the newly created representation
+	 */
+	UNewCartoonRepresentation* CreateNewNCartoonRep(AProteinRepresentation* InParent, AProteinData* const ProteinData, FName InName);
 
 private:
 	

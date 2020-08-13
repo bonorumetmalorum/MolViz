@@ -7,7 +7,7 @@
 
 #include "FBondData.generated.h"
 /**
- * 
+ * represents a single bond between two atoms
  */
 USTRUCT(BlueprintType)
 struct FBondData 
@@ -15,7 +15,13 @@ struct FBondData
 	GENERATED_BODY()
 	
 	FBondData();
-	FBondData(int GetIndex, int GetIndex1, FVector Direction);
+	/*
+	 * Constructor
+	 * @param AtomA the first atom
+	 * @param AtomB the second atom
+	 * @param Direction the direction from the first to the second atom
+	 */
+	FBondData(int AtomA, int AtomB, FVector Direction);
 	~FBondData();
 
 	int AtomA;

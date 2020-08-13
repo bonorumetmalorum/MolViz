@@ -2,6 +2,7 @@
 
 
 #include "BenchmarkGameModeBase.h"
+#include "StereoRendering.h" 
 
 ABenchmarkGameModeBase::ABenchmarkGameModeBase()
 {

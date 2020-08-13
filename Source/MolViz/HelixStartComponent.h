@@ -6,7 +6,7 @@
 #include "BackBoneComponent.h"
 #include "HelixStartComponent.generated.h"
 /**
- * 
+ * class to represent the helix start component
  */
 UCLASS()
 class MOLVIZ_API UHelixStartComponent : public UBackBoneComponent

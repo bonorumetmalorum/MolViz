@@ -19,11 +19,6 @@ AMousePlayerController::AMousePlayerController()
 	TransformMode = ETransformMode::Rotate;
 }
 
-void AMousePlayerController::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-}
-
 void AMousePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();

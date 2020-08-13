@@ -7,7 +7,8 @@
 #include "FVanDerWaalRadiiRowBase.generated.h"
 
 /**
- * 
+ * class to represent an element types van der waal radii
+ * managed in the editor
  */
 USTRUCT(BlueprintType)
 struct FVanDerWaalRadiiRowBase : public FTableRowBase

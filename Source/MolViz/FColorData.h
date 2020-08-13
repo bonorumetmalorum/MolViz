@@ -6,6 +6,7 @@
 #include "Engine/DataTable.h"
 #include "FColorData.generated.h"
 
+//all element types
 UENUM()
 enum class  AtomType : uint8
 {
@@ -21,7 +22,8 @@ enum class  AtomType : uint8
 };
 
 /**
- * 
+ * represents an element and its color
+ * this is created and configured in editor in tables
  */
 USTRUCT(BlueprintType)
 struct FColorData : public FTableRowBase

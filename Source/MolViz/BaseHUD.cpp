@@ -9,9 +9,9 @@ void ABaseHUD::BeginPlay()
 {
 	Super::BeginPlay();
 	if (GEngine && GEngine->GameViewport)
-	{
-		fileExplorer = SNew(SMainWindow)
-		.AppManager(TWeakObjectPtr<AMolVizGameModeBase>(Cast<AMolVizGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))))
-		.Proteins(&Cast<AMolVizGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))->Proteins);
+	{ //if we have a game instance and viewport to add UI elements to
+		fileExplorer = SNew(SMainWindow) //create a new main window
+		.AppManager(TWeakObjectPtr<AMolVizGameModeBase>(Cast<AMolVizGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))) //set the app manager instance
+		.Proteins(&Cast<AMolVizGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()))->Proteins); //set the list of loaded proteins
 	}
 }

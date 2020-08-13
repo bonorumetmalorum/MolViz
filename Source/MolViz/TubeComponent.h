@@ -7,7 +7,7 @@
 #include "TubeComponent.generated.h"
 
 /**
- * 
+ * a class to represent the tube mesh
  */
 UCLASS()
 class MOLVIZ_API UTubeComponent : public UBackBoneComponent

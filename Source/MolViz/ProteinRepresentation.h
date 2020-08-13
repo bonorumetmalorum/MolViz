@@ -37,8 +37,20 @@ public:
 	AProteinRepresentation();
 	FString FileName;
 	//make methods to activate / deactive a representation
+	/*
+	 * activates a representation
+	 * @param Rep representation to activate
+	 */
 	void ActivateRepresentation(TWeakObjectPtr<URepresentation> Rep);
+	/*
+	 * deactivates a representation
+	 * @param Rep representation to deactivate
+	 */
 	void DeactivateRepresentation(TWeakObjectPtr<URepresentation> Rep);
+	/*
+	 * removes a representation
+	 * @param Representation representation to remove
+	 */
 	void RemoveRep(const TWeakObjectPtr<URepresentation> Representation);
 
 	TArray<TWeakObjectPtr<URepresentation>> Representations;

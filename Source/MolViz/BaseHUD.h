@@ -6,8 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "MolViz.h"
 #include "BaseHUD.generated.h"
-
-
+//forward declaration
 class SMainWindow;
 
 /**

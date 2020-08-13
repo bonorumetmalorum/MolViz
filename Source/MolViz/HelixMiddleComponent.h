@@ -7,7 +7,7 @@
 #include "HelixMiddleComponent.generated.h"
 
 /**
- * 
+ * class to represent the helix middle mesh component
  */
 UCLASS()
 class MOLVIZ_API UHelixMiddleComponent : public UBackBoneComponent

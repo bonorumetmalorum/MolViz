@@ -10,7 +10,7 @@
 class URepresentation;
 
 /**
- * 
+ * UI window to show and configure representations for a selected protein
  */
 class MOLVIZ_API SProteinRepConfigWindow : public SCompoundWidget
 {
@@ -20,11 +20,23 @@ public:
 	SLATE_ARGUMENT(TWeakObjectPtr<URepresentationFactory>, RepFactory)
 	SLATE_END_ARGS()
 
-	/** Constructs this widget with InArgs */
+	/**
+	 * Constructs this widget with InArgs
+	 * @param InArgs the arugments to setup the UI
+	 */
 	void Construct(const FArguments& InArgs);
-
+	/**
+	 * display a new row in the table of represenations
+	 * @param Rep the representation to display
+	 * @param OwnerTable the table for displaying
+	 * @return the newly created row
+	 */
 	TSharedRef<ITableRow> GenerateRepRow(TWeakObjectPtr<URepresentation> Rep, const TSharedRef<STableViewBase>& OwnerTable);
 
+	/**
+	 * hide a selected representation
+	 * @param selected representation
+	 */
 	void HideRep(TWeakObjectPtr<URepresentation> Rep);
 	
 private:

@@ -49,6 +49,10 @@
 		{
 			"Name": "Gauntlet",
 			"Enabled": true
+		},
+		{
+			"Name": "RenderDocPlugin",
+			"Enabled": true
 		}
 	]
 }
