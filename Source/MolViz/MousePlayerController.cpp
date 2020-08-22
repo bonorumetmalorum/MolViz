@@ -46,14 +46,6 @@ void AMousePlayerController::TransformStart()
 		TransformEnabled = true;
 		break;
 	case ETransformMode::Rotate:
-		//GetMousePosition(CurrentPostion.X, CurrentPostion.Y);
-		//int32 x, y;
-		//GetViewportSize(x, y);
-		//int size = (x > y) ? y : x;
-		//CurrentPostion.X = (2.0 * CurrentPostion.X - size) / size;
-		//CurrentPostion.Y = (size - 2.0 * CurrentPostion.Y) / size;
-		//ArcBallController->Ball_Mouse(CurrentPostion);
-		//this->ArcBallController->Ball_BeginDrag();
 		TransformEnabled = true;
 		GetMousePosition(CurrentPostion.X, CurrentPostion.Y);
 		PreviousPosition.X = CurrentPostion.X; PreviousPosition.Y = CurrentPostion.Y;
@@ -72,8 +64,6 @@ void AMousePlayerController::TransformEnd()
 		TransformEnabled = false;
 		break;
 	case ETransformMode::Rotate:
-		//ArcBallController->Ball_EndDrag();
-		//PreviousPosition = CurrentPostion;
 		TransformEnabled = false;
 	}
 }
@@ -130,19 +120,6 @@ void AMousePlayerController::HandleMouseMovement()
 
 void AMousePlayerController::RotateProtein()
 {
-	//GetMousePosition(CurrentPostion.X, CurrentPostion.Y);
-	//int32 x, y;
-	//GetViewportSize(x, y);
-	//int size = (x > y) ? y : x;
-	//CurrentPostion.X = (2.0 * CurrentPostion.X - size) / size;
-	//CurrentPostion.Y = (size - (2.0 * CurrentPostion.Y)) / size;
-	//if (this->ArcBallController->Dragging && ProteinRep.IsValid())
-	//{
-	//	ArcBallController->Ball_Mouse(CurrentPostion);
-	//	ArcBallController->Ball_Update();
-	//	CurrenRotation = ArcBallController->Ball_Value();
-	//	ProteinRep->SetActorRotation(ArcBallController->Ball_Value());
-	//}
 	if(TransformEnabled && ProteinRep.IsValid())
 	{
 		GetMousePosition(CurrentPostion.X, CurrentPostion.Y);
@@ -152,8 +129,8 @@ void AMousePlayerController::RotateProtein()
 			float Angle = acos(FGenericPlatformMath::Min(1.0f, FVector::DotProduct(From, To)));
 			FVector Axis = FVector::CrossProduct(From, To);
 			Axis.Normalize();
-			FQuat Rot(Axis, -Angle*5);
-			ProteinRep->AddActorWorldRotation(Rot.Inverse());
+			FQuat Rot(Axis, Angle*5);
+			ProteinRep->AddActorWorldRotation(Rot);
 			PreviousPosition.X = CurrentPostion.X;
 			PreviousPosition.Y = CurrentPostion.Y;
 		}
@@ -213,7 +190,7 @@ FVector AMousePlayerController::ComputeArcballVector(int x, int y) {
 		0);
 
 	MouseScaled.Y = -MouseScaled.Y;
-	MouseScaled.X = -MouseScaled.X;
+	//MouseScaled.X = -MouseScaled.X;
 	float OP_squared = MouseScaled.X * MouseScaled.X + MouseScaled.Y * MouseScaled.Y;
 	if (OP_squared <= 1 * 1)
 		MouseScaled.Z = sqrt(1 * 1 - OP_squared);  // Pythagoras
