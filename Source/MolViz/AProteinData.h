@@ -82,6 +82,25 @@ public:
 	 */
 	void AddHetAtom(int32 Snum, uint8 Alt, FString Name, uint8 Chain, int32 Resnum, uint8 Insertion_residue_code,
 	                FVector position, float Occupancy, float TempFactor, FString Element);
+	/*
+	 * Finds the Center of Mass of the protein
+	 */
+	const FVector FindCOM();
+	void BeginPlay() override;
+	void SetRepresentation(const TWeakObjectPtr<AProteinRepresentation>& Rep);
+	TWeakObjectPtr<AProteinRepresentation> GetRepresentation();
+	TArray<FBondData>& GetBonds();
+	FAtomData* GetAtom(const int Atom);
+	TArray<FAtomData>& GetAtoms();
+	TArray<FChainData>& GetChains();
+	TArray<FResidue>& GetResidues();
+	void SetFilePath(const FString& CS);
+	TArray<FBackBoneSegmentData>& GetBackBoneSegments();
+	FBackBoneSegmentData* GetBackBoneSegment(uint32 BackBoneIndex);
+	TArray<FResidue>& GetHetResidues();
+	FString GetFilePath();
+private:
+	bool AtomHasInterResidueBond(FAtomData & Atom);
 	TArray<FAtomData> Atoms;
 	TArray<FResidue> Residues;
 	TArray<FResidue> HetResidues;
@@ -90,11 +109,4 @@ public:
 	TArray<FBackBoneSegmentData> BackBoneSegments; //make a list of back bone segments that contain, Current C, Current O, and Current N
 	TWeakObjectPtr<AProteinRepresentation> Representation;
 	FString FilePath;
-	/*
-	 * Finds the Center of Mass of the protein
-	 */
-	const FVector FindCOM();
-	void BeginPlay() override;
-private:
-	bool AtomHasInterResidueBond(FAtomData & Atom);
 };

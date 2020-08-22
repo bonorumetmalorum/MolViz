@@ -51,13 +51,13 @@ TWeakObjectPtr<AProteinData> AMolVizGameModeBase::CreateNewProteinData()
 void AMolVizGameModeBase::SelectionChanged(const TWeakObjectPtr<AProteinData>& ProteinRep)
 {
 	if(ProteinRep.IsValid())
-		Cast<AMousePlayerController>(UGameplayStatics::GetPlayerController(this, 0))->SetProteinRep(ProteinRep.Get()->Representation.Get());
+		Cast<AMousePlayerController>(UGameplayStatics::GetPlayerController(this, 0))->SetProteinRep(ProteinRep.Get()->GetRepresentation().Get());
 }
 
 void AMolVizGameModeBase::DestroyMolecule(TWeakObjectPtr<AProteinData> WeakObject)
 {
 	Proteins.Remove(WeakObject);
-	GetWorld()->DestroyActor(WeakObject.Get()->Representation.Get());
+	GetWorld()->DestroyActor(WeakObject.Get()->GetRepresentation().Get());
 	GetWorld()->DestroyActor(WeakObject.Get());
 }
 
@@ -72,7 +72,7 @@ void AMolVizGameModeBase::OnLoadComplete(AProteinData * ProteinData)
 			)
 	);
 	ProteinReps[Index]->SetActorLocation(ProteinData->FindCOM());
-	ProteinData->Representation = ProteinReps[Index];
+	ProteinData->SetRepresentation(ProteinReps[Index]);
 	RepresentationFactory->CreateNewVdwRep(ProteinData, "VDW");
 	Cast<AMousePlayerController>(UGameplayStatics::GetPlayerController(this, 0))->SetProteinRep(ProteinReps[Index].Get());
 }

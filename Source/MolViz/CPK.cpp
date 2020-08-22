@@ -13,25 +13,25 @@ void UCPK::ConstructRepresentation(AProteinData* ProteinData)
 	AtomMeshComponent = NewObject<UInstancedAtomMesh>(this, UInstancedAtomMesh::StaticClass());
 	AtomMeshComponent->SetWorldLocation(ProteinData->FindCOM());
 	//for all bonds render a bond
-	for (auto BondIter = ProteinData->Bonds.CreateConstIterator(); BondIter.GetIndex() < ProteinData->Bonds.Num(); ++BondIter)
+	for (auto BondIter = ProteinData->GetBonds().CreateConstIterator(); BondIter.GetIndex() < ProteinData->GetBonds().Num(); ++BondIter)
 	{
 		//get the two ends of the bond
-		FAtomData AtomA = ProteinData->Atoms[BondIter->AtomA];
-		FAtomData AtomB = ProteinData->Atoms[BondIter->AtomB];
+		FAtomData AtomA = *ProteinData->GetAtom(BondIter->AtomA);
+		FAtomData AtomB = *ProteinData->GetAtom(BondIter->AtomB);
 		//add a new instanced bond
 		BondMeshComponent->AddBond((AtomA.position + AtomB.position) / 2, *BondIter);
 	}
 	//for all atoms render a sphere
-	for (auto AtomIter = ProteinData->Atoms.CreateConstIterator(); AtomIter.GetIndex() < ProteinData->Atoms.Num(); AtomIter++)
+	for (auto AtomIter = ProteinData->GetAtoms().CreateConstIterator(); AtomIter.GetIndex() < ProteinData->GetAtoms().Num(); AtomIter++)
 	{
 		//get the color data for the element type
 		FColorData * RowData = AtomColors->FindRow<FColorData>(FName(*(AtomIter->Element)), AtomIter->Name, true);
 		if (RowData)
 			//create the new instanced atom with the given color
-			AtomMeshComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], RowData->color, 1.0);
+			AtomMeshComponent->AddAtom(ProteinData->GetAtom(AtomIter.GetIndex()), RowData->color, 1.0);
 		else
 			//no color data was found render the default color
-			AtomMeshComponent->AddAtom(&ProteinData->Atoms[AtomIter.GetIndex()], FLinearColor(102, 95, 37), 50.0);
+			AtomMeshComponent->AddAtom(ProteinData->GetAtom(AtomIter.GetIndex()), FLinearColor(102, 95, 37), 50.0);
 	}
 	//setup the components and attach them to the appropriate actor
 	BondMeshComponent->RegisterComponent();

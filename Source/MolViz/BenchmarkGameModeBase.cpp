@@ -25,7 +25,7 @@ TWeakObjectPtr<AProteinRepresentation> ABenchmarkGameModeBase::AddProteinRep()
 TWeakObjectPtr<AProteinData> ABenchmarkGameModeBase::AddNewMolecule()
 {
 	auto ProteinData = AddProtein();
-	ProteinData.Get()->Representation = AddProteinRep();
+	ProteinData.Get()->SetRepresentation(AddProteinRep());
 	return ProteinData;
 }
 
@@ -33,8 +33,8 @@ void ABenchmarkGameModeBase::SetupNewMolecule()
 {
 	auto Molecule = AddNewMolecule();
 	Reader.readStructure(Path, Molecule.Get());
-	RepFactory->CreateNewCpkRep(Molecule->Representation.Get(), Molecule.Get(), FName("CPK"));
-	RepFactory->CreateNewTubeRep(Molecule->Representation.Get(), Molecule.Get(), FName("TUBE"));
+	RepFactory->CreateNewCpkRep(Molecule->GetRepresentation().Get(), Molecule.Get(), FName("CPK"));
+	RepFactory->CreateNewTubeRep(Molecule->GetRepresentation().Get(), Molecule.Get(), FName("TUBE"));
 	this->AtomCount += 4412;
 	if (AtomCount > 100000)
 	{

@@ -6,6 +6,7 @@
 #include "FArcBall.generated.h"
 /**
  * Manages arcball controller related states
+ * based on Ken Shoemakes arcball controller
  */
 UCLASS()
 class MOLVIZ_API UArcBall : public UObject

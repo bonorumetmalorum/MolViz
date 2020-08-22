@@ -23,7 +23,7 @@ void SProteinRepConfigWindow::Construct(const FArguments& InArgs)
 				.Content()
 				[
 					SAssignNew(RepresentationsView, SListView<TWeakObjectPtr<URepresentation>>)
-					.ListItemsSource(&this->ProteinData->Representation->Representations)
+					.ListItemsSource(&this->ProteinData->GetRepresentation()->Representations)
 					.OnGenerateRow(this, &SProteinRepConfigWindow::GenerateRepRow)
 					.OnMouseButtonDoubleClick(this, &SProteinRepConfigWindow::HideRep)
 					.OnSelectionChanged(this, &SProteinRepConfigWindow::SelectionChanged)
@@ -92,14 +92,14 @@ END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
 FReply SProteinRepConfigWindow::RemoveRepresentation()
 {
-	ProteinData->Representation->RemoveRep(SelectedRep);
+	ProteinData->GetRepresentation()->RemoveRep(SelectedRep);
 	this->RepresentationsView->RequestListRefresh();
 	return FReply::Handled();
 }
 
 FReply SProteinRepConfigWindow::AddNewCpk()
 {
-	this->RepFactory->CreateNewCpkRep(this->ProteinData.Get()->Representation.Get(), this->ProteinData.Get(), FName("CPK"));
+	this->RepFactory->CreateNewCpkRep(this->ProteinData.Get()->GetRepresentation().Get(), this->ProteinData.Get(), FName("CPK"));
 	this->RepresentationsView->RequestListRefresh();
 	return FReply::Handled();
 }
@@ -113,14 +113,14 @@ FReply SProteinRepConfigWindow::AddNewVdw()
 
 FReply SProteinRepConfigWindow::AddNewTube()
 {
-	this->RepFactory->CreateNewTubeRep(this->ProteinData.Get()->Representation.Get(), this->ProteinData.Get(), FName("TUBE"));
+	this->RepFactory->CreateNewTubeRep(this->ProteinData.Get()->GetRepresentation().Get(), this->ProteinData.Get(), FName("TUBE"));
 	this->RepresentationsView->RequestListRefresh();
 	return FReply::Handled();
 }
 
 FReply SProteinRepConfigWindow::AddNewNCartoon()
 {
-	this->RepFactory->CreateNewNCartoonRep(this->ProteinData.Get()->Representation.Get(), this->ProteinData.Get(), FName("NCARTOON"));
+	this->RepFactory->CreateNewNCartoonRep(this->ProteinData.Get()->GetRepresentation().Get(), this->ProteinData.Get(), FName("NCARTOON"));
 	this->RepresentationsView->RequestListRefresh();
 	return FReply::Handled();
 }

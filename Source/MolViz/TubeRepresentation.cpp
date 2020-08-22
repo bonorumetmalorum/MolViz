@@ -8,18 +8,18 @@
 
 void UTubeRepresentation::ConstructRepresentation(AProteinData* ProteinData)
 {
-	if(ProteinData->BackBoneSegments.Num() == 0)
+	if(ProteinData->GetBackBoneSegments().Num() == 0)
 	{
 		ProteinData->FindBackBone();
 	}
 	this->SetWorldLocation(ProteinData->FindCOM());
-	const int NumResidues = ProteinData->BackBoneSegments.Num();
-	for(auto ChainIter = ProteinData->Chains.CreateConstIterator(); ChainIter; ChainIter++)
+	const int NumResidues = ProteinData->GetBackBoneSegments().Num();
+	for(auto ChainIter = ProteinData->GetChains().CreateConstIterator(); ChainIter; ChainIter++)
 	{
 		for(uint32 BackBoneSeg = ChainIter->StartBackBoneIndex; BackBoneSeg <= ChainIter->EndBackBoneIndex-2; BackBoneSeg++)
 		{
-			if (ProteinData->BackBoneSegments[BackBoneSeg].IsValid() && ProteinData->BackBoneSegments[BackBoneSeg + 1].IsValid())
-				AddTubeSection(ProteinData->BackBoneSegments[BackBoneSeg].CA, ProteinData->BackBoneSegments[BackBoneSeg].C, ProteinData->BackBoneSegments[BackBoneSeg + 1].CA, ProteinData->BackBoneSegments[BackBoneSeg + 1].C);
+			if (ProteinData->GetBackBoneSegments()[BackBoneSeg].IsValid() && ProteinData->GetBackBoneSegments()[BackBoneSeg + 1].IsValid())
+				AddTubeSection(ProteinData->GetBackBoneSegments()[BackBoneSeg].CA, ProteinData->GetBackBoneSegments()[BackBoneSeg].C, ProteinData->GetBackBoneSegments()[BackBoneSeg + 1].CA, ProteinData->GetBackBoneSegments()[BackBoneSeg + 1].C);
 		}
 	}
 }

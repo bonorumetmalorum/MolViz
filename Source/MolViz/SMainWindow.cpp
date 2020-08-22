@@ -42,7 +42,7 @@ void SMainWindow::Construct(const FArguments& InArgs)
 		.Title(FText::FromString(FString("MolViz")))
 		[
 			SNew(SOverlay)
-			+SOverlay::Slot()
+			+ SOverlay::Slot()
 			[
 				SNew(SVerticalBox)
 				+ SVerticalBox::Slot()
@@ -151,7 +151,7 @@ TSharedRef<ITableRow> SMainWindow::CreateListItem(TWeakObjectPtr<AProteinData> I
 		.Content()
 		[
 			SNew(STextBlock)
-			.Text(FText::FromString(Item->FilePath))
+			.Text(FText::FromString(Item->GetFilePath()))
 		];
 }
 

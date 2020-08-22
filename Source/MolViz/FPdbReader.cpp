@@ -18,9 +18,9 @@ FPdbReader::~FPdbReader()
 void FPdbReader::ParseEnd(AProteinData * Protein)
 {
 	//if for some reason we have no chains, we must create one.
-	if(Protein->Chains.Num() == 0)
+	if(Protein->GetChains().Num() == 0)
 	{
-		Protein->Chains.Add(FChainData(Protein->Atoms.Last().Snum + 1, Protein->Residues.Last().Resname, Protein->Atoms.Last().Chain, Protein->Residues.Last().Resseq, -1, 0, Protein->Residues.Num() - 1));
+		Protein->GetChains().Add(FChainData(Protein->GetAtoms().Last().Snum + 1, Protein->GetResidues().Last().Resname, Protein->GetAtoms().Last().Chain, Protein->GetResidues().Last().Resseq, -1, 0, Protein->GetResidues().Num() - 1));
 	}
 }
 
@@ -61,7 +61,7 @@ void FPdbReader::readStructure(FString filepath, AActor * Protein)
 		}
 	}
 	ParseEnd(Cast<AProteinData>(Protein));
-	Cast<AProteinData>(Protein)->FilePath = filepath;
+	Cast<AProteinData>(Protein)->SetFilePath(filepath);
 	Cast<AProteinData>(Protein)->CreateBonds();
 	//broadcast "load succeeded"
 	UE_LOG(LogTemp, Warning, TEXT("finished parsing file"));
@@ -174,20 +174,20 @@ void FPdbReader::ParseTer(uint8* line, AProteinData* Cast)
 	//now we need to store this information in the protein ds
 	//if this is the first chain, i.e. the list is previously empty, then it assumes 0 - current atom list length
 	//if this is the next chain, then we must start at the previous chain end and stop and current atom list length
-	if(Cast->Chains.Num() == 0)
+	if(Cast->GetChains().Num() == 0)
 	{
-		Cast->Chains.Add(FChainData(SerialNumber, Resname, ChainID, ResSeq, CodeForInsertionsOfResidues, 0, NewChainEndOffset));
+		Cast->GetChains().Add(FChainData(SerialNumber, Resname, ChainID, ResSeq, CodeForInsertionsOfResidues, 0, NewChainEndOffset));
 	}
 	else
 	{
-		FChainData* Chain = Cast->Chains.FindByKey(ChainID);
+		FChainData* Chain = Cast->GetChains().FindByKey(ChainID);
 		if (Chain)
 		{
 			Chain->ResidueOffsets.Add(TPair<uint32, uint32>(NewChainStartOffset, NewChainEndOffset));
 		}
 		else
 		{
-			Cast->Chains.Add(FChainData(SerialNumber, Resname, ChainID, ResSeq, CodeForInsertionsOfResidues, NewChainStartOffset, NewChainEndOffset));
+			Cast->GetChains().Add(FChainData(SerialNumber, Resname, ChainID, ResSeq, CodeForInsertionsOfResidues, NewChainStartOffset, NewChainEndOffset));
 		}
 		
 	}

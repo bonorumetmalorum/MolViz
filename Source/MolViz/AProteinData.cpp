@@ -200,6 +200,66 @@ void AProteinData::BeginPlay()
 	Residues.Reset();
 }
 
+void AProteinData::SetRepresentation(const TWeakObjectPtr<AProteinRepresentation>& Rep)
+{
+	this->Representation = Rep;
+}
+
+TWeakObjectPtr<AProteinRepresentation> AProteinData::GetRepresentation()
+{
+	return Representation;
+}
+
+TArray<FBondData>& AProteinData::GetBonds()
+{
+	return Bonds;
+}
+
+FAtomData* AProteinData::GetAtom(const int Atom)
+{
+	return &Atoms[Atom];
+}
+
+TArray<FAtomData>& AProteinData::GetAtoms()
+{
+	return Atoms;
+}
+
+TArray<FChainData>& AProteinData::GetChains()
+{
+	return Chains;
+}
+
+TArray<FResidue>& AProteinData::GetResidues()
+{
+	return Residues;
+}
+
+void AProteinData::SetFilePath(const FString& CS)
+{
+	FilePath = CS;
+}
+
+TArray<FBackBoneSegmentData>& AProteinData::GetBackBoneSegments()
+{
+	return BackBoneSegments;
+}
+
+FBackBoneSegmentData* AProteinData::GetBackBoneSegment(uint32 BackBoneIndex)
+{
+	return &BackBoneSegments[BackBoneIndex];
+}
+
+TArray<FResidue>& AProteinData::GetHetResidues()
+{
+	return HetResidues;
+}
+
+FString AProteinData::GetFilePath()
+{
+	return FilePath;
+}
+
 bool AProteinData::AtomHasInterResidueBond(FAtomData & Atom)
 {
 	for(auto Iter = Atom.Neighbours.CreateIterator(); Iter; ++Iter)
