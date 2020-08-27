@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FArcBall.h"
 #include "ProteinRepresentation.h"
 #include "GameFramework/PlayerController.h"
 #include "MousePlayerController.generated.h"
@@ -64,7 +63,7 @@ public:
 	 */
 	void SetProteinRep(AProteinRepresentation* InProteinRep);
 	/*
-	 * compute the arcball vector
+	 * compute the arcball vector, given a mouse position compute the closest point on the arc ball
 	 */
 	FVector ComputeArcballVector(int x, int y);
 	/*
@@ -90,10 +89,6 @@ public:
 	void ModeRotate();
 	void ModeTranslate();
 	bool TransformEnabled;
-
-	
-	UPROPERTY()
-	UArcBall * ArcBallController;
 
 	ETransformMode TransformMode;
 	

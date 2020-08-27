@@ -15,7 +15,7 @@ UVDW::UVDW()
 
 void UVDW::ConstructRepresentation(AProteinData * ProteinData)
 {
-	UInstancedAtomMesh* Component = NewObject<UInstancedAtomMesh>(this, UInstancedAtomMesh::StaticClass());
+	AtomMeshComponent = NewObject<UInstancedAtomMesh>(this, UInstancedAtomMesh::StaticClass());
 	for (auto iter = ProteinData->GetResidues().CreateConstIterator(); iter.GetIndex() < ProteinData->GetResidues().Num(); ++iter)
 	{
 		for (auto atomiter = iter->atoms.CreateConstIterator(); atomiter; atomiter++)
@@ -24,9 +24,9 @@ void UVDW::ConstructRepresentation(AProteinData * ProteinData)
 			FVanDerWaalRadiiRowBase* Radii = VDWRadiiData->FindRow<FVanDerWaalRadiiRowBase>(FName(*(ProteinData->GetAtoms()[*atomiter].Element)), ProteinData->GetAtoms()[*atomiter].Name, true);
 
 			if (RowData && Radii)
-				Component->AddAtom(&ProteinData->GetAtoms()[*atomiter], RowData->color, Radii->Radius);
+				AtomMeshComponent->AddAtom(&ProteinData->GetAtoms()[*atomiter], RowData->color, Radii->Radius);
 			else
-				Component->AddAtom(&ProteinData->GetAtoms()[*atomiter], FLinearColor(102, 95, 37), 50.0);
+				AtomMeshComponent->AddAtom(&ProteinData->GetAtoms()[*atomiter], FLinearColor(102, 95, 37), 50.0);
 		}
 	}
 	for(auto hetiter = ProteinData->GetHetResidues().CreateConstIterator(); hetiter; hetiter++)
@@ -37,19 +37,12 @@ void UVDW::ConstructRepresentation(AProteinData * ProteinData)
 			FVanDerWaalRadiiRowBase* Radii = VDWRadiiData->FindRow<FVanDerWaalRadiiRowBase>(FName(*(ProteinData->GetAtoms()[*hetatomiter].Element)), ProteinData->GetAtoms()[*hetatomiter].Name, true);
 
 			if (RowData && Radii)
-				Component->AddAtom(&ProteinData->GetAtoms()[*hetatomiter], RowData->color, Radii->Radius);
+				AtomMeshComponent->AddAtom(&ProteinData->GetAtoms()[*hetatomiter], RowData->color, Radii->Radius);
 			else
-				Component->AddAtom(&ProteinData->GetAtoms()[*hetatomiter], FLinearColor(102, 95, 37), 50.0);
+				AtomMeshComponent->AddAtom(&ProteinData->GetAtoms()[*hetatomiter], FLinearColor(102, 95, 37), 50.0);
 		}
 	}
-	Component->RegisterComponent();
-	Component->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
-	Component->SetMobility(EComponentMobility::Movable);
-}
-
-void UVDW::SetSphereRes(int InStacks, int InSlices, float Radius)
-{
-	this->Stacks = InStacks;
-	this->Slices = InSlices;
-	this->SphereRadius = Radius;
+	AtomMeshComponent->RegisterComponent();
+	AtomMeshComponent->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+	AtomMeshComponent->SetMobility(EComponentMobility::Movable);
 }

@@ -15,11 +15,7 @@ class MOLVIZ_API UMolVizGauntletTestController : public UGauntletTestController
 	GENERATED_BODY()
 
 private:
-	// Time to wait after game start before doing anything.
-	const float SpinUpTime = 3.f;
 
-	// Time to run the profiler for.
-	const float ProfilingTime = 7.f;
 
 	/*
 	 * start the test

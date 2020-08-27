@@ -47,17 +47,6 @@ void UMolVizGauntletTestController::StopTesting()
 void UMolVizGauntletTestController::OnInit()
 {
 	UE_LOG(LogGauntlet, Display, TEXT("YourGameGauntletController started"));
-	//swap to the benchmark level if the application has been launched with the gauntlet automation system
-    //static ConstructorHelpers::FObjectFinder<ULevel>BenchmarkLevel(TEXT("World'/Game/Benchmark.Benchmark'"));
-	/*if(GetWorld()->GetCurrentLevel()->GetName().Equals("Benchmark"))
-	{
-        bool success = GetWorld()->SetCurrentLevel(BenchmarkLevel.Object);
-        if(!success)
-        {
-            UE_LOG(LogGauntlet, Warning, TEXT("unable to change to benchmark level"));
-            EndTest();
-        }
-	}*/
     StartProfiling();
 }
 

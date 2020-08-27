@@ -43,8 +43,3 @@ struct FChainData
 	uint32 EndBackBoneIndex;
 	bool operator==(uint8 Index);
 };
-
-//TODO maybe add an array of residues here, move it from the protein data class.
-//we need to do this because residue numbers are repeated for each chain.
-//also residue numbers dont necessarily start from 1... what a pain.
-//this will just store the residue start and end indices. easier this way. still have data locality for all arrays.

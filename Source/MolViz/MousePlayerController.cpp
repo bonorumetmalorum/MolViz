@@ -9,9 +9,6 @@
 AMousePlayerController::AMousePlayerController()
 {
 	this->bShowMouseCursor = true;
-	this->ArcBallController = NewObject<UArcBall>();
-	
-	ArcBallController->Ball_Place(FVector4(0.5, 0.5, 0, 1), 0.8);
 	this->CurrentPostion = FVector4(0,0,0,1);
 	this->PreviousPosition = FVector4(0, 0, 0, 1);
 	this->CurrenRotation = FQuat::Identity;
@@ -124,12 +121,12 @@ void AMousePlayerController::RotateProtein()
 	{
 		GetMousePosition(CurrentPostion.X, CurrentPostion.Y);
 		if (CurrentPostion.X != PreviousPosition.X || CurrentPostion.Y != PreviousPosition.Y) {
-			FVector From = ComputeArcballVector(PreviousPosition.X, PreviousPosition.Y);
+			FVector From = ComputeArcballVector(PreviousPosition.X, PreviousPosition.Y); //from and to vectors on the arcball surface
 			FVector To = ComputeArcballVector(CurrentPostion.X, CurrentPostion.Y);
-			float Angle = acos(FGenericPlatformMath::Min(1.0f, FVector::DotProduct(From, To)));
-			FVector Axis = FVector::CrossProduct(From, To);
+			float Angle = acos(FGenericPlatformMath::Min(1.0f, FVector::DotProduct(From, To))); //the angle between the two vectors
+			FVector Axis = FVector::CrossProduct(To, From); //the axis around which we rotate
 			Axis.Normalize();
-			FQuat Rot(Axis, Angle*5);
+			FQuat Rot(Axis, Angle*5); //create the quaternion rotation to apply
 			ProteinRep->AddActorWorldRotation(Rot);
 			PreviousPosition.X = CurrentPostion.X;
 			PreviousPosition.Y = CurrentPostion.Y;
@@ -179,22 +176,18 @@ void AMousePlayerController::SetProteinRep(AProteinRepresentation * InProteinRep
 {
 	this->ProteinRep = InProteinRep;
 	CurrentTranslation = InProteinRep->GetTransform().GetTranslation();
-	ArcBallController->SetRotation(ProteinRep->GetTransform().GetRotation());
 }
 
 FVector AMousePlayerController::ComputeArcballVector(int x, int y) {
-	int ViewportWidth, ViewportHeight;
+	int ViewportWidth, ViewportHeight; //viewport width and height
 	GetViewportSize(ViewportWidth, ViewportHeight);
-	FVector MouseScaled = FVector(1.0 * x / ViewportWidth * 2 - 1.0,
-		1.0 * y / ViewportHeight * 2 - 1.0,
-		0);
-
-	MouseScaled.Y = -MouseScaled.Y;
-	//MouseScaled.X = -MouseScaled.X;
-	float OP_squared = MouseScaled.X * MouseScaled.X + MouseScaled.Y * MouseScaled.Y;
-	if (OP_squared <= 1 * 1)
-		MouseScaled.Z = sqrt(1 * 1 - OP_squared);  // Pythagoras
+	//scale the mouse between -1 and 1 such that we can compute the closest point on the arcball (which is a unit sphere)
+	FVector MouseScaled = FVector(1.0 * x / ViewportWidth * 2 - 1.0, 1.0 * y / ViewportHeight * 2 - 1.0,0);
+	MouseScaled.Y = -MouseScaled.Y; //invert the y to help with orientation
+	float SquaredLength = MouseScaled.X * MouseScaled.X + MouseScaled.Y * MouseScaled.Y; //compute the squared length so we do not incur cost of sqrt op
+	if (SquaredLength <= 1) //if it is less than unit length, do not normalize
+		MouseScaled.Z = sqrt(1 - SquaredLength); //compute the 3d coordinate on the surface of the sphere using pythagoras
 	else
-		MouseScaled.Normalize();  // nearest point
+		MouseScaled.Normalize(); //if it is not unit length normalize it, retuning the nearest point
 	return MouseScaled;
 }

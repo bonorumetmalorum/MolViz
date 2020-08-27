@@ -71,6 +71,6 @@ FMatrix UBackBoneComponent::MakeRotation(FAtomData* C1, FAtomData* C2, FAtomData
 void UBackBoneComponent::UpdateBackBone()
 {
 	/*
-	 * TODO atom positions have changed in this case so we recompute the control points and update the curve
+	 * TODO
 	 */
 }

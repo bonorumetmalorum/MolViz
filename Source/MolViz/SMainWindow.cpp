@@ -107,7 +107,6 @@ void SMainWindow::Construct(const FArguments& InArgs)
 }
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
-//TODO I need to allow for file type recognition, and switching to parse DSSP / PDB info.
 FReply SMainWindow::OpenFileDialog()
 {
 	IDesktopPlatform * Platform = FDesktopPlatformModule::Get();

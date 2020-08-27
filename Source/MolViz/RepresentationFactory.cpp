@@ -18,8 +18,6 @@ UVDW* URepresentationFactory::CreateNewVdwRep(AProteinData * InProteinData, FNam
 	UVDW* rep = NewObject<UVDW>(InProteinData->GetRepresentation().Get(), InName);
 	InProteinData->GetRepresentation()->Representations.Add(TWeakObjectPtr<URepresentation>(rep));
 	rep->AttachToComponent(InProteinData->GetRepresentation().Get()->GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
-	rep->SetSphereRes(10, 10, 10.f);
-	//TODO pass in selection data
 	rep->ConstructRepresentation(InProteinData);
 	return rep;
 }

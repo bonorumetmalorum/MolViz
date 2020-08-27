@@ -22,7 +22,7 @@ public:
 	 * construct the representation
 	 * @Param *ProteinData the protein data
 	 */
-	void ConstructRepresentation(AProteinData * ProteinData/*, FColourScheme ColourScheme*/) override;
+	void ConstructRepresentation(AProteinData * ProteinData) override;
 	
 private:
 	static FMatrix ComputeRotation(FVector A);

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InstancedAtomMesh.h"
 #include "Representation.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -23,9 +24,7 @@ public:
 	 * @param ProteinData the protein data to represent in VDW
 	 */
 	void ConstructRepresentation(AProteinData * ProteinData) override;
-	void SetSphereRes(int Stacks, int Slices, float Radius);
-	int Stacks = 5;
-	int Slices = 5;
 	float SphereRadius = 5.0f;
 	UDataTable* VDWRadiiData;
+	UInstancedAtomMesh* AtomMeshComponent;
 };
