@@ -17,53 +17,37 @@ void UNewCartoonRepresentation::ConstructRepresentation(AProteinData* ProteinDat
 	FMatrix PreviousRot;
 	//iterate through the residues
 	//find out what kind of ss rep is used in this residue
-	//
-	//
 	if(ProteinData->GetBackBoneSegments().Num() == 0)
 		ProteinData->FindBackBone();
 	ChainState CurrentChainState = ChainInvalid;
 	for(auto ChainIter = ProteinData->GetChains().CreateConstIterator(); ChainIter; ChainIter++)
-	{
+	{//for all chains
 		for (uint32 i = ChainIter->StartBackBoneIndex; i < ChainIter->EndBackBoneIndex - 1; i++)
-		{
+		{//for all backbone segments in this chain
 			if (!ProteinData->GetBackBoneSegment(i)->IsValid() || !ProteinData->GetBackBoneSegment(i + 1)->IsValid())
-				continue;
-
+				continue; //skip if current or next is not valid backbone segment
+			//update the current chain state, used to keep track of start, middle and end of a SS type
 			CurrentChainState = UpdateChainState(ProteinData, i);
 			UBackBoneComponent* SegmentComponent = nullptr;
+			//switch on the ss type of the current segment
 			switch (ProteinData->GetBackBoneSegment(i)->ResType)
 			{
-			case SSType::AHelix:
-				if (i == ProteinData->GetResidues().Num() - 1)
-					SegmentComponent = AddAlphaHelixComponent(CurrentChainState, ProteinData->GetBackBoneSegment(i - 1)->CA, ProteinData->GetBackBoneSegment(i - 1)->C, ProteinData->GetBackBoneSegment(i)->CA, ProteinData->GetBackBoneSegment(i)->CA);
-				else
-					SegmentComponent = AddAlphaHelixComponent(CurrentChainState, ProteinData->GetBackBoneSegment(i)->CA, ProteinData->GetBackBoneSegment(i)->C, ProteinData->GetBackBoneSegment(i + 1)->CA, ProteinData->GetBackBoneSegment(i + 1)->C);
-
+			case SSType::AHelix: //add a helix component
+				SegmentComponent = AddAlphaHelixComponent(CurrentChainState, ProteinData->GetBackBoneSegment(i)->CA, ProteinData->GetBackBoneSegment(i)->C, ProteinData->GetBackBoneSegment(i + 1)->CA, ProteinData->GetBackBoneSegment(i + 1)->C);
 				break;
-			case SSType::BStrand:
-				if (i == ProteinData->GetResidues().Num() - 1)
-					SegmentComponent = AddBetaSheetComponent(CurrentChainState, ProteinData->GetBackBoneSegment(i - 1)->CA, ProteinData->GetBackBoneSegment(i - 1)->C, ProteinData->GetBackBoneSegment(i)->CA, ProteinData->GetBackBoneSegment(i)->C);
-				else
-					SegmentComponent = AddBetaSheetComponent(CurrentChainState, ProteinData->GetBackBoneSegment(i)->CA, ProteinData->GetBackBoneSegment(i)->C, ProteinData->GetBackBoneSegment(i + 1)->CA, ProteinData->GetBackBoneSegment(i + 1)->C);
-
+			case SSType::BStrand: //add a beta strand / beta sheet component
+				SegmentComponent = AddBetaSheetComponent(CurrentChainState, ProteinData->GetBackBoneSegment(i)->CA, ProteinData->GetBackBoneSegment(i)->C, ProteinData->GetBackBoneSegment(i + 1)->CA, ProteinData->GetBackBoneSegment(i + 1)->C);
 				break;
-			case SSType::Coil:
-				if (i == ProteinData->GetResidues().Num() - 1)
-					SegmentComponent = AddCoilComponent(CurrentChainState, ProteinData->GetBackBoneSegment(i - 1)->CA, ProteinData->GetBackBoneSegment(i - 1)->C, ProteinData->GetBackBoneSegment(i)->CA, ProteinData->GetBackBoneSegment(i)->C);
-				else
-					SegmentComponent = AddCoilComponent(CurrentChainState, ProteinData->GetBackBoneSegment(i)->CA, ProteinData->GetBackBoneSegment(i)->C, ProteinData->GetBackBoneSegment(i + 1)->CA, ProteinData->GetBackBoneSegment(i + 1)->C);
+			case SSType::Coil: //add a coil component
+				SegmentComponent = AddCoilComponent(CurrentChainState, ProteinData->GetBackBoneSegment(i)->CA, ProteinData->GetBackBoneSegment(i)->C, ProteinData->GetBackBoneSegment(i + 1)->CA, ProteinData->GetBackBoneSegment(i + 1)->C);
 				break;
-			default:
-				if (i == ProteinData->GetResidues().Num() - 1)
-					SegmentComponent = AddCoilComponent(CurrentChainState, ProteinData->GetBackBoneSegment(i - 1)->CA, ProteinData->GetBackBoneSegment(i - 1)->C, ProteinData->GetBackBoneSegment(i)->CA, ProteinData->GetBackBoneSegment(i)->C);
-				else
-					SegmentComponent = AddCoilComponent(CurrentChainState, ProteinData->GetBackBoneSegment(i)->CA, ProteinData->GetBackBoneSegment(i)->C, ProteinData->GetBackBoneSegment(i + 1)->CA, ProteinData->GetBackBoneSegment(i + 1)->C); UE_LOG(LogTemp, Warning, TEXT("unknown type"));
+			default: //add a coil component if no ss type matched
+				SegmentComponent = AddCoilComponent(CurrentChainState, ProteinData->GetBackBoneSegment(i)->CA, ProteinData->GetBackBoneSegment(i)->C, ProteinData->GetBackBoneSegment(i + 1)->CA, ProteinData->GetBackBoneSegment(i + 1)->C); UE_LOG(LogTemp, Warning, TEXT("unknown type"));
 				break;
 			}
-			if (!SegmentComponent || (ProteinData->GetBackBoneSegment(i)->ResType == Coil)) continue;
 	}
 	
-		//TODO bug with this rotation, flipping to 180, need to average consecutive CAs
+		//TODO incomplete / incorrect code to set rotations
 		//if it is the begining, we dont have a previous segment to do
 		//if it is at the end we dont have a next segment to do
 		//if(i == 0)
@@ -148,7 +132,7 @@ UBackBoneComponent* UNewCartoonRepresentation::AddCoilComponent(ChainState Curre
 UNewCartoonRepresentation::ChainState UNewCartoonRepresentation::UpdateChainState(AProteinData* ProteindData, int CurrentResidue)
 {
 	if (CurrentResidue == 0) return ChainStart;
-	if (CurrentResidue >= ProteindData->GetResidues().Num() - 1) return ChainEnd; //TODO bug with this index, residues not matching backbone segments???
+	if (CurrentResidue >= ProteindData->GetResidues().Num() - 1) return ChainEnd;
 	if (ProteindData->GetResidues()[CurrentResidue - 1].SSResType != ProteindData->GetResidues()[CurrentResidue].SSResType) return ChainStart;
 	if (ProteindData->GetResidues()[CurrentResidue + 1].SSResType != ProteindData->GetResidues()[CurrentResidue].SSResType) return ChainEnd;
 	return ChainMiddle;

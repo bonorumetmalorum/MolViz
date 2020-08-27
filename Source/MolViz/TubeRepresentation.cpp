@@ -15,10 +15,11 @@ void UTubeRepresentation::ConstructRepresentation(AProteinData* ProteinData)
 	this->SetWorldLocation(ProteinData->FindCOM());
 	const int NumResidues = ProteinData->GetBackBoneSegments().Num();
 	for(auto ChainIter = ProteinData->GetChains().CreateConstIterator(); ChainIter; ChainIter++)
-	{
+	{//for all chains
 		for(uint32 BackBoneSeg = ChainIter->StartBackBoneIndex; BackBoneSeg <= ChainIter->EndBackBoneIndex-2; BackBoneSeg++)
-		{
-			if (ProteinData->GetBackBoneSegments()[BackBoneSeg].IsValid() && ProteinData->GetBackBoneSegments()[BackBoneSeg + 1].IsValid())
+		{//for all backbone segments in this chain
+			if (ProteinData->GetBackBoneSegments()[BackBoneSeg].IsValid() && ProteinData->GetBackBoneSegments()[BackBoneSeg + 1].IsValid()) //if valid backbone segment
+				//insert new tube
 				AddTubeSection(ProteinData->GetBackBoneSegments()[BackBoneSeg].CA, ProteinData->GetBackBoneSegments()[BackBoneSeg].C, ProteinData->GetBackBoneSegments()[BackBoneSeg + 1].CA, ProteinData->GetBackBoneSegments()[BackBoneSeg + 1].C);
 		}
 	}
