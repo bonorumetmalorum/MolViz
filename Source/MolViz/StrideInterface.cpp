@@ -10,7 +10,9 @@
 FStrideInterface::FStrideInterface()
 {
 #if !UE_BUILD_SHIPPING
+	//for in editor usage uncomment the following
 	//Command = TEXT("C:/Program Files (x86)/University of Illinois/VMD/stride_WIN32.exe");
+	//for standalone use the following
 	Command = TEXT(".\\stride_WIN32.exe");
 #else
 	Command = TEXT(".\\stride_WIN32.exe");

@@ -60,7 +60,7 @@ private:
 	URepresentationFactory * RepFactory;
 	TArray<TWeakObjectPtr<AProteinRepresentation>> ProteinReps;
 	TArray<TWeakObjectPtr<AProteinData>> ProteinDatas;
-	FString Path = "C:\\Users\\Govind\\Documents\\vmd-1.9.4a43\\proteins\\3b43.pdb";
+	FString Path = ".\\3b43.pdb";
 	FTimerHandle NewProteinTimer;
 	int32 AtomCount;
 };
